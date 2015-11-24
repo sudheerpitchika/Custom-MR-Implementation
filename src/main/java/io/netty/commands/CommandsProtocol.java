@@ -6,10 +6,906 @@ public final class CommandsProtocol {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface CommandOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  /**
+   * Protobuf enum {@code Instruction}
+   */
+  public enum Instruction
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>START_DATA_NODE = 1;</code>
+     */
+    START_DATA_NODE(0, 1),
+    /**
+     * <code>ACCEPT_DATA = 2;</code>
+     */
+    ACCEPT_DATA(1, 2),
+    /**
+     * <code>ACCEPT_JAR = 3;</code>
+     */
+    ACCEPT_JAR(2, 3),
+    /**
+     * <code>START_TASK_TRACKER = 4;</code>
+     */
+    START_TASK_TRACKER(3, 4),
+    /**
+     * <code>START_MAP = 5;</code>
+     */
+    START_MAP(4, 5),
+    /**
+     * <code>START_REDUCE = 6;</code>
+     */
+    START_REDUCE(5, 6),
+    /**
+     * <code>RETURN_KEYS_AND_LOCATIONS = 7;</code>
+     */
+    RETURN_KEYS_AND_LOCATIONS(6, 7),
+    /**
+     * <code>ACCEPT_KEYS_AND_LOCATIONS = 8;</code>
+     */
+    ACCEPT_KEYS_AND_LOCATIONS(7, 8),
+    /**
+     * <code>RETURN_VALUES_FOR_KEY = 9;</code>
+     */
+    RETURN_VALUES_FOR_KEY(8, 9),
+    /**
+     * <code>SHUTDOWN = 10;</code>
+     */
+    SHUTDOWN(9, 10),
+    ;
 
-    // required uint32 commandId = 1;
+    /**
+     * <code>START_DATA_NODE = 1;</code>
+     */
+    public static final int START_DATA_NODE_VALUE = 1;
+    /**
+     * <code>ACCEPT_DATA = 2;</code>
+     */
+    public static final int ACCEPT_DATA_VALUE = 2;
+    /**
+     * <code>ACCEPT_JAR = 3;</code>
+     */
+    public static final int ACCEPT_JAR_VALUE = 3;
+    /**
+     * <code>START_TASK_TRACKER = 4;</code>
+     */
+    public static final int START_TASK_TRACKER_VALUE = 4;
+    /**
+     * <code>START_MAP = 5;</code>
+     */
+    public static final int START_MAP_VALUE = 5;
+    /**
+     * <code>START_REDUCE = 6;</code>
+     */
+    public static final int START_REDUCE_VALUE = 6;
+    /**
+     * <code>RETURN_KEYS_AND_LOCATIONS = 7;</code>
+     */
+    public static final int RETURN_KEYS_AND_LOCATIONS_VALUE = 7;
+    /**
+     * <code>ACCEPT_KEYS_AND_LOCATIONS = 8;</code>
+     */
+    public static final int ACCEPT_KEYS_AND_LOCATIONS_VALUE = 8;
+    /**
+     * <code>RETURN_VALUES_FOR_KEY = 9;</code>
+     */
+    public static final int RETURN_VALUES_FOR_KEY_VALUE = 9;
+    /**
+     * <code>SHUTDOWN = 10;</code>
+     */
+    public static final int SHUTDOWN_VALUE = 10;
+
+
+    public final int getNumber() { return value; }
+
+    public static Instruction valueOf(int value) {
+      switch (value) {
+        case 1: return START_DATA_NODE;
+        case 2: return ACCEPT_DATA;
+        case 3: return ACCEPT_JAR;
+        case 4: return START_TASK_TRACKER;
+        case 5: return START_MAP;
+        case 6: return START_REDUCE;
+        case 7: return RETURN_KEYS_AND_LOCATIONS;
+        case 8: return ACCEPT_KEYS_AND_LOCATIONS;
+        case 9: return RETURN_VALUES_FOR_KEY;
+        case 10: return SHUTDOWN;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<Instruction>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<Instruction>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Instruction>() {
+            public Instruction findValueByNumber(int number) {
+              return Instruction.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return CommandsProtocol.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final Instruction[] VALUES = values();
+
+    public static Instruction valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private Instruction(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:Instruction)
+  }
+
+  public interface LocationOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Location)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string ip = 1;</code>
+     */
+    boolean hasIp();
+    /**
+     * <code>required string ip = 1;</code>
+     */
+    java.lang.String getIp();
+    /**
+     * <code>required string ip = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getIpBytes();
+
+    /**
+     * <code>required uint32 chunk = 2;</code>
+     */
+    boolean hasChunk();
+    /**
+     * <code>required uint32 chunk = 2;</code>
+     */
+    int getChunk();
+
+    /**
+     * <code>required uint32 start = 3;</code>
+     */
+    boolean hasStart();
+    /**
+     * <code>required uint32 start = 3;</code>
+     */
+    int getStart();
+
+    /**
+     * <code>required uint32 offset = 4;</code>
+     */
+    boolean hasOffset();
+    /**
+     * <code>required uint32 offset = 4;</code>
+     */
+    int getOffset();
+  }
+  /**
+   * Protobuf type {@code Location}
+   */
+  public static final class Location extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:Location)
+      LocationOrBuilder {
+    // Use Location.newBuilder() to construct.
+    private Location(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Location(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Location defaultInstance;
+    public static Location getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Location getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Location(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              ip_ = bs;
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              chunk_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              start_ = input.readUInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              offset_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return CommandsProtocol.internal_static_Location_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return CommandsProtocol.internal_static_Location_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              CommandsProtocol.Location.class, CommandsProtocol.Location.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Location> PARSER =
+        new com.google.protobuf.AbstractParser<Location>() {
+      public Location parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Location(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Location> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int IP_FIELD_NUMBER = 1;
+    private java.lang.Object ip_;
+    /**
+     * <code>required string ip = 1;</code>
+     */
+    public boolean hasIp() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string ip = 1;</code>
+     */
+    public java.lang.String getIp() {
+      java.lang.Object ref = ip_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          ip_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string ip = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getIpBytes() {
+      java.lang.Object ref = ip_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ip_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CHUNK_FIELD_NUMBER = 2;
+    private int chunk_;
+    /**
+     * <code>required uint32 chunk = 2;</code>
+     */
+    public boolean hasChunk() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required uint32 chunk = 2;</code>
+     */
+    public int getChunk() {
+      return chunk_;
+    }
+
+    public static final int START_FIELD_NUMBER = 3;
+    private int start_;
+    /**
+     * <code>required uint32 start = 3;</code>
+     */
+    public boolean hasStart() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required uint32 start = 3;</code>
+     */
+    public int getStart() {
+      return start_;
+    }
+
+    public static final int OFFSET_FIELD_NUMBER = 4;
+    private int offset_;
+    /**
+     * <code>required uint32 offset = 4;</code>
+     */
+    public boolean hasOffset() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required uint32 offset = 4;</code>
+     */
+    public int getOffset() {
+      return offset_;
+    }
+
+    private void initFields() {
+      ip_ = "";
+      chunk_ = 0;
+      start_ = 0;
+      offset_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasIp()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasChunk()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasStart()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasOffset()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getIpBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, chunk_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, start_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, offset_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getIpBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, chunk_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, start_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, offset_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static CommandsProtocol.Location parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.Location parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.Location parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.Location parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.Location parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.Location parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.Location parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static CommandsProtocol.Location parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.Location parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.Location parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(CommandsProtocol.Location prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code Location}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Location)
+        CommandsProtocol.LocationOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return CommandsProtocol.internal_static_Location_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return CommandsProtocol.internal_static_Location_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                CommandsProtocol.Location.class, CommandsProtocol.Location.Builder.class);
+      }
+
+      // Construct using CommandsProtocol.Location.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        ip_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        chunk_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        start_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        offset_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return CommandsProtocol.internal_static_Location_descriptor;
+      }
+
+      public CommandsProtocol.Location getDefaultInstanceForType() {
+        return CommandsProtocol.Location.getDefaultInstance();
+      }
+
+      public CommandsProtocol.Location build() {
+        CommandsProtocol.Location result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public CommandsProtocol.Location buildPartial() {
+        CommandsProtocol.Location result = new CommandsProtocol.Location(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.ip_ = ip_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.chunk_ = chunk_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.start_ = start_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.offset_ = offset_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof CommandsProtocol.Location) {
+          return mergeFrom((CommandsProtocol.Location)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(CommandsProtocol.Location other) {
+        if (other == CommandsProtocol.Location.getDefaultInstance()) return this;
+        if (other.hasIp()) {
+          bitField0_ |= 0x00000001;
+          ip_ = other.ip_;
+          onChanged();
+        }
+        if (other.hasChunk()) {
+          setChunk(other.getChunk());
+        }
+        if (other.hasStart()) {
+          setStart(other.getStart());
+        }
+        if (other.hasOffset()) {
+          setOffset(other.getOffset());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasIp()) {
+          
+          return false;
+        }
+        if (!hasChunk()) {
+          
+          return false;
+        }
+        if (!hasStart()) {
+          
+          return false;
+        }
+        if (!hasOffset()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        CommandsProtocol.Location parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (CommandsProtocol.Location) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object ip_ = "";
+      /**
+       * <code>required string ip = 1;</code>
+       */
+      public boolean hasIp() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string ip = 1;</code>
+       */
+      public java.lang.String getIp() {
+        java.lang.Object ref = ip_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            ip_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string ip = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIpBytes() {
+        java.lang.Object ref = ip_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ip_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string ip = 1;</code>
+       */
+      public Builder setIp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        ip_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string ip = 1;</code>
+       */
+      public Builder clearIp() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        ip_ = getDefaultInstance().getIp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string ip = 1;</code>
+       */
+      public Builder setIpBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        ip_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int chunk_ ;
+      /**
+       * <code>required uint32 chunk = 2;</code>
+       */
+      public boolean hasChunk() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required uint32 chunk = 2;</code>
+       */
+      public int getChunk() {
+        return chunk_;
+      }
+      /**
+       * <code>required uint32 chunk = 2;</code>
+       */
+      public Builder setChunk(int value) {
+        bitField0_ |= 0x00000002;
+        chunk_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 chunk = 2;</code>
+       */
+      public Builder clearChunk() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        chunk_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int start_ ;
+      /**
+       * <code>required uint32 start = 3;</code>
+       */
+      public boolean hasStart() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required uint32 start = 3;</code>
+       */
+      public int getStart() {
+        return start_;
+      }
+      /**
+       * <code>required uint32 start = 3;</code>
+       */
+      public Builder setStart(int value) {
+        bitField0_ |= 0x00000004;
+        start_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 start = 3;</code>
+       */
+      public Builder clearStart() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        start_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int offset_ ;
+      /**
+       * <code>required uint32 offset = 4;</code>
+       */
+      public boolean hasOffset() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required uint32 offset = 4;</code>
+       */
+      public int getOffset() {
+        return offset_;
+      }
+      /**
+       * <code>required uint32 offset = 4;</code>
+       */
+      public Builder setOffset(int value) {
+        bitField0_ |= 0x00000008;
+        offset_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 offset = 4;</code>
+       */
+      public Builder clearOffset() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        offset_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:Location)
+    }
+
+    static {
+      defaultInstance = new Location(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:Location)
+  }
+
+  public interface CommandOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Command)
+      com.google.protobuf.MessageOrBuilder {
+
     /**
      * <code>required uint32 commandId = 1;</code>
      */
@@ -19,7 +915,6 @@ public final class CommandsProtocol {
      */
     int getCommandId();
 
-    // required string commandString = 2;
     /**
      * <code>required string commandString = 2;</code>
      */
@@ -33,13 +928,109 @@ public final class CommandsProtocol {
      */
     com.google.protobuf.ByteString
         getCommandStringBytes();
+
+    /**
+     * <code>optional string inputChunk = 3;</code>
+     *
+     * <pre>
+     * for ACCEPT_DATA
+     * </pre>
+     */
+    boolean hasInputChunk();
+    /**
+     * <code>optional string inputChunk = 3;</code>
+     *
+     * <pre>
+     * for ACCEPT_DATA
+     * </pre>
+     */
+    java.lang.String getInputChunk();
+    /**
+     * <code>optional string inputChunk = 3;</code>
+     *
+     * <pre>
+     * for ACCEPT_DATA
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getInputChunkBytes();
+
+    /**
+     * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+     *
+     * <pre>
+     * for ACCEPT_KEYS_AND_LOCATIONS
+     * </pre>
+     */
+    java.util.List<CommandsProtocol.KeyLocationsSet> 
+        getKeysAndLocationsSetList();
+    /**
+     * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+     *
+     * <pre>
+     * for ACCEPT_KEYS_AND_LOCATIONS
+     * </pre>
+     */
+    CommandsProtocol.KeyLocationsSet getKeysAndLocationsSet(int index);
+    /**
+     * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+     *
+     * <pre>
+     * for ACCEPT_KEYS_AND_LOCATIONS
+     * </pre>
+     */
+    int getKeysAndLocationsSetCount();
+    /**
+     * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+     *
+     * <pre>
+     * for ACCEPT_KEYS_AND_LOCATIONS
+     * </pre>
+     */
+    java.util.List<? extends CommandsProtocol.KeyLocationsSetOrBuilder> 
+        getKeysAndLocationsSetOrBuilderList();
+    /**
+     * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+     *
+     * <pre>
+     * for ACCEPT_KEYS_AND_LOCATIONS
+     * </pre>
+     */
+    CommandsProtocol.KeyLocationsSetOrBuilder getKeysAndLocationsSetOrBuilder(
+        int index);
+
+    /**
+     * <code>optional .KeyLocation keyLocation = 5;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    boolean hasKeyLocation();
+    /**
+     * <code>optional .KeyLocation keyLocation = 5;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    CommandsProtocol.KeyLocation getKeyLocation();
+    /**
+     * <code>optional .KeyLocation keyLocation = 5;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    CommandsProtocol.KeyLocationOrBuilder getKeyLocationOrBuilder();
   }
   /**
    * Protobuf type {@code Command}
    */
   public static final class Command extends
-      com.google.protobuf.GeneratedMessage
-      implements CommandOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:Command)
+      CommandOrBuilder {
     // Use Command.newBuilder() to construct.
     private Command(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -91,8 +1082,36 @@ public final class CommandsProtocol {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              commandString_ = input.readBytes();
+              commandString_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              inputChunk_ = bs;
+              break;
+            }
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                keysAndLocationsSet_ = new java.util.ArrayList<CommandsProtocol.KeyLocationsSet>();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              keysAndLocationsSet_.add(input.readMessage(CommandsProtocol.KeyLocationsSet.PARSER, extensionRegistry));
+              break;
+            }
+            case 42: {
+              CommandsProtocol.KeyLocation.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                subBuilder = keyLocation_.toBuilder();
+              }
+              keyLocation_ = input.readMessage(CommandsProtocol.KeyLocation.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(keyLocation_);
+                keyLocation_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000008;
               break;
             }
           }
@@ -103,6 +1122,9 @@ public final class CommandsProtocol {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+          keysAndLocationsSet_ = java.util.Collections.unmodifiableList(keysAndLocationsSet_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -135,7 +1157,6 @@ public final class CommandsProtocol {
     }
 
     private int bitField0_;
-    // required uint32 commandId = 1;
     public static final int COMMANDID_FIELD_NUMBER = 1;
     private int commandId_;
     /**
@@ -151,7 +1172,6 @@ public final class CommandsProtocol {
       return commandId_;
     }
 
-    // required string commandString = 2;
     public static final int COMMANDSTRING_FIELD_NUMBER = 2;
     private java.lang.Object commandString_;
     /**
@@ -194,14 +1214,160 @@ public final class CommandsProtocol {
       }
     }
 
+    public static final int INPUTCHUNK_FIELD_NUMBER = 3;
+    private java.lang.Object inputChunk_;
+    /**
+     * <code>optional string inputChunk = 3;</code>
+     *
+     * <pre>
+     * for ACCEPT_DATA
+     * </pre>
+     */
+    public boolean hasInputChunk() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string inputChunk = 3;</code>
+     *
+     * <pre>
+     * for ACCEPT_DATA
+     * </pre>
+     */
+    public java.lang.String getInputChunk() {
+      java.lang.Object ref = inputChunk_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          inputChunk_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string inputChunk = 3;</code>
+     *
+     * <pre>
+     * for ACCEPT_DATA
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getInputChunkBytes() {
+      java.lang.Object ref = inputChunk_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        inputChunk_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int KEYSANDLOCATIONSSET_FIELD_NUMBER = 4;
+    private java.util.List<CommandsProtocol.KeyLocationsSet> keysAndLocationsSet_;
+    /**
+     * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+     *
+     * <pre>
+     * for ACCEPT_KEYS_AND_LOCATIONS
+     * </pre>
+     */
+    public java.util.List<CommandsProtocol.KeyLocationsSet> getKeysAndLocationsSetList() {
+      return keysAndLocationsSet_;
+    }
+    /**
+     * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+     *
+     * <pre>
+     * for ACCEPT_KEYS_AND_LOCATIONS
+     * </pre>
+     */
+    public java.util.List<? extends CommandsProtocol.KeyLocationsSetOrBuilder> 
+        getKeysAndLocationsSetOrBuilderList() {
+      return keysAndLocationsSet_;
+    }
+    /**
+     * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+     *
+     * <pre>
+     * for ACCEPT_KEYS_AND_LOCATIONS
+     * </pre>
+     */
+    public int getKeysAndLocationsSetCount() {
+      return keysAndLocationsSet_.size();
+    }
+    /**
+     * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+     *
+     * <pre>
+     * for ACCEPT_KEYS_AND_LOCATIONS
+     * </pre>
+     */
+    public CommandsProtocol.KeyLocationsSet getKeysAndLocationsSet(int index) {
+      return keysAndLocationsSet_.get(index);
+    }
+    /**
+     * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+     *
+     * <pre>
+     * for ACCEPT_KEYS_AND_LOCATIONS
+     * </pre>
+     */
+    public CommandsProtocol.KeyLocationsSetOrBuilder getKeysAndLocationsSetOrBuilder(
+        int index) {
+      return keysAndLocationsSet_.get(index);
+    }
+
+    public static final int KEYLOCATION_FIELD_NUMBER = 5;
+    private CommandsProtocol.KeyLocation keyLocation_;
+    /**
+     * <code>optional .KeyLocation keyLocation = 5;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    public boolean hasKeyLocation() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional .KeyLocation keyLocation = 5;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    public CommandsProtocol.KeyLocation getKeyLocation() {
+      return keyLocation_;
+    }
+    /**
+     * <code>optional .KeyLocation keyLocation = 5;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    public CommandsProtocol.KeyLocationOrBuilder getKeyLocationOrBuilder() {
+      return keyLocation_;
+    }
+
     private void initFields() {
       commandId_ = 0;
       commandString_ = "";
+      inputChunk_ = "";
+      keysAndLocationsSet_ = java.util.Collections.emptyList();
+      keyLocation_ = CommandsProtocol.KeyLocation.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasCommandId()) {
         memoizedIsInitialized = 0;
@@ -210,6 +1376,18 @@ public final class CommandsProtocol {
       if (!hasCommandString()) {
         memoizedIsInitialized = 0;
         return false;
+      }
+      for (int i = 0; i < getKeysAndLocationsSetCount(); i++) {
+        if (!getKeysAndLocationsSet(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasKeyLocation()) {
+        if (!getKeyLocation().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
       }
       memoizedIsInitialized = 1;
       return true;
@@ -223,6 +1401,15 @@ public final class CommandsProtocol {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getCommandStringBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getInputChunkBytes());
+      }
+      for (int i = 0; i < keysAndLocationsSet_.size(); i++) {
+        output.writeMessage(4, keysAndLocationsSet_.get(i));
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeMessage(5, keyLocation_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -240,6 +1427,18 @@ public final class CommandsProtocol {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getCommandStringBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getInputChunkBytes());
+      }
+      for (int i = 0; i < keysAndLocationsSet_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, keysAndLocationsSet_.get(i));
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, keyLocation_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -323,8 +1522,9 @@ public final class CommandsProtocol {
      * Protobuf type {@code Command}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements CommandsProtocol.CommandOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Command)
+        CommandsProtocol.CommandOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return CommandsProtocol.internal_static_Command_descriptor;
@@ -349,6 +1549,8 @@ public final class CommandsProtocol {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getKeysAndLocationsSetFieldBuilder();
+          getKeyLocationFieldBuilder();
         }
       }
       private static Builder create() {
@@ -361,6 +1563,20 @@ public final class CommandsProtocol {
         bitField0_ = (bitField0_ & ~0x00000001);
         commandString_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        inputChunk_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        if (keysAndLocationsSetBuilder_ == null) {
+          keysAndLocationsSet_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+        } else {
+          keysAndLocationsSetBuilder_.clear();
+        }
+        if (keyLocationBuilder_ == null) {
+          keyLocation_ = CommandsProtocol.KeyLocation.getDefaultInstance();
+        } else {
+          keyLocationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -397,6 +1613,27 @@ public final class CommandsProtocol {
           to_bitField0_ |= 0x00000002;
         }
         result.commandString_ = commandString_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.inputChunk_ = inputChunk_;
+        if (keysAndLocationsSetBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+            keysAndLocationsSet_ = java.util.Collections.unmodifiableList(keysAndLocationsSet_);
+            bitField0_ = (bitField0_ & ~0x00000008);
+          }
+          result.keysAndLocationsSet_ = keysAndLocationsSet_;
+        } else {
+          result.keysAndLocationsSet_ = keysAndLocationsSetBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        if (keyLocationBuilder_ == null) {
+          result.keyLocation_ = keyLocation_;
+        } else {
+          result.keyLocation_ = keyLocationBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -421,6 +1658,40 @@ public final class CommandsProtocol {
           commandString_ = other.commandString_;
           onChanged();
         }
+        if (other.hasInputChunk()) {
+          bitField0_ |= 0x00000004;
+          inputChunk_ = other.inputChunk_;
+          onChanged();
+        }
+        if (keysAndLocationsSetBuilder_ == null) {
+          if (!other.keysAndLocationsSet_.isEmpty()) {
+            if (keysAndLocationsSet_.isEmpty()) {
+              keysAndLocationsSet_ = other.keysAndLocationsSet_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+            } else {
+              ensureKeysAndLocationsSetIsMutable();
+              keysAndLocationsSet_.addAll(other.keysAndLocationsSet_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.keysAndLocationsSet_.isEmpty()) {
+            if (keysAndLocationsSetBuilder_.isEmpty()) {
+              keysAndLocationsSetBuilder_.dispose();
+              keysAndLocationsSetBuilder_ = null;
+              keysAndLocationsSet_ = other.keysAndLocationsSet_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+              keysAndLocationsSetBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getKeysAndLocationsSetFieldBuilder() : null;
+            } else {
+              keysAndLocationsSetBuilder_.addAllMessages(other.keysAndLocationsSet_);
+            }
+          }
+        }
+        if (other.hasKeyLocation()) {
+          mergeKeyLocation(other.getKeyLocation());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -433,6 +1704,18 @@ public final class CommandsProtocol {
         if (!hasCommandString()) {
           
           return false;
+        }
+        for (int i = 0; i < getKeysAndLocationsSetCount(); i++) {
+          if (!getKeysAndLocationsSet(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasKeyLocation()) {
+          if (!getKeyLocation().isInitialized()) {
+            
+            return false;
+          }
         }
         return true;
       }
@@ -456,7 +1739,6 @@ public final class CommandsProtocol {
       }
       private int bitField0_;
 
-      // required uint32 commandId = 1;
       private int commandId_ ;
       /**
        * <code>required uint32 commandId = 1;</code>
@@ -489,7 +1771,6 @@ public final class CommandsProtocol {
         return this;
       }
 
-      // required string commandString = 2;
       private java.lang.Object commandString_ = "";
       /**
        * <code>required string commandString = 2;</code>
@@ -503,9 +1784,12 @@ public final class CommandsProtocol {
       public java.lang.String getCommandString() {
         java.lang.Object ref = commandString_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          commandString_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            commandString_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -563,6 +1847,570 @@ public final class CommandsProtocol {
         return this;
       }
 
+      private java.lang.Object inputChunk_ = "";
+      /**
+       * <code>optional string inputChunk = 3;</code>
+       *
+       * <pre>
+       * for ACCEPT_DATA
+       * </pre>
+       */
+      public boolean hasInputChunk() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string inputChunk = 3;</code>
+       *
+       * <pre>
+       * for ACCEPT_DATA
+       * </pre>
+       */
+      public java.lang.String getInputChunk() {
+        java.lang.Object ref = inputChunk_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            inputChunk_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string inputChunk = 3;</code>
+       *
+       * <pre>
+       * for ACCEPT_DATA
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getInputChunkBytes() {
+        java.lang.Object ref = inputChunk_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          inputChunk_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string inputChunk = 3;</code>
+       *
+       * <pre>
+       * for ACCEPT_DATA
+       * </pre>
+       */
+      public Builder setInputChunk(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        inputChunk_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string inputChunk = 3;</code>
+       *
+       * <pre>
+       * for ACCEPT_DATA
+       * </pre>
+       */
+      public Builder clearInputChunk() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        inputChunk_ = getDefaultInstance().getInputChunk();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string inputChunk = 3;</code>
+       *
+       * <pre>
+       * for ACCEPT_DATA
+       * </pre>
+       */
+      public Builder setInputChunkBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        inputChunk_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<CommandsProtocol.KeyLocationsSet> keysAndLocationsSet_ =
+        java.util.Collections.emptyList();
+      private void ensureKeysAndLocationsSetIsMutable() {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+          keysAndLocationsSet_ = new java.util.ArrayList<CommandsProtocol.KeyLocationsSet>(keysAndLocationsSet_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          CommandsProtocol.KeyLocationsSet, CommandsProtocol.KeyLocationsSet.Builder, CommandsProtocol.KeyLocationsSetOrBuilder> keysAndLocationsSetBuilder_;
+
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public java.util.List<CommandsProtocol.KeyLocationsSet> getKeysAndLocationsSetList() {
+        if (keysAndLocationsSetBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(keysAndLocationsSet_);
+        } else {
+          return keysAndLocationsSetBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public int getKeysAndLocationsSetCount() {
+        if (keysAndLocationsSetBuilder_ == null) {
+          return keysAndLocationsSet_.size();
+        } else {
+          return keysAndLocationsSetBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocationsSet getKeysAndLocationsSet(int index) {
+        if (keysAndLocationsSetBuilder_ == null) {
+          return keysAndLocationsSet_.get(index);
+        } else {
+          return keysAndLocationsSetBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public Builder setKeysAndLocationsSet(
+          int index, CommandsProtocol.KeyLocationsSet value) {
+        if (keysAndLocationsSetBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureKeysAndLocationsSetIsMutable();
+          keysAndLocationsSet_.set(index, value);
+          onChanged();
+        } else {
+          keysAndLocationsSetBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public Builder setKeysAndLocationsSet(
+          int index, CommandsProtocol.KeyLocationsSet.Builder builderForValue) {
+        if (keysAndLocationsSetBuilder_ == null) {
+          ensureKeysAndLocationsSetIsMutable();
+          keysAndLocationsSet_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          keysAndLocationsSetBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public Builder addKeysAndLocationsSet(CommandsProtocol.KeyLocationsSet value) {
+        if (keysAndLocationsSetBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureKeysAndLocationsSetIsMutable();
+          keysAndLocationsSet_.add(value);
+          onChanged();
+        } else {
+          keysAndLocationsSetBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public Builder addKeysAndLocationsSet(
+          int index, CommandsProtocol.KeyLocationsSet value) {
+        if (keysAndLocationsSetBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureKeysAndLocationsSetIsMutable();
+          keysAndLocationsSet_.add(index, value);
+          onChanged();
+        } else {
+          keysAndLocationsSetBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public Builder addKeysAndLocationsSet(
+          CommandsProtocol.KeyLocationsSet.Builder builderForValue) {
+        if (keysAndLocationsSetBuilder_ == null) {
+          ensureKeysAndLocationsSetIsMutable();
+          keysAndLocationsSet_.add(builderForValue.build());
+          onChanged();
+        } else {
+          keysAndLocationsSetBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public Builder addKeysAndLocationsSet(
+          int index, CommandsProtocol.KeyLocationsSet.Builder builderForValue) {
+        if (keysAndLocationsSetBuilder_ == null) {
+          ensureKeysAndLocationsSetIsMutable();
+          keysAndLocationsSet_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          keysAndLocationsSetBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public Builder addAllKeysAndLocationsSet(
+          java.lang.Iterable<? extends CommandsProtocol.KeyLocationsSet> values) {
+        if (keysAndLocationsSetBuilder_ == null) {
+          ensureKeysAndLocationsSetIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, keysAndLocationsSet_);
+          onChanged();
+        } else {
+          keysAndLocationsSetBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public Builder clearKeysAndLocationsSet() {
+        if (keysAndLocationsSetBuilder_ == null) {
+          keysAndLocationsSet_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+          onChanged();
+        } else {
+          keysAndLocationsSetBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public Builder removeKeysAndLocationsSet(int index) {
+        if (keysAndLocationsSetBuilder_ == null) {
+          ensureKeysAndLocationsSetIsMutable();
+          keysAndLocationsSet_.remove(index);
+          onChanged();
+        } else {
+          keysAndLocationsSetBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocationsSet.Builder getKeysAndLocationsSetBuilder(
+          int index) {
+        return getKeysAndLocationsSetFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocationsSetOrBuilder getKeysAndLocationsSetOrBuilder(
+          int index) {
+        if (keysAndLocationsSetBuilder_ == null) {
+          return keysAndLocationsSet_.get(index);  } else {
+          return keysAndLocationsSetBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public java.util.List<? extends CommandsProtocol.KeyLocationsSetOrBuilder> 
+           getKeysAndLocationsSetOrBuilderList() {
+        if (keysAndLocationsSetBuilder_ != null) {
+          return keysAndLocationsSetBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(keysAndLocationsSet_);
+        }
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocationsSet.Builder addKeysAndLocationsSetBuilder() {
+        return getKeysAndLocationsSetFieldBuilder().addBuilder(
+            CommandsProtocol.KeyLocationsSet.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocationsSet.Builder addKeysAndLocationsSetBuilder(
+          int index) {
+        return getKeysAndLocationsSetFieldBuilder().addBuilder(
+            index, CommandsProtocol.KeyLocationsSet.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .KeyLocationsSet keysAndLocationsSet = 4;</code>
+       *
+       * <pre>
+       * for ACCEPT_KEYS_AND_LOCATIONS
+       * </pre>
+       */
+      public java.util.List<CommandsProtocol.KeyLocationsSet.Builder> 
+           getKeysAndLocationsSetBuilderList() {
+        return getKeysAndLocationsSetFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          CommandsProtocol.KeyLocationsSet, CommandsProtocol.KeyLocationsSet.Builder, CommandsProtocol.KeyLocationsSetOrBuilder> 
+          getKeysAndLocationsSetFieldBuilder() {
+        if (keysAndLocationsSetBuilder_ == null) {
+          keysAndLocationsSetBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              CommandsProtocol.KeyLocationsSet, CommandsProtocol.KeyLocationsSet.Builder, CommandsProtocol.KeyLocationsSetOrBuilder>(
+                  keysAndLocationsSet_,
+                  ((bitField0_ & 0x00000008) == 0x00000008),
+                  getParentForChildren(),
+                  isClean());
+          keysAndLocationsSet_ = null;
+        }
+        return keysAndLocationsSetBuilder_;
+      }
+
+      private CommandsProtocol.KeyLocation keyLocation_ = CommandsProtocol.KeyLocation.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          CommandsProtocol.KeyLocation, CommandsProtocol.KeyLocation.Builder, CommandsProtocol.KeyLocationOrBuilder> keyLocationBuilder_;
+      /**
+       * <code>optional .KeyLocation keyLocation = 5;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public boolean hasKeyLocation() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional .KeyLocation keyLocation = 5;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocation getKeyLocation() {
+        if (keyLocationBuilder_ == null) {
+          return keyLocation_;
+        } else {
+          return keyLocationBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .KeyLocation keyLocation = 5;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public Builder setKeyLocation(CommandsProtocol.KeyLocation value) {
+        if (keyLocationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          keyLocation_ = value;
+          onChanged();
+        } else {
+          keyLocationBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .KeyLocation keyLocation = 5;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public Builder setKeyLocation(
+          CommandsProtocol.KeyLocation.Builder builderForValue) {
+        if (keyLocationBuilder_ == null) {
+          keyLocation_ = builderForValue.build();
+          onChanged();
+        } else {
+          keyLocationBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .KeyLocation keyLocation = 5;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public Builder mergeKeyLocation(CommandsProtocol.KeyLocation value) {
+        if (keyLocationBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010) &&
+              keyLocation_ != CommandsProtocol.KeyLocation.getDefaultInstance()) {
+            keyLocation_ =
+              CommandsProtocol.KeyLocation.newBuilder(keyLocation_).mergeFrom(value).buildPartial();
+          } else {
+            keyLocation_ = value;
+          }
+          onChanged();
+        } else {
+          keyLocationBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .KeyLocation keyLocation = 5;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public Builder clearKeyLocation() {
+        if (keyLocationBuilder_ == null) {
+          keyLocation_ = CommandsProtocol.KeyLocation.getDefaultInstance();
+          onChanged();
+        } else {
+          keyLocationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+      /**
+       * <code>optional .KeyLocation keyLocation = 5;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocation.Builder getKeyLocationBuilder() {
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return getKeyLocationFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .KeyLocation keyLocation = 5;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocationOrBuilder getKeyLocationOrBuilder() {
+        if (keyLocationBuilder_ != null) {
+          return keyLocationBuilder_.getMessageOrBuilder();
+        } else {
+          return keyLocation_;
+        }
+      }
+      /**
+       * <code>optional .KeyLocation keyLocation = 5;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          CommandsProtocol.KeyLocation, CommandsProtocol.KeyLocation.Builder, CommandsProtocol.KeyLocationOrBuilder> 
+          getKeyLocationFieldBuilder() {
+        if (keyLocationBuilder_ == null) {
+          keyLocationBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              CommandsProtocol.KeyLocation, CommandsProtocol.KeyLocation.Builder, CommandsProtocol.KeyLocationOrBuilder>(
+                  getKeyLocation(),
+                  getParentForChildren(),
+                  isClean());
+          keyLocation_ = null;
+        }
+        return keyLocationBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:Command)
     }
 
@@ -574,11 +2422,4870 @@ public final class CommandsProtocol {
     // @@protoc_insertion_point(class_scope:Command)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  public interface CommandResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:CommandResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 forCommandId = 1;</code>
+     */
+    boolean hasForCommandId();
+    /**
+     * <code>required uint32 forCommandId = 1;</code>
+     */
+    int getForCommandId();
+
+    /**
+     * <code>required string forCommandString = 2;</code>
+     */
+    boolean hasForCommandString();
+    /**
+     * <code>required string forCommandString = 2;</code>
+     */
+    java.lang.String getForCommandString();
+    /**
+     * <code>required string forCommandString = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getForCommandStringBytes();
+
+    /**
+     * <code>optional string responseText = 3;</code>
+     */
+    boolean hasResponseText();
+    /**
+     * <code>optional string responseText = 3;</code>
+     */
+    java.lang.String getResponseText();
+    /**
+     * <code>optional string responseText = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getResponseTextBytes();
+
+    /**
+     * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    boolean hasKeyValuesSet();
+    /**
+     * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    CommandsProtocol.KeyValuesSet getKeyValuesSet();
+    /**
+     * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    CommandsProtocol.KeyValuesSetOrBuilder getKeyValuesSetOrBuilder();
+
+    /**
+     * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+     *
+     * <pre>
+     * for RETURN_KEYS_AND_LOCATIONS	
+     * </pre>
+     */
+    java.util.List<CommandsProtocol.KeyLocation> 
+        getKeyLocationTableList();
+    /**
+     * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+     *
+     * <pre>
+     * for RETURN_KEYS_AND_LOCATIONS	
+     * </pre>
+     */
+    CommandsProtocol.KeyLocation getKeyLocationTable(int index);
+    /**
+     * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+     *
+     * <pre>
+     * for RETURN_KEYS_AND_LOCATIONS	
+     * </pre>
+     */
+    int getKeyLocationTableCount();
+    /**
+     * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+     *
+     * <pre>
+     * for RETURN_KEYS_AND_LOCATIONS	
+     * </pre>
+     */
+    java.util.List<? extends CommandsProtocol.KeyLocationOrBuilder> 
+        getKeyLocationTableOrBuilderList();
+    /**
+     * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+     *
+     * <pre>
+     * for RETURN_KEYS_AND_LOCATIONS	
+     * </pre>
+     */
+    CommandsProtocol.KeyLocationOrBuilder getKeyLocationTableOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code CommandResponse}
+   */
+  public static final class CommandResponse extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:CommandResponse)
+      CommandResponseOrBuilder {
+    // Use CommandResponse.newBuilder() to construct.
+    private CommandResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private CommandResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final CommandResponse defaultInstance;
+    public static CommandResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public CommandResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private CommandResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              forCommandId_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              forCommandString_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              responseText_ = bs;
+              break;
+            }
+            case 34: {
+              CommandsProtocol.KeyValuesSet.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                subBuilder = keyValuesSet_.toBuilder();
+              }
+              keyValuesSet_ = input.readMessage(CommandsProtocol.KeyValuesSet.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(keyValuesSet_);
+                keyValuesSet_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000008;
+              break;
+            }
+            case 42: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+                keyLocationTable_ = new java.util.ArrayList<CommandsProtocol.KeyLocation>();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              keyLocationTable_.add(input.readMessage(CommandsProtocol.KeyLocation.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+          keyLocationTable_ = java.util.Collections.unmodifiableList(keyLocationTable_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return CommandsProtocol.internal_static_CommandResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return CommandsProtocol.internal_static_CommandResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              CommandsProtocol.CommandResponse.class, CommandsProtocol.CommandResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<CommandResponse> PARSER =
+        new com.google.protobuf.AbstractParser<CommandResponse>() {
+      public CommandResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new CommandResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CommandResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int FORCOMMANDID_FIELD_NUMBER = 1;
+    private int forCommandId_;
+    /**
+     * <code>required uint32 forCommandId = 1;</code>
+     */
+    public boolean hasForCommandId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 forCommandId = 1;</code>
+     */
+    public int getForCommandId() {
+      return forCommandId_;
+    }
+
+    public static final int FORCOMMANDSTRING_FIELD_NUMBER = 2;
+    private java.lang.Object forCommandString_;
+    /**
+     * <code>required string forCommandString = 2;</code>
+     */
+    public boolean hasForCommandString() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string forCommandString = 2;</code>
+     */
+    public java.lang.String getForCommandString() {
+      java.lang.Object ref = forCommandString_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          forCommandString_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string forCommandString = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getForCommandStringBytes() {
+      java.lang.Object ref = forCommandString_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        forCommandString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int RESPONSETEXT_FIELD_NUMBER = 3;
+    private java.lang.Object responseText_;
+    /**
+     * <code>optional string responseText = 3;</code>
+     */
+    public boolean hasResponseText() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string responseText = 3;</code>
+     */
+    public java.lang.String getResponseText() {
+      java.lang.Object ref = responseText_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          responseText_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string responseText = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getResponseTextBytes() {
+      java.lang.Object ref = responseText_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        responseText_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int KEYVALUESSET_FIELD_NUMBER = 4;
+    private CommandsProtocol.KeyValuesSet keyValuesSet_;
+    /**
+     * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    public boolean hasKeyValuesSet() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    public CommandsProtocol.KeyValuesSet getKeyValuesSet() {
+      return keyValuesSet_;
+    }
+    /**
+     * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+     *
+     * <pre>
+     * for RETURN_VALUES_FOR_KEY
+     * </pre>
+     */
+    public CommandsProtocol.KeyValuesSetOrBuilder getKeyValuesSetOrBuilder() {
+      return keyValuesSet_;
+    }
+
+    public static final int KEYLOCATIONTABLE_FIELD_NUMBER = 5;
+    private java.util.List<CommandsProtocol.KeyLocation> keyLocationTable_;
+    /**
+     * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+     *
+     * <pre>
+     * for RETURN_KEYS_AND_LOCATIONS	
+     * </pre>
+     */
+    public java.util.List<CommandsProtocol.KeyLocation> getKeyLocationTableList() {
+      return keyLocationTable_;
+    }
+    /**
+     * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+     *
+     * <pre>
+     * for RETURN_KEYS_AND_LOCATIONS	
+     * </pre>
+     */
+    public java.util.List<? extends CommandsProtocol.KeyLocationOrBuilder> 
+        getKeyLocationTableOrBuilderList() {
+      return keyLocationTable_;
+    }
+    /**
+     * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+     *
+     * <pre>
+     * for RETURN_KEYS_AND_LOCATIONS	
+     * </pre>
+     */
+    public int getKeyLocationTableCount() {
+      return keyLocationTable_.size();
+    }
+    /**
+     * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+     *
+     * <pre>
+     * for RETURN_KEYS_AND_LOCATIONS	
+     * </pre>
+     */
+    public CommandsProtocol.KeyLocation getKeyLocationTable(int index) {
+      return keyLocationTable_.get(index);
+    }
+    /**
+     * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+     *
+     * <pre>
+     * for RETURN_KEYS_AND_LOCATIONS	
+     * </pre>
+     */
+    public CommandsProtocol.KeyLocationOrBuilder getKeyLocationTableOrBuilder(
+        int index) {
+      return keyLocationTable_.get(index);
+    }
+
+    private void initFields() {
+      forCommandId_ = 0;
+      forCommandString_ = "";
+      responseText_ = "";
+      keyValuesSet_ = CommandsProtocol.KeyValuesSet.getDefaultInstance();
+      keyLocationTable_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasForCommandId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasForCommandString()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (hasKeyValuesSet()) {
+        if (!getKeyValuesSet().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getKeyLocationTableCount(); i++) {
+        if (!getKeyLocationTable(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, forCommandId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getForCommandStringBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getResponseTextBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeMessage(4, keyValuesSet_);
+      }
+      for (int i = 0; i < keyLocationTable_.size(); i++) {
+        output.writeMessage(5, keyLocationTable_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, forCommandId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getForCommandStringBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getResponseTextBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, keyValuesSet_);
+      }
+      for (int i = 0; i < keyLocationTable_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, keyLocationTable_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static CommandsProtocol.CommandResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.CommandResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.CommandResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.CommandResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.CommandResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.CommandResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.CommandResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static CommandsProtocol.CommandResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.CommandResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.CommandResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(CommandsProtocol.CommandResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code CommandResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:CommandResponse)
+        CommandsProtocol.CommandResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return CommandsProtocol.internal_static_CommandResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return CommandsProtocol.internal_static_CommandResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                CommandsProtocol.CommandResponse.class, CommandsProtocol.CommandResponse.Builder.class);
+      }
+
+      // Construct using CommandsProtocol.CommandResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getKeyValuesSetFieldBuilder();
+          getKeyLocationTableFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        forCommandId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        forCommandString_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        responseText_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        if (keyValuesSetBuilder_ == null) {
+          keyValuesSet_ = CommandsProtocol.KeyValuesSet.getDefaultInstance();
+        } else {
+          keyValuesSetBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        if (keyLocationTableBuilder_ == null) {
+          keyLocationTable_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+        } else {
+          keyLocationTableBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return CommandsProtocol.internal_static_CommandResponse_descriptor;
+      }
+
+      public CommandsProtocol.CommandResponse getDefaultInstanceForType() {
+        return CommandsProtocol.CommandResponse.getDefaultInstance();
+      }
+
+      public CommandsProtocol.CommandResponse build() {
+        CommandsProtocol.CommandResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public CommandsProtocol.CommandResponse buildPartial() {
+        CommandsProtocol.CommandResponse result = new CommandsProtocol.CommandResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.forCommandId_ = forCommandId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.forCommandString_ = forCommandString_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.responseText_ = responseText_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        if (keyValuesSetBuilder_ == null) {
+          result.keyValuesSet_ = keyValuesSet_;
+        } else {
+          result.keyValuesSet_ = keyValuesSetBuilder_.build();
+        }
+        if (keyLocationTableBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+            keyLocationTable_ = java.util.Collections.unmodifiableList(keyLocationTable_);
+            bitField0_ = (bitField0_ & ~0x00000010);
+          }
+          result.keyLocationTable_ = keyLocationTable_;
+        } else {
+          result.keyLocationTable_ = keyLocationTableBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof CommandsProtocol.CommandResponse) {
+          return mergeFrom((CommandsProtocol.CommandResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(CommandsProtocol.CommandResponse other) {
+        if (other == CommandsProtocol.CommandResponse.getDefaultInstance()) return this;
+        if (other.hasForCommandId()) {
+          setForCommandId(other.getForCommandId());
+        }
+        if (other.hasForCommandString()) {
+          bitField0_ |= 0x00000002;
+          forCommandString_ = other.forCommandString_;
+          onChanged();
+        }
+        if (other.hasResponseText()) {
+          bitField0_ |= 0x00000004;
+          responseText_ = other.responseText_;
+          onChanged();
+        }
+        if (other.hasKeyValuesSet()) {
+          mergeKeyValuesSet(other.getKeyValuesSet());
+        }
+        if (keyLocationTableBuilder_ == null) {
+          if (!other.keyLocationTable_.isEmpty()) {
+            if (keyLocationTable_.isEmpty()) {
+              keyLocationTable_ = other.keyLocationTable_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+            } else {
+              ensureKeyLocationTableIsMutable();
+              keyLocationTable_.addAll(other.keyLocationTable_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.keyLocationTable_.isEmpty()) {
+            if (keyLocationTableBuilder_.isEmpty()) {
+              keyLocationTableBuilder_.dispose();
+              keyLocationTableBuilder_ = null;
+              keyLocationTable_ = other.keyLocationTable_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+              keyLocationTableBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getKeyLocationTableFieldBuilder() : null;
+            } else {
+              keyLocationTableBuilder_.addAllMessages(other.keyLocationTable_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasForCommandId()) {
+          
+          return false;
+        }
+        if (!hasForCommandString()) {
+          
+          return false;
+        }
+        if (hasKeyValuesSet()) {
+          if (!getKeyValuesSet().isInitialized()) {
+            
+            return false;
+          }
+        }
+        for (int i = 0; i < getKeyLocationTableCount(); i++) {
+          if (!getKeyLocationTable(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        CommandsProtocol.CommandResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (CommandsProtocol.CommandResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int forCommandId_ ;
+      /**
+       * <code>required uint32 forCommandId = 1;</code>
+       */
+      public boolean hasForCommandId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 forCommandId = 1;</code>
+       */
+      public int getForCommandId() {
+        return forCommandId_;
+      }
+      /**
+       * <code>required uint32 forCommandId = 1;</code>
+       */
+      public Builder setForCommandId(int value) {
+        bitField0_ |= 0x00000001;
+        forCommandId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 forCommandId = 1;</code>
+       */
+      public Builder clearForCommandId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        forCommandId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object forCommandString_ = "";
+      /**
+       * <code>required string forCommandString = 2;</code>
+       */
+      public boolean hasForCommandString() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string forCommandString = 2;</code>
+       */
+      public java.lang.String getForCommandString() {
+        java.lang.Object ref = forCommandString_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            forCommandString_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string forCommandString = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getForCommandStringBytes() {
+        java.lang.Object ref = forCommandString_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          forCommandString_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string forCommandString = 2;</code>
+       */
+      public Builder setForCommandString(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        forCommandString_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string forCommandString = 2;</code>
+       */
+      public Builder clearForCommandString() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        forCommandString_ = getDefaultInstance().getForCommandString();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string forCommandString = 2;</code>
+       */
+      public Builder setForCommandStringBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        forCommandString_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object responseText_ = "";
+      /**
+       * <code>optional string responseText = 3;</code>
+       */
+      public boolean hasResponseText() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string responseText = 3;</code>
+       */
+      public java.lang.String getResponseText() {
+        java.lang.Object ref = responseText_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            responseText_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string responseText = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getResponseTextBytes() {
+        java.lang.Object ref = responseText_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          responseText_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string responseText = 3;</code>
+       */
+      public Builder setResponseText(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        responseText_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string responseText = 3;</code>
+       */
+      public Builder clearResponseText() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        responseText_ = getDefaultInstance().getResponseText();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string responseText = 3;</code>
+       */
+      public Builder setResponseTextBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        responseText_ = value;
+        onChanged();
+        return this;
+      }
+
+      private CommandsProtocol.KeyValuesSet keyValuesSet_ = CommandsProtocol.KeyValuesSet.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          CommandsProtocol.KeyValuesSet, CommandsProtocol.KeyValuesSet.Builder, CommandsProtocol.KeyValuesSetOrBuilder> keyValuesSetBuilder_;
+      /**
+       * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public boolean hasKeyValuesSet() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public CommandsProtocol.KeyValuesSet getKeyValuesSet() {
+        if (keyValuesSetBuilder_ == null) {
+          return keyValuesSet_;
+        } else {
+          return keyValuesSetBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public Builder setKeyValuesSet(CommandsProtocol.KeyValuesSet value) {
+        if (keyValuesSetBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          keyValuesSet_ = value;
+          onChanged();
+        } else {
+          keyValuesSetBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public Builder setKeyValuesSet(
+          CommandsProtocol.KeyValuesSet.Builder builderForValue) {
+        if (keyValuesSetBuilder_ == null) {
+          keyValuesSet_ = builderForValue.build();
+          onChanged();
+        } else {
+          keyValuesSetBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public Builder mergeKeyValuesSet(CommandsProtocol.KeyValuesSet value) {
+        if (keyValuesSetBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+              keyValuesSet_ != CommandsProtocol.KeyValuesSet.getDefaultInstance()) {
+            keyValuesSet_ =
+              CommandsProtocol.KeyValuesSet.newBuilder(keyValuesSet_).mergeFrom(value).buildPartial();
+          } else {
+            keyValuesSet_ = value;
+          }
+          onChanged();
+        } else {
+          keyValuesSetBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public Builder clearKeyValuesSet() {
+        if (keyValuesSetBuilder_ == null) {
+          keyValuesSet_ = CommandsProtocol.KeyValuesSet.getDefaultInstance();
+          onChanged();
+        } else {
+          keyValuesSetBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      /**
+       * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public CommandsProtocol.KeyValuesSet.Builder getKeyValuesSetBuilder() {
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return getKeyValuesSetFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      public CommandsProtocol.KeyValuesSetOrBuilder getKeyValuesSetOrBuilder() {
+        if (keyValuesSetBuilder_ != null) {
+          return keyValuesSetBuilder_.getMessageOrBuilder();
+        } else {
+          return keyValuesSet_;
+        }
+      }
+      /**
+       * <code>optional .KeyValuesSet keyValuesSet = 4;</code>
+       *
+       * <pre>
+       * for RETURN_VALUES_FOR_KEY
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          CommandsProtocol.KeyValuesSet, CommandsProtocol.KeyValuesSet.Builder, CommandsProtocol.KeyValuesSetOrBuilder> 
+          getKeyValuesSetFieldBuilder() {
+        if (keyValuesSetBuilder_ == null) {
+          keyValuesSetBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              CommandsProtocol.KeyValuesSet, CommandsProtocol.KeyValuesSet.Builder, CommandsProtocol.KeyValuesSetOrBuilder>(
+                  getKeyValuesSet(),
+                  getParentForChildren(),
+                  isClean());
+          keyValuesSet_ = null;
+        }
+        return keyValuesSetBuilder_;
+      }
+
+      private java.util.List<CommandsProtocol.KeyLocation> keyLocationTable_ =
+        java.util.Collections.emptyList();
+      private void ensureKeyLocationTableIsMutable() {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+          keyLocationTable_ = new java.util.ArrayList<CommandsProtocol.KeyLocation>(keyLocationTable_);
+          bitField0_ |= 0x00000010;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          CommandsProtocol.KeyLocation, CommandsProtocol.KeyLocation.Builder, CommandsProtocol.KeyLocationOrBuilder> keyLocationTableBuilder_;
+
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public java.util.List<CommandsProtocol.KeyLocation> getKeyLocationTableList() {
+        if (keyLocationTableBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(keyLocationTable_);
+        } else {
+          return keyLocationTableBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public int getKeyLocationTableCount() {
+        if (keyLocationTableBuilder_ == null) {
+          return keyLocationTable_.size();
+        } else {
+          return keyLocationTableBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocation getKeyLocationTable(int index) {
+        if (keyLocationTableBuilder_ == null) {
+          return keyLocationTable_.get(index);
+        } else {
+          return keyLocationTableBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public Builder setKeyLocationTable(
+          int index, CommandsProtocol.KeyLocation value) {
+        if (keyLocationTableBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureKeyLocationTableIsMutable();
+          keyLocationTable_.set(index, value);
+          onChanged();
+        } else {
+          keyLocationTableBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public Builder setKeyLocationTable(
+          int index, CommandsProtocol.KeyLocation.Builder builderForValue) {
+        if (keyLocationTableBuilder_ == null) {
+          ensureKeyLocationTableIsMutable();
+          keyLocationTable_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          keyLocationTableBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public Builder addKeyLocationTable(CommandsProtocol.KeyLocation value) {
+        if (keyLocationTableBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureKeyLocationTableIsMutable();
+          keyLocationTable_.add(value);
+          onChanged();
+        } else {
+          keyLocationTableBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public Builder addKeyLocationTable(
+          int index, CommandsProtocol.KeyLocation value) {
+        if (keyLocationTableBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureKeyLocationTableIsMutable();
+          keyLocationTable_.add(index, value);
+          onChanged();
+        } else {
+          keyLocationTableBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public Builder addKeyLocationTable(
+          CommandsProtocol.KeyLocation.Builder builderForValue) {
+        if (keyLocationTableBuilder_ == null) {
+          ensureKeyLocationTableIsMutable();
+          keyLocationTable_.add(builderForValue.build());
+          onChanged();
+        } else {
+          keyLocationTableBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public Builder addKeyLocationTable(
+          int index, CommandsProtocol.KeyLocation.Builder builderForValue) {
+        if (keyLocationTableBuilder_ == null) {
+          ensureKeyLocationTableIsMutable();
+          keyLocationTable_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          keyLocationTableBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public Builder addAllKeyLocationTable(
+          java.lang.Iterable<? extends CommandsProtocol.KeyLocation> values) {
+        if (keyLocationTableBuilder_ == null) {
+          ensureKeyLocationTableIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, keyLocationTable_);
+          onChanged();
+        } else {
+          keyLocationTableBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public Builder clearKeyLocationTable() {
+        if (keyLocationTableBuilder_ == null) {
+          keyLocationTable_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+          onChanged();
+        } else {
+          keyLocationTableBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public Builder removeKeyLocationTable(int index) {
+        if (keyLocationTableBuilder_ == null) {
+          ensureKeyLocationTableIsMutable();
+          keyLocationTable_.remove(index);
+          onChanged();
+        } else {
+          keyLocationTableBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocation.Builder getKeyLocationTableBuilder(
+          int index) {
+        return getKeyLocationTableFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocationOrBuilder getKeyLocationTableOrBuilder(
+          int index) {
+        if (keyLocationTableBuilder_ == null) {
+          return keyLocationTable_.get(index);  } else {
+          return keyLocationTableBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public java.util.List<? extends CommandsProtocol.KeyLocationOrBuilder> 
+           getKeyLocationTableOrBuilderList() {
+        if (keyLocationTableBuilder_ != null) {
+          return keyLocationTableBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(keyLocationTable_);
+        }
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocation.Builder addKeyLocationTableBuilder() {
+        return getKeyLocationTableFieldBuilder().addBuilder(
+            CommandsProtocol.KeyLocation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public CommandsProtocol.KeyLocation.Builder addKeyLocationTableBuilder(
+          int index) {
+        return getKeyLocationTableFieldBuilder().addBuilder(
+            index, CommandsProtocol.KeyLocation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .KeyLocation keyLocationTable = 5;</code>
+       *
+       * <pre>
+       * for RETURN_KEYS_AND_LOCATIONS	
+       * </pre>
+       */
+      public java.util.List<CommandsProtocol.KeyLocation.Builder> 
+           getKeyLocationTableBuilderList() {
+        return getKeyLocationTableFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          CommandsProtocol.KeyLocation, CommandsProtocol.KeyLocation.Builder, CommandsProtocol.KeyLocationOrBuilder> 
+          getKeyLocationTableFieldBuilder() {
+        if (keyLocationTableBuilder_ == null) {
+          keyLocationTableBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              CommandsProtocol.KeyLocation, CommandsProtocol.KeyLocation.Builder, CommandsProtocol.KeyLocationOrBuilder>(
+                  keyLocationTable_,
+                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  getParentForChildren(),
+                  isClean());
+          keyLocationTable_ = null;
+        }
+        return keyLocationTableBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:CommandResponse)
+    }
+
+    static {
+      defaultInstance = new CommandResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:CommandResponse)
+  }
+
+  public interface KeyLocationsSetOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:KeyLocationsSet)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string key = 1;</code>
+     */
+    boolean hasKey();
+    /**
+     * <code>required string key = 1;</code>
+     */
+    java.lang.String getKey();
+    /**
+     * <code>required string key = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getKeyBytes();
+
+    /**
+     * <code>repeated .Location locations = 2;</code>
+     */
+    java.util.List<CommandsProtocol.Location> 
+        getLocationsList();
+    /**
+     * <code>repeated .Location locations = 2;</code>
+     */
+    CommandsProtocol.Location getLocations(int index);
+    /**
+     * <code>repeated .Location locations = 2;</code>
+     */
+    int getLocationsCount();
+    /**
+     * <code>repeated .Location locations = 2;</code>
+     */
+    java.util.List<? extends CommandsProtocol.LocationOrBuilder> 
+        getLocationsOrBuilderList();
+    /**
+     * <code>repeated .Location locations = 2;</code>
+     */
+    CommandsProtocol.LocationOrBuilder getLocationsOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code KeyLocationsSet}
+   */
+  public static final class KeyLocationsSet extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:KeyLocationsSet)
+      KeyLocationsSetOrBuilder {
+    // Use KeyLocationsSet.newBuilder() to construct.
+    private KeyLocationsSet(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private KeyLocationsSet(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final KeyLocationsSet defaultInstance;
+    public static KeyLocationsSet getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public KeyLocationsSet getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private KeyLocationsSet(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              key_ = bs;
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                locations_ = new java.util.ArrayList<CommandsProtocol.Location>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              locations_.add(input.readMessage(CommandsProtocol.Location.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          locations_ = java.util.Collections.unmodifiableList(locations_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return CommandsProtocol.internal_static_KeyLocationsSet_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return CommandsProtocol.internal_static_KeyLocationsSet_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              CommandsProtocol.KeyLocationsSet.class, CommandsProtocol.KeyLocationsSet.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<KeyLocationsSet> PARSER =
+        new com.google.protobuf.AbstractParser<KeyLocationsSet>() {
+      public KeyLocationsSet parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new KeyLocationsSet(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<KeyLocationsSet> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int KEY_FIELD_NUMBER = 1;
+    private java.lang.Object key_;
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public boolean hasKey() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public java.lang.String getKey() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          key_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getKeyBytes() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        key_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int LOCATIONS_FIELD_NUMBER = 2;
+    private java.util.List<CommandsProtocol.Location> locations_;
+    /**
+     * <code>repeated .Location locations = 2;</code>
+     */
+    public java.util.List<CommandsProtocol.Location> getLocationsList() {
+      return locations_;
+    }
+    /**
+     * <code>repeated .Location locations = 2;</code>
+     */
+    public java.util.List<? extends CommandsProtocol.LocationOrBuilder> 
+        getLocationsOrBuilderList() {
+      return locations_;
+    }
+    /**
+     * <code>repeated .Location locations = 2;</code>
+     */
+    public int getLocationsCount() {
+      return locations_.size();
+    }
+    /**
+     * <code>repeated .Location locations = 2;</code>
+     */
+    public CommandsProtocol.Location getLocations(int index) {
+      return locations_.get(index);
+    }
+    /**
+     * <code>repeated .Location locations = 2;</code>
+     */
+    public CommandsProtocol.LocationOrBuilder getLocationsOrBuilder(
+        int index) {
+      return locations_.get(index);
+    }
+
+    private void initFields() {
+      key_ = "";
+      locations_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasKey()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getLocationsCount(); i++) {
+        if (!getLocations(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getKeyBytes());
+      }
+      for (int i = 0; i < locations_.size(); i++) {
+        output.writeMessage(2, locations_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getKeyBytes());
+      }
+      for (int i = 0; i < locations_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, locations_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static CommandsProtocol.KeyLocationsSet parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.KeyLocationsSet parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyLocationsSet parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.KeyLocationsSet parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyLocationsSet parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.KeyLocationsSet parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyLocationsSet parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static CommandsProtocol.KeyLocationsSet parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyLocationsSet parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.KeyLocationsSet parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(CommandsProtocol.KeyLocationsSet prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code KeyLocationsSet}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:KeyLocationsSet)
+        CommandsProtocol.KeyLocationsSetOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return CommandsProtocol.internal_static_KeyLocationsSet_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return CommandsProtocol.internal_static_KeyLocationsSet_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                CommandsProtocol.KeyLocationsSet.class, CommandsProtocol.KeyLocationsSet.Builder.class);
+      }
+
+      // Construct using CommandsProtocol.KeyLocationsSet.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getLocationsFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        key_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (locationsBuilder_ == null) {
+          locations_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          locationsBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return CommandsProtocol.internal_static_KeyLocationsSet_descriptor;
+      }
+
+      public CommandsProtocol.KeyLocationsSet getDefaultInstanceForType() {
+        return CommandsProtocol.KeyLocationsSet.getDefaultInstance();
+      }
+
+      public CommandsProtocol.KeyLocationsSet build() {
+        CommandsProtocol.KeyLocationsSet result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public CommandsProtocol.KeyLocationsSet buildPartial() {
+        CommandsProtocol.KeyLocationsSet result = new CommandsProtocol.KeyLocationsSet(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.key_ = key_;
+        if (locationsBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            locations_ = java.util.Collections.unmodifiableList(locations_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.locations_ = locations_;
+        } else {
+          result.locations_ = locationsBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof CommandsProtocol.KeyLocationsSet) {
+          return mergeFrom((CommandsProtocol.KeyLocationsSet)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(CommandsProtocol.KeyLocationsSet other) {
+        if (other == CommandsProtocol.KeyLocationsSet.getDefaultInstance()) return this;
+        if (other.hasKey()) {
+          bitField0_ |= 0x00000001;
+          key_ = other.key_;
+          onChanged();
+        }
+        if (locationsBuilder_ == null) {
+          if (!other.locations_.isEmpty()) {
+            if (locations_.isEmpty()) {
+              locations_ = other.locations_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureLocationsIsMutable();
+              locations_.addAll(other.locations_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.locations_.isEmpty()) {
+            if (locationsBuilder_.isEmpty()) {
+              locationsBuilder_.dispose();
+              locationsBuilder_ = null;
+              locations_ = other.locations_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              locationsBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getLocationsFieldBuilder() : null;
+            } else {
+              locationsBuilder_.addAllMessages(other.locations_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasKey()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getLocationsCount(); i++) {
+          if (!getLocations(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        CommandsProtocol.KeyLocationsSet parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (CommandsProtocol.KeyLocationsSet) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object key_ = "";
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public boolean hasKey() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public java.lang.String getKey() {
+        java.lang.Object ref = key_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            key_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getKeyBytes() {
+        java.lang.Object ref = key_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          key_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder setKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder clearKey() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        key_ = getDefaultInstance().getKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder setKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        key_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<CommandsProtocol.Location> locations_ =
+        java.util.Collections.emptyList();
+      private void ensureLocationsIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          locations_ = new java.util.ArrayList<CommandsProtocol.Location>(locations_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          CommandsProtocol.Location, CommandsProtocol.Location.Builder, CommandsProtocol.LocationOrBuilder> locationsBuilder_;
+
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public java.util.List<CommandsProtocol.Location> getLocationsList() {
+        if (locationsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(locations_);
+        } else {
+          return locationsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public int getLocationsCount() {
+        if (locationsBuilder_ == null) {
+          return locations_.size();
+        } else {
+          return locationsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public CommandsProtocol.Location getLocations(int index) {
+        if (locationsBuilder_ == null) {
+          return locations_.get(index);
+        } else {
+          return locationsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public Builder setLocations(
+          int index, CommandsProtocol.Location value) {
+        if (locationsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLocationsIsMutable();
+          locations_.set(index, value);
+          onChanged();
+        } else {
+          locationsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public Builder setLocations(
+          int index, CommandsProtocol.Location.Builder builderForValue) {
+        if (locationsBuilder_ == null) {
+          ensureLocationsIsMutable();
+          locations_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          locationsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public Builder addLocations(CommandsProtocol.Location value) {
+        if (locationsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLocationsIsMutable();
+          locations_.add(value);
+          onChanged();
+        } else {
+          locationsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public Builder addLocations(
+          int index, CommandsProtocol.Location value) {
+        if (locationsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLocationsIsMutable();
+          locations_.add(index, value);
+          onChanged();
+        } else {
+          locationsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public Builder addLocations(
+          CommandsProtocol.Location.Builder builderForValue) {
+        if (locationsBuilder_ == null) {
+          ensureLocationsIsMutable();
+          locations_.add(builderForValue.build());
+          onChanged();
+        } else {
+          locationsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public Builder addLocations(
+          int index, CommandsProtocol.Location.Builder builderForValue) {
+        if (locationsBuilder_ == null) {
+          ensureLocationsIsMutable();
+          locations_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          locationsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public Builder addAllLocations(
+          java.lang.Iterable<? extends CommandsProtocol.Location> values) {
+        if (locationsBuilder_ == null) {
+          ensureLocationsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, locations_);
+          onChanged();
+        } else {
+          locationsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public Builder clearLocations() {
+        if (locationsBuilder_ == null) {
+          locations_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          locationsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public Builder removeLocations(int index) {
+        if (locationsBuilder_ == null) {
+          ensureLocationsIsMutable();
+          locations_.remove(index);
+          onChanged();
+        } else {
+          locationsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public CommandsProtocol.Location.Builder getLocationsBuilder(
+          int index) {
+        return getLocationsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public CommandsProtocol.LocationOrBuilder getLocationsOrBuilder(
+          int index) {
+        if (locationsBuilder_ == null) {
+          return locations_.get(index);  } else {
+          return locationsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public java.util.List<? extends CommandsProtocol.LocationOrBuilder> 
+           getLocationsOrBuilderList() {
+        if (locationsBuilder_ != null) {
+          return locationsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(locations_);
+        }
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public CommandsProtocol.Location.Builder addLocationsBuilder() {
+        return getLocationsFieldBuilder().addBuilder(
+            CommandsProtocol.Location.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public CommandsProtocol.Location.Builder addLocationsBuilder(
+          int index) {
+        return getLocationsFieldBuilder().addBuilder(
+            index, CommandsProtocol.Location.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .Location locations = 2;</code>
+       */
+      public java.util.List<CommandsProtocol.Location.Builder> 
+           getLocationsBuilderList() {
+        return getLocationsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          CommandsProtocol.Location, CommandsProtocol.Location.Builder, CommandsProtocol.LocationOrBuilder> 
+          getLocationsFieldBuilder() {
+        if (locationsBuilder_ == null) {
+          locationsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              CommandsProtocol.Location, CommandsProtocol.Location.Builder, CommandsProtocol.LocationOrBuilder>(
+                  locations_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          locations_ = null;
+        }
+        return locationsBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:KeyLocationsSet)
+    }
+
+    static {
+      defaultInstance = new KeyLocationsSet(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:KeyLocationsSet)
+  }
+
+  public interface KeyLocationOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:KeyLocation)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string key = 1;</code>
+     */
+    boolean hasKey();
+    /**
+     * <code>required string key = 1;</code>
+     */
+    java.lang.String getKey();
+    /**
+     * <code>required string key = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getKeyBytes();
+
+    /**
+     * <code>required .Location location = 2;</code>
+     */
+    boolean hasLocation();
+    /**
+     * <code>required .Location location = 2;</code>
+     */
+    CommandsProtocol.Location getLocation();
+    /**
+     * <code>required .Location location = 2;</code>
+     */
+    CommandsProtocol.LocationOrBuilder getLocationOrBuilder();
+  }
+  /**
+   * Protobuf type {@code KeyLocation}
+   */
+  public static final class KeyLocation extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:KeyLocation)
+      KeyLocationOrBuilder {
+    // Use KeyLocation.newBuilder() to construct.
+    private KeyLocation(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private KeyLocation(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final KeyLocation defaultInstance;
+    public static KeyLocation getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public KeyLocation getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private KeyLocation(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              key_ = bs;
+              break;
+            }
+            case 18: {
+              CommandsProtocol.Location.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = location_.toBuilder();
+              }
+              location_ = input.readMessage(CommandsProtocol.Location.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(location_);
+                location_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return CommandsProtocol.internal_static_KeyLocation_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return CommandsProtocol.internal_static_KeyLocation_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              CommandsProtocol.KeyLocation.class, CommandsProtocol.KeyLocation.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<KeyLocation> PARSER =
+        new com.google.protobuf.AbstractParser<KeyLocation>() {
+      public KeyLocation parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new KeyLocation(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<KeyLocation> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int KEY_FIELD_NUMBER = 1;
+    private java.lang.Object key_;
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public boolean hasKey() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public java.lang.String getKey() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          key_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getKeyBytes() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        key_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int LOCATION_FIELD_NUMBER = 2;
+    private CommandsProtocol.Location location_;
+    /**
+     * <code>required .Location location = 2;</code>
+     */
+    public boolean hasLocation() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required .Location location = 2;</code>
+     */
+    public CommandsProtocol.Location getLocation() {
+      return location_;
+    }
+    /**
+     * <code>required .Location location = 2;</code>
+     */
+    public CommandsProtocol.LocationOrBuilder getLocationOrBuilder() {
+      return location_;
+    }
+
+    private void initFields() {
+      key_ = "";
+      location_ = CommandsProtocol.Location.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasKey()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasLocation()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getLocation().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getKeyBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, location_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getKeyBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, location_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static CommandsProtocol.KeyLocation parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.KeyLocation parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyLocation parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.KeyLocation parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyLocation parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.KeyLocation parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyLocation parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static CommandsProtocol.KeyLocation parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyLocation parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.KeyLocation parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(CommandsProtocol.KeyLocation prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code KeyLocation}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:KeyLocation)
+        CommandsProtocol.KeyLocationOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return CommandsProtocol.internal_static_KeyLocation_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return CommandsProtocol.internal_static_KeyLocation_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                CommandsProtocol.KeyLocation.class, CommandsProtocol.KeyLocation.Builder.class);
+      }
+
+      // Construct using CommandsProtocol.KeyLocation.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getLocationFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        key_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (locationBuilder_ == null) {
+          location_ = CommandsProtocol.Location.getDefaultInstance();
+        } else {
+          locationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return CommandsProtocol.internal_static_KeyLocation_descriptor;
+      }
+
+      public CommandsProtocol.KeyLocation getDefaultInstanceForType() {
+        return CommandsProtocol.KeyLocation.getDefaultInstance();
+      }
+
+      public CommandsProtocol.KeyLocation build() {
+        CommandsProtocol.KeyLocation result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public CommandsProtocol.KeyLocation buildPartial() {
+        CommandsProtocol.KeyLocation result = new CommandsProtocol.KeyLocation(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.key_ = key_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (locationBuilder_ == null) {
+          result.location_ = location_;
+        } else {
+          result.location_ = locationBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof CommandsProtocol.KeyLocation) {
+          return mergeFrom((CommandsProtocol.KeyLocation)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(CommandsProtocol.KeyLocation other) {
+        if (other == CommandsProtocol.KeyLocation.getDefaultInstance()) return this;
+        if (other.hasKey()) {
+          bitField0_ |= 0x00000001;
+          key_ = other.key_;
+          onChanged();
+        }
+        if (other.hasLocation()) {
+          mergeLocation(other.getLocation());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasKey()) {
+          
+          return false;
+        }
+        if (!hasLocation()) {
+          
+          return false;
+        }
+        if (!getLocation().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        CommandsProtocol.KeyLocation parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (CommandsProtocol.KeyLocation) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object key_ = "";
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public boolean hasKey() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public java.lang.String getKey() {
+        java.lang.Object ref = key_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            key_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getKeyBytes() {
+        java.lang.Object ref = key_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          key_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder setKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder clearKey() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        key_ = getDefaultInstance().getKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder setKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        key_ = value;
+        onChanged();
+        return this;
+      }
+
+      private CommandsProtocol.Location location_ = CommandsProtocol.Location.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          CommandsProtocol.Location, CommandsProtocol.Location.Builder, CommandsProtocol.LocationOrBuilder> locationBuilder_;
+      /**
+       * <code>required .Location location = 2;</code>
+       */
+      public boolean hasLocation() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required .Location location = 2;</code>
+       */
+      public CommandsProtocol.Location getLocation() {
+        if (locationBuilder_ == null) {
+          return location_;
+        } else {
+          return locationBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .Location location = 2;</code>
+       */
+      public Builder setLocation(CommandsProtocol.Location value) {
+        if (locationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          location_ = value;
+          onChanged();
+        } else {
+          locationBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .Location location = 2;</code>
+       */
+      public Builder setLocation(
+          CommandsProtocol.Location.Builder builderForValue) {
+        if (locationBuilder_ == null) {
+          location_ = builderForValue.build();
+          onChanged();
+        } else {
+          locationBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .Location location = 2;</code>
+       */
+      public Builder mergeLocation(CommandsProtocol.Location value) {
+        if (locationBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              location_ != CommandsProtocol.Location.getDefaultInstance()) {
+            location_ =
+              CommandsProtocol.Location.newBuilder(location_).mergeFrom(value).buildPartial();
+          } else {
+            location_ = value;
+          }
+          onChanged();
+        } else {
+          locationBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .Location location = 2;</code>
+       */
+      public Builder clearLocation() {
+        if (locationBuilder_ == null) {
+          location_ = CommandsProtocol.Location.getDefaultInstance();
+          onChanged();
+        } else {
+          locationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>required .Location location = 2;</code>
+       */
+      public CommandsProtocol.Location.Builder getLocationBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getLocationFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .Location location = 2;</code>
+       */
+      public CommandsProtocol.LocationOrBuilder getLocationOrBuilder() {
+        if (locationBuilder_ != null) {
+          return locationBuilder_.getMessageOrBuilder();
+        } else {
+          return location_;
+        }
+      }
+      /**
+       * <code>required .Location location = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          CommandsProtocol.Location, CommandsProtocol.Location.Builder, CommandsProtocol.LocationOrBuilder> 
+          getLocationFieldBuilder() {
+        if (locationBuilder_ == null) {
+          locationBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              CommandsProtocol.Location, CommandsProtocol.Location.Builder, CommandsProtocol.LocationOrBuilder>(
+                  getLocation(),
+                  getParentForChildren(),
+                  isClean());
+          location_ = null;
+        }
+        return locationBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:KeyLocation)
+    }
+
+    static {
+      defaultInstance = new KeyLocation(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:KeyLocation)
+  }
+
+  public interface HeartBeatOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:HeartBeat)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 forCommandId = 1;</code>
+     */
+    boolean hasForCommandId();
+    /**
+     * <code>required uint32 forCommandId = 1;</code>
+     */
+    int getForCommandId();
+
+    /**
+     * <code>required bool status = 2;</code>
+     */
+    boolean hasStatus();
+    /**
+     * <code>required bool status = 2;</code>
+     */
+    boolean getStatus();
+  }
+  /**
+   * Protobuf type {@code HeartBeat}
+   */
+  public static final class HeartBeat extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:HeartBeat)
+      HeartBeatOrBuilder {
+    // Use HeartBeat.newBuilder() to construct.
+    private HeartBeat(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private HeartBeat(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final HeartBeat defaultInstance;
+    public static HeartBeat getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public HeartBeat getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HeartBeat(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              forCommandId_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              status_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return CommandsProtocol.internal_static_HeartBeat_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return CommandsProtocol.internal_static_HeartBeat_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              CommandsProtocol.HeartBeat.class, CommandsProtocol.HeartBeat.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<HeartBeat> PARSER =
+        new com.google.protobuf.AbstractParser<HeartBeat>() {
+      public HeartBeat parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HeartBeat(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HeartBeat> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int FORCOMMANDID_FIELD_NUMBER = 1;
+    private int forCommandId_;
+    /**
+     * <code>required uint32 forCommandId = 1;</code>
+     */
+    public boolean hasForCommandId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 forCommandId = 1;</code>
+     */
+    public int getForCommandId() {
+      return forCommandId_;
+    }
+
+    public static final int STATUS_FIELD_NUMBER = 2;
+    private boolean status_;
+    /**
+     * <code>required bool status = 2;</code>
+     */
+    public boolean hasStatus() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required bool status = 2;</code>
+     */
+    public boolean getStatus() {
+      return status_;
+    }
+
+    private void initFields() {
+      forCommandId_ = 0;
+      status_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasForCommandId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasStatus()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, forCommandId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBool(2, status_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, forCommandId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, status_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static CommandsProtocol.HeartBeat parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.HeartBeat parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.HeartBeat parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.HeartBeat parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.HeartBeat parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.HeartBeat parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.HeartBeat parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static CommandsProtocol.HeartBeat parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.HeartBeat parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.HeartBeat parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(CommandsProtocol.HeartBeat prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code HeartBeat}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:HeartBeat)
+        CommandsProtocol.HeartBeatOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return CommandsProtocol.internal_static_HeartBeat_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return CommandsProtocol.internal_static_HeartBeat_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                CommandsProtocol.HeartBeat.class, CommandsProtocol.HeartBeat.Builder.class);
+      }
+
+      // Construct using CommandsProtocol.HeartBeat.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        forCommandId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        status_ = false;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return CommandsProtocol.internal_static_HeartBeat_descriptor;
+      }
+
+      public CommandsProtocol.HeartBeat getDefaultInstanceForType() {
+        return CommandsProtocol.HeartBeat.getDefaultInstance();
+      }
+
+      public CommandsProtocol.HeartBeat build() {
+        CommandsProtocol.HeartBeat result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public CommandsProtocol.HeartBeat buildPartial() {
+        CommandsProtocol.HeartBeat result = new CommandsProtocol.HeartBeat(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.forCommandId_ = forCommandId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.status_ = status_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof CommandsProtocol.HeartBeat) {
+          return mergeFrom((CommandsProtocol.HeartBeat)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(CommandsProtocol.HeartBeat other) {
+        if (other == CommandsProtocol.HeartBeat.getDefaultInstance()) return this;
+        if (other.hasForCommandId()) {
+          setForCommandId(other.getForCommandId());
+        }
+        if (other.hasStatus()) {
+          setStatus(other.getStatus());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasForCommandId()) {
+          
+          return false;
+        }
+        if (!hasStatus()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        CommandsProtocol.HeartBeat parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (CommandsProtocol.HeartBeat) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int forCommandId_ ;
+      /**
+       * <code>required uint32 forCommandId = 1;</code>
+       */
+      public boolean hasForCommandId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 forCommandId = 1;</code>
+       */
+      public int getForCommandId() {
+        return forCommandId_;
+      }
+      /**
+       * <code>required uint32 forCommandId = 1;</code>
+       */
+      public Builder setForCommandId(int value) {
+        bitField0_ |= 0x00000001;
+        forCommandId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 forCommandId = 1;</code>
+       */
+      public Builder clearForCommandId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        forCommandId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean status_ ;
+      /**
+       * <code>required bool status = 2;</code>
+       */
+      public boolean hasStatus() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required bool status = 2;</code>
+       */
+      public boolean getStatus() {
+        return status_;
+      }
+      /**
+       * <code>required bool status = 2;</code>
+       */
+      public Builder setStatus(boolean value) {
+        bitField0_ |= 0x00000002;
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool status = 2;</code>
+       */
+      public Builder clearStatus() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        status_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:HeartBeat)
+    }
+
+    static {
+      defaultInstance = new HeartBeat(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:HeartBeat)
+  }
+
+  public interface KeyValuesSetOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:KeyValuesSet)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string key = 1;</code>
+     */
+    boolean hasKey();
+    /**
+     * <code>required string key = 1;</code>
+     */
+    java.lang.String getKey();
+    /**
+     * <code>required string key = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getKeyBytes();
+
+    /**
+     * <code>repeated string values = 2;</code>
+     */
+    com.google.protobuf.ProtocolStringList
+        getValuesList();
+    /**
+     * <code>repeated string values = 2;</code>
+     */
+    int getValuesCount();
+    /**
+     * <code>repeated string values = 2;</code>
+     */
+    java.lang.String getValues(int index);
+    /**
+     * <code>repeated string values = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getValuesBytes(int index);
+  }
+  /**
+   * Protobuf type {@code KeyValuesSet}
+   */
+  public static final class KeyValuesSet extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:KeyValuesSet)
+      KeyValuesSetOrBuilder {
+    // Use KeyValuesSet.newBuilder() to construct.
+    private KeyValuesSet(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private KeyValuesSet(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final KeyValuesSet defaultInstance;
+    public static KeyValuesSet getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public KeyValuesSet getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private KeyValuesSet(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              key_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                values_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              values_.add(bs);
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          values_ = values_.getUnmodifiableView();
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return CommandsProtocol.internal_static_KeyValuesSet_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return CommandsProtocol.internal_static_KeyValuesSet_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              CommandsProtocol.KeyValuesSet.class, CommandsProtocol.KeyValuesSet.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<KeyValuesSet> PARSER =
+        new com.google.protobuf.AbstractParser<KeyValuesSet>() {
+      public KeyValuesSet parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new KeyValuesSet(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<KeyValuesSet> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int KEY_FIELD_NUMBER = 1;
+    private java.lang.Object key_;
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public boolean hasKey() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public java.lang.String getKey() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          key_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getKeyBytes() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        key_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VALUES_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList values_;
+    /**
+     * <code>repeated string values = 2;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getValuesList() {
+      return values_;
+    }
+    /**
+     * <code>repeated string values = 2;</code>
+     */
+    public int getValuesCount() {
+      return values_.size();
+    }
+    /**
+     * <code>repeated string values = 2;</code>
+     */
+    public java.lang.String getValues(int index) {
+      return values_.get(index);
+    }
+    /**
+     * <code>repeated string values = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getValuesBytes(int index) {
+      return values_.getByteString(index);
+    }
+
+    private void initFields() {
+      key_ = "";
+      values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasKey()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getKeyBytes());
+      }
+      for (int i = 0; i < values_.size(); i++) {
+        output.writeBytes(2, values_.getByteString(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getKeyBytes());
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < values_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(values_.getByteString(i));
+        }
+        size += dataSize;
+        size += 1 * getValuesList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static CommandsProtocol.KeyValuesSet parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.KeyValuesSet parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyValuesSet parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.KeyValuesSet parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyValuesSet parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.KeyValuesSet parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyValuesSet parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static CommandsProtocol.KeyValuesSet parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyValuesSet parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.KeyValuesSet parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(CommandsProtocol.KeyValuesSet prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code KeyValuesSet}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:KeyValuesSet)
+        CommandsProtocol.KeyValuesSetOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return CommandsProtocol.internal_static_KeyValuesSet_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return CommandsProtocol.internal_static_KeyValuesSet_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                CommandsProtocol.KeyValuesSet.class, CommandsProtocol.KeyValuesSet.Builder.class);
+      }
+
+      // Construct using CommandsProtocol.KeyValuesSet.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        key_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return CommandsProtocol.internal_static_KeyValuesSet_descriptor;
+      }
+
+      public CommandsProtocol.KeyValuesSet getDefaultInstanceForType() {
+        return CommandsProtocol.KeyValuesSet.getDefaultInstance();
+      }
+
+      public CommandsProtocol.KeyValuesSet build() {
+        CommandsProtocol.KeyValuesSet result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public CommandsProtocol.KeyValuesSet buildPartial() {
+        CommandsProtocol.KeyValuesSet result = new CommandsProtocol.KeyValuesSet(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.key_ = key_;
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          values_ = values_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.values_ = values_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof CommandsProtocol.KeyValuesSet) {
+          return mergeFrom((CommandsProtocol.KeyValuesSet)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(CommandsProtocol.KeyValuesSet other) {
+        if (other == CommandsProtocol.KeyValuesSet.getDefaultInstance()) return this;
+        if (other.hasKey()) {
+          bitField0_ |= 0x00000001;
+          key_ = other.key_;
+          onChanged();
+        }
+        if (!other.values_.isEmpty()) {
+          if (values_.isEmpty()) {
+            values_ = other.values_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureValuesIsMutable();
+            values_.addAll(other.values_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasKey()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        CommandsProtocol.KeyValuesSet parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (CommandsProtocol.KeyValuesSet) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object key_ = "";
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public boolean hasKey() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public java.lang.String getKey() {
+        java.lang.Object ref = key_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            key_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getKeyBytes() {
+        java.lang.Object ref = key_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          key_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder setKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder clearKey() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        key_ = getDefaultInstance().getKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder setKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        key_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureValuesIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          values_ = new com.google.protobuf.LazyStringArrayList(values_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <code>repeated string values = 2;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getValuesList() {
+        return values_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string values = 2;</code>
+       */
+      public int getValuesCount() {
+        return values_.size();
+      }
+      /**
+       * <code>repeated string values = 2;</code>
+       */
+      public java.lang.String getValues(int index) {
+        return values_.get(index);
+      }
+      /**
+       * <code>repeated string values = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getValuesBytes(int index) {
+        return values_.getByteString(index);
+      }
+      /**
+       * <code>repeated string values = 2;</code>
+       */
+      public Builder setValues(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureValuesIsMutable();
+        values_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string values = 2;</code>
+       */
+      public Builder addValues(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureValuesIsMutable();
+        values_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string values = 2;</code>
+       */
+      public Builder addAllValues(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureValuesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, values_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string values = 2;</code>
+       */
+      public Builder clearValues() {
+        values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string values = 2;</code>
+       */
+      public Builder addValuesBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureValuesIsMutable();
+        values_.add(value);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:KeyValuesSet)
+    }
+
+    static {
+      defaultInstance = new KeyValuesSet(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:KeyValuesSet)
+  }
+
+  public interface KeyValueOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:KeyValue)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string key = 1;</code>
+     */
+    boolean hasKey();
+    /**
+     * <code>required string key = 1;</code>
+     */
+    java.lang.String getKey();
+    /**
+     * <code>required string key = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getKeyBytes();
+
+    /**
+     * <code>required string value = 2;</code>
+     */
+    boolean hasValue();
+    /**
+     * <code>required string value = 2;</code>
+     */
+    java.lang.String getValue();
+    /**
+     * <code>required string value = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getValueBytes();
+  }
+  /**
+   * Protobuf type {@code KeyValue}
+   */
+  public static final class KeyValue extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:KeyValue)
+      KeyValueOrBuilder {
+    // Use KeyValue.newBuilder() to construct.
+    private KeyValue(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private KeyValue(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final KeyValue defaultInstance;
+    public static KeyValue getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public KeyValue getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private KeyValue(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              key_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              value_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return CommandsProtocol.internal_static_KeyValue_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return CommandsProtocol.internal_static_KeyValue_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              CommandsProtocol.KeyValue.class, CommandsProtocol.KeyValue.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<KeyValue> PARSER =
+        new com.google.protobuf.AbstractParser<KeyValue>() {
+      public KeyValue parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new KeyValue(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<KeyValue> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int KEY_FIELD_NUMBER = 1;
+    private java.lang.Object key_;
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public boolean hasKey() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public java.lang.String getKey() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          key_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string key = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getKeyBytes() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        key_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private java.lang.Object value_;
+    /**
+     * <code>required string value = 2;</code>
+     */
+    public boolean hasValue() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string value = 2;</code>
+     */
+    public java.lang.String getValue() {
+      java.lang.Object ref = value_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          value_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string value = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getValueBytes() {
+      java.lang.Object ref = value_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        value_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      key_ = "";
+      value_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasKey()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasValue()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getKeyBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getValueBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getKeyBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getValueBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static CommandsProtocol.KeyValue parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.KeyValue parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyValue parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static CommandsProtocol.KeyValue parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyValue parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.KeyValue parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyValue parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static CommandsProtocol.KeyValue parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static CommandsProtocol.KeyValue parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static CommandsProtocol.KeyValue parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(CommandsProtocol.KeyValue prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code KeyValue}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:KeyValue)
+        CommandsProtocol.KeyValueOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return CommandsProtocol.internal_static_KeyValue_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return CommandsProtocol.internal_static_KeyValue_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                CommandsProtocol.KeyValue.class, CommandsProtocol.KeyValue.Builder.class);
+      }
+
+      // Construct using CommandsProtocol.KeyValue.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        key_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        value_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return CommandsProtocol.internal_static_KeyValue_descriptor;
+      }
+
+      public CommandsProtocol.KeyValue getDefaultInstanceForType() {
+        return CommandsProtocol.KeyValue.getDefaultInstance();
+      }
+
+      public CommandsProtocol.KeyValue build() {
+        CommandsProtocol.KeyValue result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public CommandsProtocol.KeyValue buildPartial() {
+        CommandsProtocol.KeyValue result = new CommandsProtocol.KeyValue(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.key_ = key_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.value_ = value_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof CommandsProtocol.KeyValue) {
+          return mergeFrom((CommandsProtocol.KeyValue)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(CommandsProtocol.KeyValue other) {
+        if (other == CommandsProtocol.KeyValue.getDefaultInstance()) return this;
+        if (other.hasKey()) {
+          bitField0_ |= 0x00000001;
+          key_ = other.key_;
+          onChanged();
+        }
+        if (other.hasValue()) {
+          bitField0_ |= 0x00000002;
+          value_ = other.value_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasKey()) {
+          
+          return false;
+        }
+        if (!hasValue()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        CommandsProtocol.KeyValue parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (CommandsProtocol.KeyValue) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object key_ = "";
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public boolean hasKey() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public java.lang.String getKey() {
+        java.lang.Object ref = key_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            key_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getKeyBytes() {
+        java.lang.Object ref = key_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          key_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder setKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder clearKey() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        key_ = getDefaultInstance().getKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string key = 1;</code>
+       */
+      public Builder setKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        key_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object value_ = "";
+      /**
+       * <code>required string value = 2;</code>
+       */
+      public boolean hasValue() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string value = 2;</code>
+       */
+      public java.lang.String getValue() {
+        java.lang.Object ref = value_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            value_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string value = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getValueBytes() {
+        java.lang.Object ref = value_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          value_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string value = 2;</code>
+       */
+      public Builder setValue(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        value_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string value = 2;</code>
+       */
+      public Builder clearValue() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        value_ = getDefaultInstance().getValue();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string value = 2;</code>
+       */
+      public Builder setValueBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        value_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:KeyValue)
+    }
+
+    static {
+      defaultInstance = new KeyValue(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:KeyValue)
+  }
+
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Location_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_Location_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Command_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Command_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_CommandResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_CommandResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_KeyLocationsSet_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_KeyLocationsSet_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_KeyLocation_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_KeyLocation_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_HeartBeat_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_HeartBeat_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_KeyValuesSet_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_KeyValuesSet_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_KeyValue_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_KeyValue_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -588,28 +7295,90 @@ public final class CommandsProtocol {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\026CommandsProtocol.proto\"3\n\007Command\022\021\n\tc" +
-      "ommandId\030\001 \002(\r\022\025\n\rcommandString\030\002 \002(\tB\002H" +
-      "\001"
+      "\n\026CommandsProtocol.proto\"D\n\010Location\022\n\n\002" +
+      "ip\030\001 \002(\t\022\r\n\005chunk\030\002 \002(\r\022\r\n\005start\030\003 \002(\r\022\016" +
+      "\n\006offset\030\004 \002(\r\"\231\001\n\007Command\022\021\n\tcommandId\030" +
+      "\001 \002(\r\022\025\n\rcommandString\030\002 \002(\t\022\022\n\ninputChu" +
+      "nk\030\003 \001(\t\022-\n\023keysAndLocationsSet\030\004 \003(\0132\020." +
+      "KeyLocationsSet\022!\n\013keyLocation\030\005 \001(\0132\014.K" +
+      "eyLocation\"\244\001\n\017CommandResponse\022\024\n\014forCom" +
+      "mandId\030\001 \002(\r\022\030\n\020forCommandString\030\002 \002(\t\022\024" +
+      "\n\014responseText\030\003 \001(\t\022#\n\014keyValuesSet\030\004 \001" +
+      "(\0132\r.KeyValuesSet\022&\n\020keyLocationTable\030\005 ",
+      "\003(\0132\014.KeyLocation\"<\n\017KeyLocationsSet\022\013\n\003" +
+      "key\030\001 \002(\t\022\034\n\tlocations\030\002 \003(\0132\t.Location\"" +
+      "7\n\013KeyLocation\022\013\n\003key\030\001 \002(\t\022\033\n\010location\030" +
+      "\002 \002(\0132\t.Location\"1\n\tHeartBeat\022\024\n\014forComm" +
+      "andId\030\001 \002(\r\022\016\n\006status\030\002 \002(\010\"+\n\014KeyValues" +
+      "Set\022\013\n\003key\030\001 \002(\t\022\016\n\006values\030\002 \003(\t\"&\n\010KeyV" +
+      "alue\022\013\n\003key\030\001 \002(\t\022\r\n\005value\030\002 \002(\t*\343\001\n\013Ins" +
+      "truction\022\023\n\017START_DATA_NODE\020\001\022\017\n\013ACCEPT_" +
+      "DATA\020\002\022\016\n\nACCEPT_JAR\020\003\022\026\n\022START_TASK_TRA" +
+      "CKER\020\004\022\r\n\tSTART_MAP\020\005\022\020\n\014START_REDUCE\020\006\022",
+      "\035\n\031RETURN_KEYS_AND_LOCATIONS\020\007\022\035\n\031ACCEPT" +
+      "_KEYS_AND_LOCATIONS\020\010\022\031\n\025RETURN_VALUES_F" +
+      "OR_KEY\020\t\022\014\n\010SHUTDOWN\020\nB\002H\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_Command_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_Command_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_Command_descriptor,
-              new java.lang.String[] { "CommandId", "CommandString", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_Location_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_Location_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_Location_descriptor,
+        new java.lang.String[] { "Ip", "Chunk", "Start", "Offset", });
+    internal_static_Command_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_Command_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_Command_descriptor,
+        new java.lang.String[] { "CommandId", "CommandString", "InputChunk", "KeysAndLocationsSet", "KeyLocation", });
+    internal_static_CommandResponse_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_CommandResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_CommandResponse_descriptor,
+        new java.lang.String[] { "ForCommandId", "ForCommandString", "ResponseText", "KeyValuesSet", "KeyLocationTable", });
+    internal_static_KeyLocationsSet_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_KeyLocationsSet_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_KeyLocationsSet_descriptor,
+        new java.lang.String[] { "Key", "Locations", });
+    internal_static_KeyLocation_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_KeyLocation_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_KeyLocation_descriptor,
+        new java.lang.String[] { "Key", "Location", });
+    internal_static_HeartBeat_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_HeartBeat_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_HeartBeat_descriptor,
+        new java.lang.String[] { "ForCommandId", "Status", });
+    internal_static_KeyValuesSet_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_KeyValuesSet_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_KeyValuesSet_descriptor,
+        new java.lang.String[] { "Key", "Values", });
+    internal_static_KeyValue_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_KeyValue_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_KeyValue_descriptor,
+        new java.lang.String[] { "Key", "Value", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

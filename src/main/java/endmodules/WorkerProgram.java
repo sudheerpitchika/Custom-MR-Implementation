@@ -1,5 +1,7 @@
 package endmodules;
 
+import io.netty.commands.CommandsClient;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,19 +24,21 @@ public class WorkerProgram {
 	DataNode dn;
 	
 	final static String complexDelimiter="#$%@@%$#";
-	Map<String, Location> keyLocationMap; //stores keys and location(offset) in file, and let of the value for key
-	//used to send values to reducers
 	
-	Map<String, ArrayList<Location>> keysAndIps;
-	Map<String, ArrayList<String>> keyValuesMap;
+	//used to send values to reducers
+	Map<String, Location> keyAndFileLocationMap; //stores keys and location(offset) in file, and let of the value for key
+	Map<String, ArrayList<Location>> keysAndMapperLocations;
+	Map<String, ArrayList<String>> keyValuesInMap;
+	Map<String, ArrayList<String>> keyValuesInReducer;
 	ArrayList<String> keyList;
 	ArrayList<DataInputStream> fileStreams;
 	
 	public WorkerProgram(){
-		keyValuesMap = new HashMap<String, ArrayList<String>>();
-		keyLocationMap = new HashMap<String, Location>();
+		keyValuesInMap = new HashMap<String, ArrayList<String>>();
+		keyValuesInReducer = new HashMap<String, ArrayList<String>>();
+		keyAndFileLocationMap = new HashMap<String, Location>();
 		fileStreams = new ArrayList<DataInputStream>();
-		keysAndIps = new HashMap<String, ArrayList<Location>>();
+		keysAndMapperLocations = new HashMap<String, ArrayList<Location>>();
 	}
 	
 	
@@ -50,15 +54,26 @@ public class WorkerProgram {
 	//start a thread and listen for master program
 
 	public void startProgram(String type){ //run map or reducer task
+		//
+		
+	}
+	
+	public void startMapFunction(){
+		
+	}
+
+	public void startReduceFunction(){
 		
 	}
 
 	public void startCombiner() throws Exception{
 		//sort values in the map
-		Set<String> keySet = keyValuesMap.keySet();
+		Set<String> keySet = keyValuesInMap.keySet();
 		keyList = new ArrayList<String>();
 		keyList.addAll(keySet);
 		Collections.sort(keyList);
+
+		//write to file
 		this.writeKeyValuesFileAndCreateTable();
 	}
 
@@ -70,11 +85,11 @@ public class WorkerProgram {
 		
 		// RETURN_KEYS_AND_LOCATIONS
 		
-		return keyLocationMap;
+		return keyAndFileLocationMap;
 	}
 	
 	public ArrayList<String> valueForKey(String key, Location location) throws Exception{
-		//get the value from the file(for corresponding chunk) 
+		//get the value from the file(for corresponding chunk) //requested by reducer
 		
 		DataInputStream in = fileStreams.get(location.getChunkId());
 		byte[] dataBytes=null;
@@ -87,21 +102,25 @@ public class WorkerProgram {
 		values.remove(values.size());
 		values.remove(0);
 
-		return null;
+		return values;
 	}
 	
-	public void receiveKeyIpSetFromShuffler(){
+	public void receiveKeyAndMapperLocationSetFromShuffler(){
 		//reducer server
+		
+
+		
+		//read from buffer and add to keysAndMapperLocations
 	}
 	
-	public void getValuesForKeyFromMaps(final String key) throws InterruptedException, ExecutionException{
+	public Map<String, ArrayList<String>> getValuesForKeyFromMaps(final String key) throws InterruptedException, ExecutionException{
 		// for each key, get the values from list of mappers of that key
 		// keysAndIps
 
-		ArrayList<Location> locations = keysAndIps.get(key);
+		ArrayList<Location> locations = keysAndMapperLocations.get(key);
 		// reducer client to map server
 		
-		int threadNum = 2;
+		int threadNum = locations.size();
         ExecutorService executor = Executors.newFixedThreadPool(threadNum);
         List<FutureTask<ArrayList<String>>> taskList = new ArrayList<FutureTask<ArrayList<String>>>();
         
@@ -111,7 +130,7 @@ public class WorkerProgram {
 			// Start thread for the first half of the numbers
 	        FutureTask<ArrayList<String>> futureTask_1 = new FutureTask<ArrayList<String>>(new Callable<ArrayList<String>>() {
 	            //@Override
-	            public ArrayList<String> call() {
+	            public ArrayList<String> call() throws Exception {
 	                return WorkerProgram.getValuesFromSingleMap(key, location);
 	            }
 	        });
@@ -120,35 +139,42 @@ public class WorkerProgram {
 
 		}
 		
-		ArrayList<String> finalValues = new ArrayList<String>();
+		ArrayList<String> valuesFromMappers = new ArrayList<String>();
 		
 		// Wait until all results are available and combine them at the same time
         for (int j = 0; j < threadNum; j++) {
             FutureTask<ArrayList<String>> futureTask = taskList.get(j);
-            finalValues.addAll(futureTask.get());
+            valuesFromMappers.addAll(futureTask.get());
         }
         executor.shutdown();
+        keyValuesInReducer.put(key, valuesFromMappers);
+        
+        return keyValuesInReducer;
 	}
 	
 	
-	public static ArrayList<String> getValuesFromSingleMap(String key, Location location){
-		// send command "VALUE_FOR_KEY"
+	public static ArrayList<String> getValuesFromSingleMap(String key, Location location) throws Exception{
+		// send command "VALUE_FOR_KEY" and return result
+		CommandsClient commandClient = new CommandsClient("127.0.0.1", "8475");
+		commandClient.startConnection();
+		
 		return null;
 	}
 	
 	public void emit(String key, String value){
 		//keyValuesMap
-		if(keyValuesMap.containsKey(key)){
-			ArrayList<String> values = keyValuesMap.get(key);
+		if(keyValuesInMap.containsKey(key)){
+			ArrayList<String> values = keyValuesInMap.get(key);
 			values.add(value);
-			keyValuesMap.put(key, values);
+			keyValuesInMap.put(key, values);
 		}else{
 			ArrayList<String> values = new ArrayList<String>();
 			values.add(value);
-			keyValuesMap.put(key, values);
+			keyValuesInMap.put(key, values);
 		}
 	}
 	
+	//call this once map() is completed
 	public void writeKeyValuesFileAndCreateTable() throws Exception{
 		int chunkId = 0;
 		String fileName = "tempFile"+chunkId+".txt";
@@ -157,21 +183,24 @@ public class WorkerProgram {
 		int start = 0;
 		
 		for(String key : keyList){
-			ArrayList<String> values = keyValuesMap.get(key);
-			String valueString = key + complexDelimiter;
+			ArrayList<String> values = keyValuesInMap.get(key);
 			
+			byte[] dataBytes = key.getBytes();
+			fos.write(dataBytes);
+			
+			int dataBytesLength = key.length();
+
 			for(String val : values){
-				valueString = valueString + val + complexDelimiter;
+				val = complexDelimiter + val;
+				dataBytes = val.getBytes();
+				fos.write(dataBytes);
+				dataBytesLength += val.length();
 			}
-			
-			byte[] dataBytes = valueString.getBytes();
-			int dataBytesLength = dataBytes.length;
 			
 			Location location = new Location(start, dataBytesLength, chunkId);
 			start += dataBytesLength;
-			keyLocationMap.put(key, location);
+			keyAndFileLocationMap.put(key, location);
 			
-			fos.write(dataBytes);
 		}		
 		fos.close();
 	}

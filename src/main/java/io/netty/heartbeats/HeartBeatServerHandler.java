@@ -34,6 +34,7 @@ public class HeartBeatServerHandler extends SimpleChannelInboundHandler<Command>
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Command command) throws Exception {
+		//replace command with heartbeat proto
         command.getCommandId();
         String cmdString = command.getCommandString();
         

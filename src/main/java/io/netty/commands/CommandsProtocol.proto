@@ -37,38 +37,55 @@ enum Instruction {
   START_REDUCE = 6;
   RETURN_KEYS_AND_LOCATIONS = 7;
   ACCEPT_KEYS_AND_LOCATIONS = 8;
-  VALUES_FOR_KEY = 9;
+  RETURN_VALUES_FOR_KEY = 9;
   SHUTDOWN = 10;
-}
-
-message Command {
-  required uint32 commandId = 1;
-  required string commandString = 2;
-  
-  //required Instruction instruction;
-  //optional string inputChunk;
-  //optional repeated KeyLocations keysAndLocations;
-}
-
-message KeyLocations{
-	required string key = 1;
-	required repeated Location locations = 2;
-}
-
-message CommandResponse{
-	required uint32 forCommandId = 1;
-	required bool status = 2; //[default = true];
-	optional string responseText = 3;
-	optional repeated string keys = 4;
-}
-
-message HeartBeat{
-	required bool status = 1;
 }
 
 message Location{
 	required string ip = 1;
 	required uint32 chunk = 2;
 	required uint32 start = 3;
-	required uint32 offset = 4; 
+	required uint32 offset = 4;
+}
+
+message Command {
+  required uint32 commandId = 1;
+  required string commandString = 2;
+  optional string inputChunk = 3;							// for ACCEPT_DATA
+  repeated KeyLocationsSet keysAndLocationsSet = 4;			// for ACCEPT_KEYS_AND_LOCATIONS
+  optional KeyLocation keyLocation = 5;						// for RETURN_VALUES_FOR_KEY
+}
+
+message CommandResponse{
+	required uint32 forCommandId = 1;
+	required string forCommandString = 2;
+	optional string responseText = 3;
+	optional KeyValuesSet keyValuesSet = 4;				// for RETURN_VALUES_FOR_KEY
+	repeated KeyLocation keyLocationTable = 5;			// for RETURN_KEYS_AND_LOCATIONS	
+}
+
+message KeyLocationsSet{
+	required string key = 1;
+	repeated Location locations = 2;
+}
+
+message KeyLocation{
+	required string key = 1;
+	required Location location = 2;
+}
+
+
+message HeartBeat{
+	required uint32 forCommandId = 1;
+	required bool status = 2;
+}
+
+message KeyValuesSet{
+	required string key = 1;
+	repeated string values = 2;
+}
+
+message KeyValue{
+	required string key = 1;
+	required string value = 2;
 }
