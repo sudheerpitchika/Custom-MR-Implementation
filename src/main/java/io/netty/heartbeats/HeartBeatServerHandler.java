@@ -39,7 +39,7 @@ public class HeartBeatServerHandler extends SimpleChannelInboundHandler<Command>
         String cmdString = command.getCommandString();
         
         //it only receives HEART_BEAT
-        System.out.println("Command Received: "+ cmdString + "\t from "+ctx.channel().remoteAddress());
+        System.out.println(cmdString + "\t from "+ctx.channel().remoteAddress());
         ctx.write("OK /"+cmdString);
         
         if(cmdString.equals("SHUTDOWN")){

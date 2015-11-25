@@ -48,7 +48,7 @@ public class HeartBeatClientHandler extends SimpleChannelInboundHandler<String> 
 
 			public void operationComplete(Future<? super Void> arg0)
 					throws Exception {
-				//System.out.println("operatoin completed");
+				// System.out.println("operatoin completed");
 			}
 		});
 

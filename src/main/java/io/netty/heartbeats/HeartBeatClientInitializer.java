@@ -44,7 +44,6 @@ public class HeartBeatClientInitializer extends ChannelInitializer<SocketChannel
         p.addLast(new StringDecoder());
         p.addLast(new ProtobufVarint32LengthFieldPrepender());
         p.addLast(new ProtobufEncoder());
-
         p.addLast(new HeartBeatClientHandler());
     }
 }

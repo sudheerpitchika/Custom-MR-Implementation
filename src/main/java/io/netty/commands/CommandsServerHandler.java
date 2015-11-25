@@ -15,18 +15,20 @@
  */
 package io.netty.commands;
 
-import endmodules.*;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.commands.CommandsProtocol.Command;
-import io.netty.heartbeats.HeartBeatClient;
-
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import io.netty.commands.CommandsProtocol.CommandResponse;
+import processing.AcceptingKeyAndLocations;
+import processing.StartMapFunction;
+import processing.StartReduceFunction;
+import responses.HeartBeats;
+import responses.ReturnKeysAndLocations;
+import responses.ReturnValueForKey;
 
 public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> {
 
-	HeartBeats heartBeatClient=null;
+	HeartBeats heartBeatClient = null;
    
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
@@ -41,70 +43,93 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Command command) throws Exception {
-        command.getCommandId();
+        
         String cmdString = command.getCommandString();
         System.out.println("Command Received: "+ cmdString + "\t from "+ctx.channel().remoteAddress());
-        ctx.write("OK /"+cmdString);
+        
+        
+        // Temp response
+        CommandResponse.Builder cmdResp = CommandResponse.newBuilder();
+        cmdResp.setForCommandId(command.getCommandId());
+        cmdResp.setForCommandString(command.getCommandString());
+        cmdResp.setResponseText("OK /"+cmdString);
+        ctx.write(cmdResp.build());
+        
         
         if(cmdString.equals("SHUTDOWN")){
+        	
         	if(heartBeatClient != null)
         		heartBeatClient.stopSendingHeartBeats();
-        	
+        
         	// Close the current channel
         	ctx.channel().close();
         	// Then close the parent channel (the one attached to the bind)
         	ctx.channel().parent().close();
         }
+        
+        else if(cmdString.equals("START_DATA_NODE")){
+        	
+        }
+        
+        else if(cmdString.equals("ACCEPT_DATA")){
+        	
+        }
+        
+        else if(cmdString.equals("ACCEPT_JAR")){
+        	
+        }
+        
+        
         else if(cmdString.equals("START_TASK_TRACKER")){
         	// send heart beats to master repeatedly
         	heartBeatClient = new HeartBeats("127.0.0.1", "9898");
    	     	Thread t = new Thread(heartBeatClient);
    	     	t.start();
+   	     	
         }
+        
         else if(cmdString.equals("START_MAP")){
         	// new thread for map work
         	//at the end of map process send the completion status
         	
+        	StartMapFunction startMap = new StartMapFunction();
+        	Thread t = new Thread(startMap);
+        	t.start();
+        	
         }
+        
         else if(cmdString.equals("START_REDUCE")){
-        	// new thread for reduce work        	
         	//at the end of reduce process send the completion status
+        	StartReduceFunction startRed = new StartReduceFunction();
+        	Thread t = new Thread(startRed);
+        	t.start();
+        }
+        
+        // IMPLEMENTING THE BELOW FUNCTION IN THE OTHER WAY - Send data to Shuffle &  ACCEPT_DATA_SHUFFLER
+        
+/*        else if (cmdString.equals("RETURN_KEYS_AND_LOCATIONS")){
+        	CommandResponse.Builder cmdResponse = CommandResponse.newBuilder();
+        	ReturnKeysAndLocations retKeyLoc = new ReturnKeysAndLocations(ctx, cmdResponse);
+        	Thread t = new Thread(retKeyLoc);
+        	t.start();
+        }*/
+
+        else if(cmdString.equals("ACCEPT_KEYS_AND_LOCATIONS")){
+        	AcceptingKeyAndLocations acceptKeyLocn = new AcceptingKeyAndLocations(ctx, command);
+        	Thread t = new Thread(acceptKeyLocn);
+        	t.start();
+        }
+        
+        else if(cmdString.equals("RETURN_VALUES_FOR_KEY")){
+        	ReturnValueForKey retValForKey = new ReturnValueForKey(ctx, command);
+        	Thread t = new Thread(retValForKey);
+        	t.start();
+        }
+        
+        else if(cmdString.equals("ACCEPT_DATA_SHUFFLER")){
         	
         }
-        else if (cmdString.equals("RETURN_KEYS")){
-        	
-        }
-	}
-}
-
-
-class HeartBeats implements Runnable {
-	static ScheduledThreadPoolExecutor exec;
-	HeartBeatClient heartBeatClientClient;
-	static int i=0;
-	public HeartBeats(String ip, String port) throws Exception{
-		heartBeatClientClient = new HeartBeatClient(ip, port);
-		heartBeatClientClient.startConnection();
-	}
-	
-    public void run() {
-        // code in the other thread, can reference "var" variable
-    	try {
-    		exec = new ScheduledThreadPoolExecutor(1);
-        	exec.scheduleAtFixedRate(new Runnable() {
-        	           public void run() {
-        	        	   // send heartbeat to master
-        	        	   i++;
-        	        	   System.out.println(""+i);
-        	        	   heartBeatClientClient.sendCommand("HEART_BEAT");
-        	           }
-        	       }, 1, 1, TimeUnit.SECONDS); // execute every 60 seconds
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    }
-	public void stopSendingHeartBeats(){
-		heartBeatClientClient.closeConnection();
-		exec.shutdown();
+        
+        
 	}
 }

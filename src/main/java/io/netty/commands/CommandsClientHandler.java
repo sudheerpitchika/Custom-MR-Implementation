@@ -21,17 +21,18 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.commands.CommandsProtocol.Command;
+import io.netty.commands.CommandsProtocol.CommandResponse;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class CommandsClientHandler extends SimpleChannelInboundHandler<String> {
+public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandResponse> {
 
     // Stateful properties
     private volatile Channel channel;
-    private final BlockingQueue<String> answer = new LinkedBlockingQueue<String>();
+    private final BlockingQueue<CommandResponse> responseFromServer = new LinkedBlockingQueue<CommandResponse>();
 
     public CommandsClientHandler() {
         super(false);
@@ -67,7 +68,7 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<String> {
     	boolean interrupted = false;    	
         for (;;) {
             try {
-            	returnResult = answer.take();
+            	returnResult = responseFromServer.take().getResponseText();
                 break;
             } catch (InterruptedException ignore) {
                 interrupted = true;
@@ -92,8 +93,8 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<String> {
     }
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, String result) throws Exception {
-		System.out.println("got from server: "+result);
-		answer.add(result);		
+	protected void channelRead0(ChannelHandlerContext ctx, CommandResponse result) throws Exception {
+		System.out.println("got from server: "+result.getResponseText());
+		responseFromServer.add(result);		
 	}
 }

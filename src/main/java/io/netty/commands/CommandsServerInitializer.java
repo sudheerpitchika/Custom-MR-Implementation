@@ -19,7 +19,9 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.commands.CommandsProtocol.Command;
+import io.netty.commands.CommandsProtocol.CommandResponse;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.codec.string.StringEncoder;
@@ -44,7 +46,8 @@ public class CommandsServerInitializer extends ChannelInitializer<SocketChannel>
 //		p.addLast(new ProtobufDecoder(WorldClockProtocol.getDefaultInstance()));
         p.addLast(new ProtobufDecoder(Command.getDefaultInstance()));
         p.addLast(new ProtobufVarint32LengthFieldPrepender());
-        p.addLast(new StringEncoder());
+//      p.addLast(new StringEncoder());
+        p.addLast(new ProtobufEncoder());
         p.addLast(new CommandsServerHandler());
     }
 }

@@ -1,6 +1,11 @@
 package endmodules;
 
 import io.netty.commands.CommandsClient;
+import io.netty.commands.CommandsProtocol.Command;
+import io.netty.commands.CommandsProtocol.CommandResponse;
+import io.netty.commands.CommandsProtocol.KeyLocation;
+import io.netty.commands.CommandsProtocol.KeyLocationOrBuilder;
+import io.netty.commands.CommandsProtocol.Location;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -26,19 +31,21 @@ public class WorkerProgram {
 	final static String complexDelimiter="#$%@@%$#";
 	
 	//used to send values to reducers
-	Map<String, Location> keyAndFileLocationMap; //stores keys and location(offset) in file, and let of the value for key
-	Map<String, ArrayList<Location>> keysAndMapperLocations;
+	Map<String, LocationMeta> keyAndFileLocationMap; //stores keys and location(offset) in file, and let of the value for key
+	Map<String, ArrayList<LocationMeta>> keysAndMapperLocations;
 	Map<String, ArrayList<String>> keyValuesInMap;
 	Map<String, ArrayList<String>> keyValuesInReducer;
 	ArrayList<String> keyList;
 	ArrayList<DataInputStream> fileStreams;
+	String inputData;
 	
 	public WorkerProgram(){
 		keyValuesInMap = new HashMap<String, ArrayList<String>>();
 		keyValuesInReducer = new HashMap<String, ArrayList<String>>();
-		keyAndFileLocationMap = new HashMap<String, Location>();
+		keyAndFileLocationMap = new HashMap<String, LocationMeta>();
 		fileStreams = new ArrayList<DataInputStream>();
-		keysAndMapperLocations = new HashMap<String, ArrayList<Location>>();
+		keysAndMapperLocations = new HashMap<String, ArrayList<LocationMeta>>();
+		inputData = null;
 	}
 	
 	
@@ -51,6 +58,7 @@ public class WorkerProgram {
 		fileStreams.add(in);
 	}
 	
+	
 	//start a thread and listen for master program
 
 	public void startProgram(String type){ //run map or reducer task
@@ -59,13 +67,18 @@ public class WorkerProgram {
 	}
 	
 	public void startMapFunction(){
-		
+		// run map class in jar
 	}
 
 	public void startReduceFunction(){
-		
+		// run reduce class in jar
+		// use keyValuesInReducer
 	}
 
+	public void receiveData(String inputData){
+		this.inputData = inputData;
+	}
+	
 	public void startCombiner() throws Exception{
 		//sort values in the map
 		Set<String> keySet = keyValuesInMap.keySet();
@@ -74,21 +87,24 @@ public class WorkerProgram {
 		Collections.sort(keyList);
 
 		//write to file
-		this.writeKeyValuesFileAndCreateTable();
+		this.writeKeyValuesToFileAndCreateTable();
 	}
 
-	public Map<String, Location> returnKeyAndLocationsToShuffler(){
+	
+	public void returnKeyAndLocationsToShuffler(){
+		
+	}
+	
+	public Map<String, LocationMeta> getKeyAndLocations(){
 		// sends the key set available at the worker when the shuffeler requests
 		// send keys and their locations too (offset, length, chunk id)
-		
-		// set protobuf objects and write to shuffle server
-		
+				
 		// RETURN_KEYS_AND_LOCATIONS
 		
 		return keyAndFileLocationMap;
 	}
 	
-	public ArrayList<String> valueForKey(String key, Location location) throws Exception{
+	public ArrayList<String> valueForKey(String key, LocationMeta location) throws Exception{
 		//get the value from the file(for corresponding chunk) //requested by reducer
 		
 		DataInputStream in = fileStreams.get(location.getChunkId());
@@ -96,7 +112,7 @@ public class WorkerProgram {
 		in.read(dataBytes, location.getStart(), location.getLength());
 		String dataString = dataBytes.toString();
 		String[] splits = dataString.split(complexDelimiter);
-		String returnKey = splits[0];
+		// String returnKey = splits[0];
 		
 		ArrayList<String> values = new ArrayList<String> ( Arrays.asList(splits));
 		values.remove(values.size());
@@ -104,27 +120,25 @@ public class WorkerProgram {
 
 		return values;
 	}
-	
-	public void receiveKeyAndMapperLocationSetFromShuffler(){
-		//reducer server
-		
 
-		
+	public void acceptKeyAndMapperLocationSetFromShuffler( Map<String, ArrayList<LocationMeta>> map){
+		//reducer server
 		//read from buffer and add to keysAndMapperLocations
+		this.keysAndMapperLocations = map;		
 	}
 	
 	public Map<String, ArrayList<String>> getValuesForKeyFromMaps(final String key) throws InterruptedException, ExecutionException{
 		// for each key, get the values from list of mappers of that key
 		// keysAndIps
 
-		ArrayList<Location> locations = keysAndMapperLocations.get(key);
+		ArrayList<LocationMeta> locations = keysAndMapperLocations.get(key);
 		// reducer client to map server
 		
 		int threadNum = locations.size();
         ExecutorService executor = Executors.newFixedThreadPool(threadNum);
         List<FutureTask<ArrayList<String>>> taskList = new ArrayList<FutureTask<ArrayList<String>>>();
         
-		for(final Location location : locations){
+		for(final LocationMeta location : locations){
 			
 			//future task with
 			// Start thread for the first half of the numbers
@@ -153,11 +167,14 @@ public class WorkerProgram {
 	}
 	
 	
-	public static ArrayList<String> getValuesFromSingleMap(String key, Location location) throws Exception{
-		// send command "VALUE_FOR_KEY" and return result
+	public static ArrayList<String> getValuesFromSingleMap(String key, LocationMeta location) throws Exception{
+		// send command "RETURN_VALUES_FOR_KEY" and return result
+		
 		CommandsClient commandClient = new CommandsClient("127.0.0.1", "8475");
+// 		CommandsClient commandClient = new CommandsClient(location.getIp(), "8475");
 		commandClient.startConnection();
 		
+		commandClient.sendCommand("RETURN_VALUES_FOR_KEY");		
 		return null;
 	}
 	
@@ -175,7 +192,7 @@ public class WorkerProgram {
 	}
 	
 	//call this once map() is completed
-	public void writeKeyValuesFileAndCreateTable() throws Exception{
+	public void writeKeyValuesToFileAndCreateTable() throws Exception{
 		int chunkId = 0;
 		String fileName = "tempFile"+chunkId+".txt";
 		FileOutputStream fos = new FileOutputStream(fileName);
@@ -196,8 +213,8 @@ public class WorkerProgram {
 				fos.write(dataBytes);
 				dataBytesLength += val.length();
 			}
-			
-			Location location = new Location(start, dataBytesLength, chunkId);
+			String ip = ""; //ip of this machine
+			LocationMeta location = new LocationMeta(start, dataBytesLength, chunkId,ip);
 			start += dataBytesLength;
 			keyAndFileLocationMap.put(key, location);
 			
@@ -206,46 +223,3 @@ public class WorkerProgram {
 	}
 }
 
-class Location{
-	private int start, length, chunkId;
-	private String ip;
-	
-	public Location(int start, int length, int chunkId){
-		this.start = start;
-		this.length = length;
-		this.chunkId = chunkId;
-	}
-
-	public int getStart() {
-		return start;
-	}
-
-	public void setStart(int start) {
-		this.start = start;
-	}
-
-	public int getLength() {
-		return length;
-	}
-
-	public void setLength(int length) {
-		this.length = length;
-	}
-
-	public int getChunkId() {
-		return chunkId;
-	}
-
-	public void setChunkId(int chunkId) {
-		this.chunkId = chunkId;
-	}
-
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-		
-}

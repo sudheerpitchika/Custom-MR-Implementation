@@ -38,14 +38,15 @@ enum Instruction {
   RETURN_KEYS_AND_LOCATIONS = 7;
   ACCEPT_KEYS_AND_LOCATIONS = 8;
   RETURN_VALUES_FOR_KEY = 9;
-  SHUTDOWN = 10;
+  ACCEPT_SHUFFLER_DATA = 10;
+  SHUTDOWN = 11;
 }
 
 message Location{
 	required string ip = 1;
 	required uint32 chunk = 2;
 	required uint32 start = 3;
-	required uint32 offset = 4;
+	required uint32 length = 4;
 }
 
 message Command {
@@ -54,6 +55,7 @@ message Command {
   optional string inputChunk = 3;							// for ACCEPT_DATA
   repeated KeyLocationsSet keysAndLocationsSet = 4;			// for ACCEPT_KEYS_AND_LOCATIONS
   optional KeyLocation keyLocation = 5;						// for RETURN_VALUES_FOR_KEY
+  repeated KeyLocation keyLocationsMap = 6;					// for ACCEPT_DATA_SHUFFLER
 }
 
 message CommandResponse{
@@ -61,7 +63,7 @@ message CommandResponse{
 	required string forCommandString = 2;
 	optional string responseText = 3;
 	optional KeyValuesSet keyValuesSet = 4;				// for RETURN_VALUES_FOR_KEY
-	repeated KeyLocation keyLocationTable = 5;			// for RETURN_KEYS_AND_LOCATIONS	
+	repeated KeyLocation keyLocation = 5;				// for RETURN_KEYS_AND_LOCATIONS	
 }
 
 message KeyLocationsSet{
