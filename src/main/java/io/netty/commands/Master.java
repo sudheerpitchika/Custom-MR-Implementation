@@ -1,5 +1,6 @@
 package io.netty.commands;
 
+import io.netty.commands.CommandsProtocol.Command;
 import io.netty.heartbeats.HeartBeatServer;
 
 
@@ -17,12 +18,17 @@ public class Master {
 	     Thread t = new Thread(myRunnable);
 	     t.start();
 	        
-		commandClient.sendCommand("START_TASK_TRACKER");
+	    Command.Builder command = Command.newBuilder();
+	    command.setCommandId(1);
+	    command.setCommandString("START_TASK_TRACKER");
+		commandClient.sendCommand(command.build());
 		Thread.sleep(4000);
-		commandClient.sendCommand("START_SHUFFLE");
+	    command.setCommandString("START_SHUFFLE");
+	    commandClient.sendCommand(command.build());
 		
 		Thread.sleep(6000);
-		commandClient.sendCommand("SHUTDOWN");
+	    command.setCommandString("SHUTDOWN");		
+	    commandClient.sendCommand(command.build());
 		commandClient.closeConnection();
 		
 		//stop heart beat server

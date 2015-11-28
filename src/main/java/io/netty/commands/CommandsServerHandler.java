@@ -22,8 +22,8 @@ import io.netty.commands.CommandsProtocol.CommandResponse;
 import processing.AcceptingKeyAndLocations;
 import processing.StartMapFunction;
 import processing.StartReduceFunction;
+import responses.AcceptDataShuffler;
 import responses.HeartBeats;
-import responses.ReturnKeysAndLocations;
 import responses.ReturnValueForKey;
 
 public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> {
@@ -46,7 +46,6 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         
         String cmdString = command.getCommandString();
         System.out.println("Command Received: "+ cmdString + "\t from "+ctx.channel().remoteAddress());
-        
         
         // Temp response
         CommandResponse.Builder cmdResp = CommandResponse.newBuilder();
@@ -104,7 +103,7 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         	Thread t = new Thread(startRed);
         	t.start();
         }
-        
+
         // IMPLEMENTING THE BELOW FUNCTION IN THE OTHER WAY - Send data to Shuffle &  ACCEPT_DATA_SHUFFLER
         
 /*        else if (cmdString.equals("RETURN_KEYS_AND_LOCATIONS")){
@@ -126,10 +125,11 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         	t.start();
         }
         
+        // Command to receive at shuffler
         else if(cmdString.equals("ACCEPT_DATA_SHUFFLER")){
-        	
+        	AcceptDataShuffler shuffleData = new AcceptDataShuffler(ctx, command);
+        	Thread t = new Thread(shuffleData);
+        	t.start();
         }
-        
-        
 	}
 }

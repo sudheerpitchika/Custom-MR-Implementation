@@ -9,7 +9,12 @@ public class StartReduceFunction implements Runnable{
 	}
 	
 	public void run(){
-		Slave.worker.startReduceFunction();
+		try {
+			Slave.worker.startReduceFunction();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// send completion status once done
 	}

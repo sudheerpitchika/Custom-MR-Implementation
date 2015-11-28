@@ -25,6 +25,7 @@ public class SendDataToShuffler implements Runnable{
 		
 		Map<String, LocationMeta> keyAndFileLocationMap = Slave.worker.getKeyAndLocations();
 		Set<String> keySet =  keyAndFileLocationMap.keySet();
+		Command.Builder command = Command.newBuilder();
 		
 		for(String key : keySet){
 			LocationMeta location = keyAndFileLocationMap.get(key);
@@ -41,12 +42,14 @@ public class SendDataToShuffler implements Runnable{
 			
 			KeyLocation kl = keyLocnBuilder.build();
 			//cmdResponse.addKeyLocationTable(kl);
+			command.addKeyLocationsMap(kl);
 		}
-		Command.Builder command = Command.newBuilder();
+		
 		command.setCommandId(1);
 		command.setCommandString("ACCEPT_DATA_SHUFFLER");
-		// send the above data also
 		
-		commandClient.sendCommand("");
+		// sending the above data also
+		
+		commandClient.sendCommand(command.build());
 	}
 }

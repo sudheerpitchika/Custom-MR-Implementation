@@ -38,12 +38,8 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandRe
         super(false);
     }
 
-    public String sendCommand(int commandId, String commandString){
-    	Command.Builder builder = Command.newBuilder();
-    	
-    	builder.setCommandId(commandId);
-    	builder.setCommandString(commandString);
-    	//channel.writeAndFlush(builder.build());
+    
+    public String sendCommand(Command command){
 
     	ChannelPromise promise = channel.newPromise();
     	promise.addListener(new GenericFutureListener<Future<? super Void>>() {
@@ -54,12 +50,11 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandRe
 			}
 		});
 
-    	ChannelFuture responseFuture = channel.writeAndFlush(builder.build(),promise);
-    	//System.out.println("isDone: "+responseFuture.isDone());
+    	ChannelFuture responseFuture = channel.writeAndFlush(command,promise);
     	
     	String returnResult = "OK:Client";
     	
-    	if(commandString.equals("SHUTDOWN")){
+    	if(command.getCommandString().equals("SHUTDOWN")){
     		while(true)
     			if(responseFuture.isDone())
     				return returnResult;

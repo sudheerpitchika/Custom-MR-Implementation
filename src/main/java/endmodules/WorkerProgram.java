@@ -2,15 +2,12 @@ package endmodules;
 
 import io.netty.commands.CommandsClient;
 import io.netty.commands.CommandsProtocol.Command;
-import io.netty.commands.CommandsProtocol.CommandResponse;
-import io.netty.commands.CommandsProtocol.KeyLocation;
-import io.netty.commands.CommandsProtocol.KeyLocationOrBuilder;
-import io.netty.commands.CommandsProtocol.Location;
 
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,6 +35,7 @@ public class WorkerProgram {
 	ArrayList<String> keyList;
 	ArrayList<DataInputStream> fileStreams;
 	String inputData;
+	FileOutputStream reduceOs;
 	
 	public WorkerProgram(){
 		keyValuesInMap = new HashMap<String, ArrayList<String>>();
@@ -70,9 +68,13 @@ public class WorkerProgram {
 		// run map class in jar
 	}
 
-	public void startReduceFunction(){
+	public void startReduceFunction() throws Exception{
 		// run reduce class in jar
 		// use keyValuesInReducer
+		
+		// open output file to write data into, write(key, value) function
+		String fileName = "output.txt";
+		reduceOs = new FileOutputStream(fileName);
 	}
 
 	public void receiveData(String inputData){
@@ -174,7 +176,10 @@ public class WorkerProgram {
 // 		CommandsClient commandClient = new CommandsClient(location.getIp(), "8475");
 		commandClient.startConnection();
 		
-		commandClient.sendCommand("RETURN_VALUES_FOR_KEY");		
+		Command.Builder command = Command.newBuilder();
+		command.setCommandId(1);
+		command.setCommandString("RETURN_VALUES_FOR_KEY");
+		commandClient.sendCommand(command.build());
 		return null;
 	}
 	
@@ -189,6 +194,13 @@ public class WorkerProgram {
 			values.add(value);
 			keyValuesInMap.put(key, values);
 		}
+	}
+	
+	
+	public void write(String key, String value) throws IOException{
+		String outVal = key+"\t"+value;
+		reduceOs.write(outVal.getBytes());
+		reduceOs.write("\n".getBytes());
 	}
 	
 	//call this once map() is completed
