@@ -25,8 +25,13 @@ import io.netty.commands.CommandsProtocol.CommandResponse;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import com.google.protobuf.ByteString;
 
 public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandResponse> {
 
@@ -89,6 +94,19 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandRe
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, CommandResponse result) throws Exception {
+		
+		if(result.getForCommandString().equals("CONNECT")){
+			
+			ByteString bs = result.getJarData();
+			byte[] buffer = bs.toByteArray();
+			File jOutFile = new File("received.jar");
+	        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(jOutFile));
+	        bos.write(buffer, 0, buffer.length);
+	        bos.flush();
+	        bos.close();
+	        System.out.println("Creating Jar" +buffer.length);
+		}
+		
 		System.out.println("got from server: "+result.getResponseText());
 		responseFromServer.add(result);		
 	}

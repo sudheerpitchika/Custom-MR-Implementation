@@ -63,7 +63,8 @@ message CommandResponse{
 	required string forCommandString = 2;
 	optional string responseText = 3;
 	optional KeyValuesSet keyValuesSet = 4;				// for RETURN_VALUES_FOR_KEY
-	repeated KeyLocation keyLocation = 5;				// for RETURN_KEYS_AND_LOCATIONS	
+	repeated KeyLocation keyLocation = 5;				// for RETURN_KEYS_AND_LOCATIONS
+	optional bytes jarData = 6;							// for ACCEPT_JAR	
 }
 
 message KeyLocationsSet{

@@ -9,7 +9,15 @@ public class StartMapFunction implements Runnable{
 	}
 	
 	public void run(){
-		Slave.worker.startMapFunction();
+		try {
+			Slave.worker.startMapFunction();
+			Slave.worker.startCombiner();
+			Slave.worker.writeKeyValuesToFileAndCreateTable();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		
 		// send completion status once done
 		// also send keysandlocations to shuffler		

@@ -15,10 +15,17 @@
  */
 package io.netty.commands;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+
+import com.google.protobuf.ByteString;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.commands.CommandsProtocol.Command;
 import io.netty.commands.CommandsProtocol.CommandResponse;
+import processing.AcceptData;
 import processing.AcceptingKeyAndLocations;
 import processing.StartMapFunction;
 import processing.StartReduceFunction;
@@ -51,11 +58,31 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         CommandResponse.Builder cmdResp = CommandResponse.newBuilder();
         cmdResp.setForCommandId(command.getCommandId());
         cmdResp.setForCommandString(command.getCommandString());
-        cmdResp.setResponseText("OK /"+cmdString);
-        ctx.write(cmdResp.build());
+        cmdResp.setResponseText("OK "+command.getCommandString());
         
+        
+        if(cmdString.equals("CONNECT")){
+        	
+        	Master.numberOfClients++;
+        	Master.connectedClients.add(ctx);
+        	
+        	Master.availableClients.add(ctx);
+//        	System.out.println("New client connected: "+Master.numberOfClients+"\tSize: "+Master.connectedClients.size());
+        	File jInFile = new File("AB.jar");
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(jInFile));
+            
+            byte[] buffer = new byte[(int)jInFile.length()];
+            bis.read(buffer);
+            
+        	cmdResp.setJarData(ByteString.copyFrom(buffer));
+            ctx.write(cmdResp.build());
+        }
         
         if(cmdString.equals("SHUTDOWN")){
+        	
+        	ctx.write(cmdResp.build());
+        	Master.numberOfClients--;
+        	Master.connectedClients.remove(ctx);
         	
         	if(heartBeatClient != null)
         		heartBeatClient.stopSendingHeartBeats();
@@ -67,20 +94,25 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         }
         
         else if(cmdString.equals("START_DATA_NODE")){
-        	
+        	ctx.write(cmdResp.build());
         }
         
         else if(cmdString.equals("ACCEPT_DATA")){
         	
-        }
-        
-        else if(cmdString.equals("ACCEPT_JAR")){
+        	AcceptData acceptData = new AcceptData(ctx, command);
+        	Thread t = new Thread(acceptData);
+        	t.start();
         	
         }
         
+/*        else if(cmdString.equals("ACCEPT_JAR")){
+        	ctx.write(cmdResp.build());
+        }
+*/        
         
         else if(cmdString.equals("START_TASK_TRACKER")){
         	// send heart beats to master repeatedly
+        	ctx.write(cmdResp.build());
         	heartBeatClient = new HeartBeats("127.0.0.1", "9898");
    	     	Thread t = new Thread(heartBeatClient);
    	     	t.start();
@@ -90,7 +122,7 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         else if(cmdString.equals("START_MAP")){
         	// new thread for map work
         	//at the end of map process send the completion status
-        	
+        	ctx.write(cmdResp.build());
         	StartMapFunction startMap = new StartMapFunction();
         	Thread t = new Thread(startMap);
         	t.start();
@@ -98,6 +130,7 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         }
         
         else if(cmdString.equals("START_REDUCE")){
+        	ctx.write(cmdResp.build());
         	//at the end of reduce process send the completion status
         	StartReduceFunction startRed = new StartReduceFunction();
         	Thread t = new Thread(startRed);
@@ -114,12 +147,14 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         }*/
 
         else if(cmdString.equals("ACCEPT_KEYS_AND_LOCATIONS")){
+        	ctx.write(cmdResp.build());
         	AcceptingKeyAndLocations acceptKeyLocn = new AcceptingKeyAndLocations(ctx, command);
         	Thread t = new Thread(acceptKeyLocn);
         	t.start();
         }
         
         else if(cmdString.equals("RETURN_VALUES_FOR_KEY")){
+        	ctx.write(cmdResp.build());
         	ReturnValueForKey retValForKey = new ReturnValueForKey(ctx, command);
         	Thread t = new Thread(retValForKey);
         	t.start();
@@ -127,6 +162,7 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         
         // Command to receive at shuffler
         else if(cmdString.equals("ACCEPT_DATA_SHUFFLER")){
+        	ctx.write(cmdResp.build());
         	AcceptDataShuffler shuffleData = new AcceptDataShuffler(ctx, command);
         	Thread t = new Thread(shuffleData);
         	t.start();

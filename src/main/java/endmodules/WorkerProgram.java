@@ -2,12 +2,20 @@ package endmodules;
 
 import io.netty.commands.CommandsClient;
 import io.netty.commands.CommandsProtocol.Command;
+import io.netty.commands.CommandsProtocol.CommandResponse;
+import io.netty.commands.Slave;
 
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,6 +54,20 @@ public class WorkerProgram {
 		inputData = null;
 	}
 	
+	public void acceptData(String inputDataString){
+			inputData = inputDataString;
+			byte[] buffer = inputDataString.getBytes();
+			File jOutFile = new File("receivedData.txt");
+	        BufferedOutputStream bos;
+			try {
+				bos = new BufferedOutputStream(new FileOutputStream(jOutFile));
+		        bos.write(buffer, 0, buffer.length);
+		        bos.flush();
+		        bos.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	}
 	
 	public void openAllFiles() throws Exception{	
 		int chunkId = 0;
@@ -64,8 +86,19 @@ public class WorkerProgram {
 		
 	}
 	
-	public void startMapFunction(){
+	public void startMapFunction() throws Exception{
 		// run map class in jar
+		
+		
+		URL url = new URL("file:MF.jar"); 
+        URLClassLoader loader = new URLClassLoader (new URL[] {url});
+        Class<?> cl = Class.forName ("userprogram.MapFunction", true, loader);
+        Method printit = cl.getMethod("map",String.class, String.class, WorkerProgram.class );
+        Constructor<?> ctor = cl.getConstructor(); //One has to pass arguments if constructor takes input arguments.
+        Object instance = ctor.newInstance();
+        Object value = printit.invoke(instance,"chunk-1",inputData, Slave.worker);
+        loader.close ();
+        System.out.println("Map completed, ele count "+keyValuesInMap.size());
 	}
 
 	public void startReduceFunction() throws Exception{
@@ -87,9 +120,6 @@ public class WorkerProgram {
 		keyList = new ArrayList<String>();
 		keyList.addAll(keySet);
 		Collections.sort(keyList);
-
-		//write to file
-		this.writeKeyValuesToFileAndCreateTable();
 	}
 
 	
@@ -185,6 +215,9 @@ public class WorkerProgram {
 	
 	public void emit(String key, String value){
 		//keyValuesMap
+		
+		System.out.println("In Emit Function "+key+"\t"+value);
+		
 		if(keyValuesInMap.containsKey(key)){
 			ArrayList<String> values = keyValuesInMap.get(key);
 			values.add(value);
@@ -194,6 +227,7 @@ public class WorkerProgram {
 			values.add(value);
 			keyValuesInMap.put(key, values);
 		}
+		System.out.println("Size: "+keyValuesInMap.size());
 	}
 	
 	
@@ -229,7 +263,6 @@ public class WorkerProgram {
 			LocationMeta location = new LocationMeta(start, dataBytesLength, chunkId,ip);
 			start += dataBytesLength;
 			keyAndFileLocationMap.put(key, location);
-			
 		}		
 		fos.close();
 	}

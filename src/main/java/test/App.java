@@ -1,6 +1,11 @@
 package test;
 
-import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+
 
 public class App {
 
@@ -8,7 +13,12 @@ public class App {
 
 		// java -jar AB.jar
 		
-		Process proc = Runtime.getRuntime().exec("java -cp AB.jar test.A");
+		String key = "";
+		String val = "";
+		
+		String a = "java -cp AB.jar test.A "+key+" "+val;
+		
+/*		Process proc = Runtime.getRuntime().exec("java -cp AB.jar test.A "+ key+" ");
 		proc.waitFor();
 		
 		InputStream in = proc.getInputStream();
@@ -22,6 +32,26 @@ public class App {
         in.read(b,0,b.length);
         System.out.println(new String(b));
         
-        System.out.println("Done.!!");
+        System.out.println("Done.!!");*/
+		
+		
+		URL url = new URL("file:A.jar"); 
+        URLClassLoader loader = new URLClassLoader (new URL[] {url});
+        Class<?> cl = Class.forName ("Demo", true, loader);
+        String printString = "Print this";
+        Method printit = cl.getMethod("test",ArrayList.class );
+        Constructor<?> ctor = cl.getConstructor(); //One has to pass arguments if constructor takes input arguments.
+        Object instance = ctor.newInstance();
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("hello");
+        Object value = printit.invoke(instance,list);
+        ArrayList<String>  s = (ArrayList) value;
+        System.out.println("returned "+s.size());
+        for(String str: s)
+        {
+            System.out.println(str);
+            
+        }
+        loader.close ();
 	}
 }
