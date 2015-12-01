@@ -16,7 +16,5 @@ public class MapFunction extends WorkerProgram implements Mapper{
             }
             wp.emit(word,"1");
          }
-
 	}
-
 }

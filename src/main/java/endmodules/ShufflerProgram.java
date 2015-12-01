@@ -2,7 +2,9 @@ package endmodules;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.commands.CommandsProtocol.Location;
+import io.netty.commands.Master;
 
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,7 +17,7 @@ import responses.SendKeysAndLocationToReducers;
 public class ShufflerProgram {
 
 	Map<String, ArrayList<Location>> keysAndLocations;
-	int reducerCount=4;
+	int totalReducerCount=4;
 	Map<String, String> keysReducerMap;
 	
 	public ShufflerProgram(){
@@ -35,25 +37,31 @@ public class ShufflerProgram {
 		}
 	}
 	
-	public void sendKeysAndLocationsToReducers(){
+	public void sendKeysAndLocationsToReducers() throws InterruptedException{
+		
+		int reducers=0;
 		
 		Set<String> keySet = keysAndLocations.keySet();
 		List<String> keyList = new ArrayList<String>();
 		keyList.addAll(keySet);
 		Collections.sort(keyList);
 		int keysCount = keyList.size();
-		ChannelHandlerContext ctx=null;
-		int keysCountToEachReducer = keysCount/reducerCount;
 		
-		for(int i = 0; i < reducerCount; i++){
+		int keysCountToEachReducer = keysCount/totalReducerCount;
+		
+		for(int i = 0; i < totalReducerCount; i++){
+			
+			ChannelHandlerContext ctx = Master.availableClients.take();
+			SocketAddress sa = ctx.channel().remoteAddress();
+			
 			int start = i*keysCountToEachReducer;
 			
-			keysReducerMap.put("ip:"+i, ""+start);	// change it to key, ip table
+			keysReducerMap.put("ip: "+sa, ""+start);	// change it to key, ip table
 			SendKeysAndLocationToReducers toReducers = new SendKeysAndLocationToReducers(ctx, keyList, keysAndLocations, start, keysCountToEachReducer);
 			Thread t = new Thread(toReducers);
 			t.start();
+			
 		}
-		
+		System.out.println("Shuffler: sent data to all reducers");
 	}
-
 }

@@ -6,7 +6,7 @@ import endmodules.WorkerProgram;
 
 public class Slave {
 	public static WorkerProgram worker = new WorkerProgram();
-	public static ShufflerProgram shuffler = new ShufflerProgram();
+	// public static ShufflerProgram shuffler = new ShufflerProgram();
 	
 	public static void main(String[] args) throws Exception{
 		

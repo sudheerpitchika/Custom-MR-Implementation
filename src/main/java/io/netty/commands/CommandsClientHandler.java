@@ -99,7 +99,7 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandRe
 			
 			ByteString bs = result.getJarData();
 			byte[] buffer = bs.toByteArray();
-			File jOutFile = new File("received.jar");
+			File jOutFile = new File("MFReceived.jar");
 	        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(jOutFile));
 	        bos.write(buffer, 0, buffer.length);
 	        bos.flush();
@@ -108,6 +108,6 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandRe
 		}
 		
 		System.out.println("got from server: "+result.getResponseText());
-		responseFromServer.add(result);		
+		responseFromServer.add(result);
 	}
 }

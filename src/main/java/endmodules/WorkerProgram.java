@@ -3,6 +3,8 @@ package endmodules;
 import io.netty.commands.CommandsClient;
 import io.netty.commands.CommandsProtocol.Command;
 import io.netty.commands.CommandsProtocol.CommandResponse;
+import io.netty.commands.CommandsProtocol.KeyLocation;
+import io.netty.commands.CommandsProtocol.Location;
 import io.netty.commands.Slave;
 
 import java.io.BufferedOutputStream;
@@ -90,7 +92,7 @@ public class WorkerProgram {
 		// run map class in jar
 		
 		
-		URL url = new URL("file:MF.jar"); 
+		URL url = new URL("file:MFReceived.jar"); 
         URLClassLoader loader = new URLClassLoader (new URL[] {url});
         Class<?> cl = Class.forName ("userprogram.MapFunction", true, loader);
         Method printit = cl.getMethod("map",String.class, String.class, WorkerProgram.class );
@@ -102,12 +104,17 @@ public class WorkerProgram {
 	}
 
 	public void startReduceFunction() throws Exception{
-		// run reduce class in jar
-		// use keyValuesInReducer
 		
 		// open output file to write data into, write(key, value) function
 		String fileName = "output.txt";
 		reduceOs = new FileOutputStream(fileName);
+		
+		// run reduce class in jar
+		// use keyValuesInReducer
+		
+		
+		
+
 	}
 
 	public void receiveData(String inputData){
@@ -123,8 +130,32 @@ public class WorkerProgram {
 	}
 
 	
-	public void returnKeyAndLocationsToShuffler(){
+	public void returnKeyAndLocationsToShuffler() throws Exception{
+		Command.Builder command = Command.newBuilder();
+		command.setCommandId(1);
+		command.setCommandString("ACCEPT_DATA_SHUFFLER");
+				
+		Set<String> keysSet = keyAndFileLocationMap.keySet();
+		for(String key : keysSet){
+			//keyLocationsMap
+			KeyLocation.Builder keyLocation = KeyLocation.newBuilder();
+			
+			LocationMeta locationMeta = keyAndFileLocationMap.get(key);
+			Location.Builder location = Location.newBuilder();
+			location.setChunk(locationMeta.getChunkId());
+			location.setIp(locationMeta.getIp());
+			location.setStart(location.getStart());
+			location.setLength(locationMeta.getLength());
+			
+			keyLocation.setKey(key);
+			keyLocation.setLocation(location);
+			
+			command.addKeyLocationsMap(keyLocation);
+		}
 		
+		CommandsClient shuffleClient = new CommandsClient("127.0.0.1", "8477");
+		shuffleClient.startConnection();
+		shuffleClient.sendCommand(command.build());
 	}
 	
 	public Map<String, LocationMeta> getKeyAndLocations(){

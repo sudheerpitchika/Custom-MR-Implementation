@@ -68,7 +68,7 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         	
         	Master.availableClients.add(ctx);
 //        	System.out.println("New client connected: "+Master.numberOfClients+"\tSize: "+Master.connectedClients.size());
-        	File jInFile = new File("AB.jar");
+        	File jInFile = new File("MF.jar");
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(jInFile));
             
             byte[] buffer = new byte[(int)jInFile.length()];
@@ -77,6 +77,19 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         	cmdResp.setJarData(ByteString.copyFrom(buffer));
             ctx.write(cmdResp.build());
         }
+       
+        else if(cmdString.equals("MAP_COMPLETE")){
+        	ctx.write(cmdResp.build());
+        	
+        	Master.completedMapsCount++;
+        	Master.availableClients.add(ctx);
+        	if(Master.jobTracker.getNumberOfMappers() == Master.completedMapsCount){
+        		Master.shuffler.sendKeysAndLocationsToReducers();
+        		System.out.println("Last mapper completed");
+        	}
+        	
+        }
+        
         
         if(cmdString.equals("SHUTDOWN")){
         	
@@ -106,7 +119,7 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         }
         
 /*        else if(cmdString.equals("ACCEPT_JAR")){
-        	ctx.write(cmdResp.build());
+        	ctx.write(cmdResp.build());f
         }
 */        
         
@@ -167,5 +180,6 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         	Thread t = new Thread(shuffleData);
         	t.start();
         }
+        
 	}
 }

@@ -42,7 +42,7 @@ public class SendKeysAndLocationToReducers implements Runnable {
 			
 			command.addKeysAndLocationsSet(klSet);	
 		}
-		CommandsClient cmdClient = new CommandsClient("", "");
+		CommandsClient cmdClient = new CommandsClient("127.0.0.1", "8476");
 		try {
 			cmdClient.startConnection();
 		} catch (Exception e) {

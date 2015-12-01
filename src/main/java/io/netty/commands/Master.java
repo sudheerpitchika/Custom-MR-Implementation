@@ -14,13 +14,18 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import endmodules.ShufflerProgram;
+
 
 public class Master {
 	
-//	static final ChannelGroup connectedClients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	static ArrayList<ChannelHandlerContext> connectedClients = new ArrayList<ChannelHandlerContext>(); 
-	static final BlockingQueue<ChannelHandlerContext> availableClients = new LinkedBlockingQueue<ChannelHandlerContext>();
+	public static final BlockingQueue<ChannelHandlerContext> availableClients = new LinkedBlockingQueue<ChannelHandlerContext>();
 	static int numberOfClients = 0;
+	static int completedMapsCount = 0;
+	public static ShufflerProgram shuffler = new ShufflerProgram();
+	static JobTracker jobTracker;
+	static ShuffleServerThread shuffleServer;
 	
 	public static void main(String[] args) throws Exception{
 		
@@ -29,11 +34,11 @@ public class Master {
 		Thread servThread = new Thread(commandsServer);
 		servThread.start();
 		
-		ShuffleServerThread shuffleServer = new ShuffleServerThread("8477");
+		shuffleServer = new ShuffleServerThread("8477");
 		Thread shuffleThread = new Thread(shuffleServer);
 		shuffleThread.start();
 		
-		JobTracker jobTracker = new JobTracker();
+		jobTracker = new JobTracker();
 		Thread jobTrackerThread = new Thread(jobTracker);
 		jobTrackerThread.start();
 		
@@ -91,15 +96,15 @@ class HeartBeatServerThread implements Runnable {
 
 
 class CommandServerThread implements Runnable{
-	CommandsServer commandsListener;
+	CommandsServer masterListener;
 
 	public CommandServerThread(String port){
-		this.commandsListener = new CommandsServer(port);
+		this.masterListener = new CommandsServer(port);
 	}
 	
 	public void run() {	
 		try {
-			commandsListener.startListening();
+			masterListener.startListening();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -124,9 +129,20 @@ class ShuffleServerThread implements Runnable{
 
 class JobTracker implements Runnable{
 	int chunksCount = 10;
+	int numberOfMappers = chunksCount;
+	
 	public JobTracker(){
 		
 	}
+	
+	public int getChunksCount(){
+		return chunksCount;
+	}
+	
+	public int getNumberOfMappers(){
+		return numberOfMappers;
+	}
+	
 	public void run(){
 		
 		int length = 4194304;
@@ -138,6 +154,7 @@ class JobTracker implements Runnable{
 			while(chunksCount>0){
 				ChannelHandlerContext ctx = Master.availableClients.take();
 				SocketAddress sa = ctx.channel().remoteAddress();
+				
 				SendData sendDataClient = new SendData (offset, length, ctx);
 				Thread t = new Thread(sendDataClient);
 				t.start();
@@ -145,6 +162,12 @@ class JobTracker implements Runnable{
 				offset += length;
 				chunksCount--;
 			}
+
+			/*while (numberOfMappers != Master.completedMapsCount){
+				
+			}*/
+			
+			
 			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
