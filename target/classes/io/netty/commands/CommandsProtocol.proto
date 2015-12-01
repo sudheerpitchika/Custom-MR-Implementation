@@ -53,9 +53,11 @@ message Command {
   required uint32 commandId = 1;
   required string commandString = 2;
   optional string inputChunk = 3;							// for ACCEPT_DATA
-  repeated KeyLocationsSet keysAndLocationsSet = 4;			// for ACCEPT_KEYS_AND_LOCATIONS
-  optional KeyLocation keyLocation = 5;						// for RETURN_VALUES_FOR_KEY
-  repeated KeyLocation keyLocationsMap = 6;					// for ACCEPT_DATA_SHUFFLER
+  optional uint32 inputChunkId = 4;
+  repeated KeyLocationsSet keysAndLocationsSet = 5;			// for ACCEPT_KEYS_AND_LOCATIONS
+  optional KeyLocation keyLocation = 6;						// for RETURN_VALUES_FOR_KEY
+  repeated KeyLocation keyLocationsMap = 7;					// for ACCEPT_DATA_SHUFFLER
+  
 }
 
 message CommandResponse{

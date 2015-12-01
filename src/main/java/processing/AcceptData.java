@@ -17,7 +17,7 @@ public class AcceptData implements Runnable {
 
 	public void run() {
 		String inputDataString = command.getInputChunk();
-		Slave.worker.acceptData(inputDataString);
+		Slave.worker.acceptData(command.getInputChunkId(), inputDataString);
 		CommandResponse.Builder cmdResponse = CommandResponse.newBuilder();
 		cmdResponse.setForCommandId(command.getCommandId());
 		cmdResponse.setForCommandString(command.getCommandString());

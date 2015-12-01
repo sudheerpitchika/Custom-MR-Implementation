@@ -2,7 +2,6 @@ package endmodules;
 
 import io.netty.commands.CommandsClient;
 import io.netty.commands.CommandsProtocol.Command;
-import io.netty.commands.CommandsProtocol.CommandResponse;
 import io.netty.commands.CommandsProtocol.KeyLocation;
 import io.netty.commands.CommandsProtocol.Location;
 import io.netty.commands.Slave;
@@ -14,8 +13,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -25,17 +24,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorkerProgram {
 	TaskTracker tt;
 	DataNode dn;
 	
-	final static String complexDelimiter="#$%@@%$#";
+	final static String complexDelimiter = "#$%@@%$#";
 	
 	//used to send values to reducers
 	Map<String, LocationMeta> keyAndFileLocationMap; //stores keys and location(offset) in file, and let of the value for key
@@ -43,23 +44,30 @@ public class WorkerProgram {
 	Map<String, ArrayList<String>> keyValuesInMap;
 	Map<String, ArrayList<String>> keyValuesInReducer;
 	ArrayList<String> keyList;
-	ArrayList<DataInputStream> fileStreams;
+	ArrayList<Integer> inputChunkIdsList;
+	HashMap<Integer,DataInputStream> fileStreams;
 	String inputData;
 	FileOutputStream reduceOs;
+	static int reducersProcessed = 0;
+	BlockingQueue<String> completedReducerKeys = new LinkedBlockingQueue<String>();
 	
 	public WorkerProgram(){
 		keyValuesInMap = new HashMap<String, ArrayList<String>>();
 		keyValuesInReducer = new HashMap<String, ArrayList<String>>();
 		keyAndFileLocationMap = new HashMap<String, LocationMeta>();
-		fileStreams = new ArrayList<DataInputStream>();
+		fileStreams = new HashMap<Integer,DataInputStream>();
 		keysAndMapperLocations = new HashMap<String, ArrayList<LocationMeta>>();
+		inputChunkIdsList = new ArrayList<Integer>();
 		inputData = null;
 	}
 	
-	public void acceptData(String inputDataString){
+	public void acceptData(int inputChunkId, String inputDataString){
 			inputData = inputDataString;
 			byte[] buffer = inputDataString.getBytes();
-			File jOutFile = new File("receivedData.txt");
+			
+			inputChunkIdsList.add(inputChunkId);
+			String fileName = "receivedData-"+inputChunkId+".txt";
+			File jOutFile = new File(fileName);
 	        BufferedOutputStream bos;
 			try {
 				bos = new BufferedOutputStream(new FileOutputStream(jOutFile));
@@ -72,12 +80,14 @@ public class WorkerProgram {
 	}
 	
 	public void openAllFiles() throws Exception{	
-		int chunkId = 0;
+		
 		// for loop here
-		String fileName = "tempFile"+chunkId+".txt";
-		File file = new File(fileName);
-		DataInputStream in = new DataInputStream(new FileInputStream(file));		
-		fileStreams.add(in);
+		for(int chunkId : inputChunkIdsList){
+			String fileName = "tempFile"+chunkId+".txt";
+			File file = new File(fileName);
+			DataInputStream in = new DataInputStream(new FileInputStream(file));		
+			fileStreams.put(chunkId,in);
+		}
 	}
 	
 	
@@ -106,14 +116,33 @@ public class WorkerProgram {
 	public void startReduceFunction() throws Exception{
 		
 		// open output file to write data into, write(key, value) function
-		String fileName = "output.txt";
+		String fileName = "output-"+reducersProcessed+".txt";
 		reduceOs = new FileOutputStream(fileName);
-		
+
 		// run reduce class in jar
-		// use keyValuesInReducer
+		URL url = new URL("file:MFReceived.jar"); 
+        URLClassLoader loader = new URLClassLoader (new URL[] {url});
+        Class<?> cl = Class.forName ("userprogram.ReduceFunction", true, loader);
+        Method printit = cl.getMethod("reduce",String.class, ArrayList.class, WorkerProgram.class );
+        Constructor<?> ctor = cl.getConstructor(); //One has to pass arguments if constructor takes input arguments.
+        Object instance = ctor.newInstance();
+        
+        Set<String> keySet = keyValuesInReducer.keySet();
+        for(String key : keySet){
+        	// Object value = printit.invoke(instance,key,keyValuesInReducer.get(key), Slave.worker);
+        	RunReducerClass runReducer = new RunReducerClass(instance, printit, key);
+        	Thread reducerTrhead = new Thread(runReducer);
+        	reducerTrhead.start();
+        }
+
+        for(int i=0; i < keySet.size(); i++){
+        	completedReducerKeys.take();
+        }
+        
+        loader.close ();
+        System.out.println("Reduce: completed-"+reducersProcessed);
 		
-		
-		
+		reducersProcessed++;
 
 	}
 
@@ -190,59 +219,7 @@ public class WorkerProgram {
 		this.keysAndMapperLocations = map;		
 	}
 	
-	public Map<String, ArrayList<String>> getValuesForKeyFromMaps(final String key) throws InterruptedException, ExecutionException{
-		// for each key, get the values from list of mappers of that key
-		// keysAndIps
 
-		ArrayList<LocationMeta> locations = keysAndMapperLocations.get(key);
-		// reducer client to map server
-		
-		int threadNum = locations.size();
-        ExecutorService executor = Executors.newFixedThreadPool(threadNum);
-        List<FutureTask<ArrayList<String>>> taskList = new ArrayList<FutureTask<ArrayList<String>>>();
-        
-		for(final LocationMeta location : locations){
-			
-			//future task with
-			// Start thread for the first half of the numbers
-	        FutureTask<ArrayList<String>> futureTask_1 = new FutureTask<ArrayList<String>>(new Callable<ArrayList<String>>() {
-	            //@Override
-	            public ArrayList<String> call() throws Exception {
-	                return WorkerProgram.getValuesFromSingleMap(key, location);
-	            }
-	        });
-	        taskList.add(futureTask_1);
-	        executor.execute(futureTask_1);
-
-		}
-		
-		ArrayList<String> valuesFromMappers = new ArrayList<String>();
-		
-		// Wait until all results are available and combine them at the same time
-        for (int j = 0; j < threadNum; j++) {
-            FutureTask<ArrayList<String>> futureTask = taskList.get(j);
-            valuesFromMappers.addAll(futureTask.get());
-        }
-        executor.shutdown();
-        keyValuesInReducer.put(key, valuesFromMappers);
-        
-        return keyValuesInReducer;
-	}
-	
-	
-	public static ArrayList<String> getValuesFromSingleMap(String key, LocationMeta location) throws Exception{
-		// send command "RETURN_VALUES_FOR_KEY" and return result
-		
-		CommandsClient commandClient = new CommandsClient("127.0.0.1", "8475");
-// 		CommandsClient commandClient = new CommandsClient(location.getIp(), "8475");
-		commandClient.startConnection();
-		
-		Command.Builder command = Command.newBuilder();
-		command.setCommandId(1);
-		command.setCommandString("RETURN_VALUES_FOR_KEY");
-		commandClient.sendCommand(command.build());
-		return null;
-	}
 	
 	public void emit(String key, String value){
 		//keyValuesMap
@@ -298,4 +275,100 @@ public class WorkerProgram {
 		fos.close();
 	}
 }
+
+
+
+class RunReducerClass implements Runnable{
+
+	
+	Object instance;
+	String key;
+	Method printit;
+	ArrayList<LocationMeta> locations;
+
+	
+    public RunReducerClass(Object instance, Method printit, String key){
+    	this.instance = instance;
+    	this.key = key;
+    	this.printit = printit;
+    }
+    
+	public void run() {
+		try {
+			
+			ArrayList<LocationMeta> locations = Slave.worker.keysAndMapperLocations.get(key);
+			ArrayList<String> values = getValuesForKeyFromMaps();
+			Object value = printit.invoke(instance,key,values, Slave.worker);	// can replace value with Slave.worker.keyValuesInReducer.get(key) 
+			Slave.worker.completedReducerKeys.add(key);
+			
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	
+	public ArrayList<String> getValuesForKeyFromMaps() throws InterruptedException, ExecutionException{
+		// for each key, get the values from list of mappers of that key
+		// keysAndIps
+
+		// ArrayList<LocationMeta> locations = keysAndMapperLocations.get(key);
+		// reducer client to map server
+		
+		int threadNum = locations.size();
+        ExecutorService executor = Executors.newFixedThreadPool(threadNum);
+        List<FutureTask<ArrayList<String>>> taskList = new ArrayList<FutureTask<ArrayList<String>>>();
+        
+		for(final LocationMeta location : locations){
+			
+			//future task with
+			// Start thread for the first half of the numbers
+	        FutureTask<ArrayList<String>> futureTask_1 = new FutureTask<ArrayList<String>>(new Callable<ArrayList<String>>() {
+	            //@Override
+	            public ArrayList<String> call() throws Exception {
+	                return getValuesFromSingleMap(key, location);
+	            }
+	        });
+	        taskList.add(futureTask_1);
+	        executor.execute(futureTask_1);
+
+		}
+		
+		ArrayList<String> valuesFromMappers = new ArrayList<String>();
+		
+		// Wait until all results are available and combine them at the same time
+        for (int j = 0; j < threadNum; j++) {
+            FutureTask<ArrayList<String>> futureTask = taskList.get(j);
+            valuesFromMappers.addAll(futureTask.get());
+        }
+        executor.shutdown();
+        Slave.worker.keyValuesInReducer.put(key, valuesFromMappers);
+        return valuesFromMappers;
+	}
+	
+	
+	public static ArrayList<String> getValuesFromSingleMap(String key, LocationMeta location) throws Exception{
+		// send command "RETURN_VALUES_FOR_KEY" and return result
+		
+		CommandsClient commandClient = new CommandsClient("127.0.0.1", "8476"); // use location.getIp(); for ip
+		commandClient.startConnection();
+		
+		Command.Builder command = Command.newBuilder();
+		command.setCommandId(1);
+		command.setCommandString("RETURN_VALUES_FOR_KEY");
+		commandClient.sendCommand(command.build());
+		return null;
+	}
+}
+
 

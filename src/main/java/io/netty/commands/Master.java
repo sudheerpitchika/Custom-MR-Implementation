@@ -21,8 +21,11 @@ public class Master {
 	
 	static ArrayList<ChannelHandlerContext> connectedClients = new ArrayList<ChannelHandlerContext>(); 
 	public static final BlockingQueue<ChannelHandlerContext> availableClients = new LinkedBlockingQueue<ChannelHandlerContext>();
+	
 	static int numberOfClients = 0;
 	static int completedMapsCount = 0;
+	static int completedReducersCount = 0;
+	
 	public static ShufflerProgram shuffler = new ShufflerProgram();
 	static JobTracker jobTracker;
 	static ShuffleServerThread shuffleServer;
@@ -128,38 +131,40 @@ class ShuffleServerThread implements Runnable{
 }
 
 class JobTracker implements Runnable{
+	
 	int chunksCount = 10;
-	int numberOfMappers = chunksCount;
+	int numberOfMappers=0;
 	
 	public JobTracker(){
 		
 	}
 	
-	public int getChunksCount(){
-		return chunksCount;
-	}
-	
-	public int getNumberOfMappers(){
-		return numberOfMappers;
-	}
-	
 	public void run(){
 		
-		int length = 4194304;
+		String fileName = "inputdata.txt";
+		File jInFile = new File(fileName);
+		long fileLength = jInFile.length();
+		
+		
+		int chunkSize = 4194304;
 		int offset = 0;
-		length = 4096;
-        
+		chunkSize = 4096;
+		chunksCount = (int) Math.ceil(fileLength/chunkSize);
+		
+		numberOfMappers = chunksCount;
+		
 		try {
-			
+			int chunkId = 0;
 			while(chunksCount>0){
 				ChannelHandlerContext ctx = Master.availableClients.take();
 				SocketAddress sa = ctx.channel().remoteAddress();
 				
-				SendData sendDataClient = new SendData (offset, length, ctx);
+				SendData sendDataClient = new SendData (chunkId, offset, chunkSize, ctx);
 				Thread t = new Thread(sendDataClient);
 				t.start();
 				
-				offset += length;
+				offset += chunkSize;
+				chunkId++;
 				chunksCount--;
 			}
 
@@ -173,28 +178,39 @@ class JobTracker implements Runnable{
 			e.printStackTrace();
 		}
 	}
+	
+	public int getChunksCount(){
+		return chunksCount;
+	}
+	
+	public int getNumberOfMappers(){
+		return numberOfMappers;
+	}
 } 
 
 class SendData implements Runnable{
 
 	BufferedInputStream bis;
+	int chunkId;
 	int offset;
 	int length;
 	ChannelHandlerContext ctx;
 	
-	public SendData (int offset, int length, ChannelHandlerContext ctx){
+	public SendData (int chunkId, int offset, int length, ChannelHandlerContext ctx){
 		
+		this.chunkId = chunkId;
 		this.offset = offset;
 		this.length = length;
 		this.ctx = ctx;
 		
-		File jInFile = new File("inputdata.txt");
-        try {
+		String fileName = "inputdata.txt";
+		File jInFile = new File(fileName);
+		
+		try {
 			bis = new BufferedInputStream(new FileInputStream(jInFile));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
-        
 	}
 	
 	public void run() {
@@ -210,6 +226,7 @@ class SendData implements Runnable{
 		cmd.setCommandId(1);
 		cmd.setCommandString("ACCEPT_DATA");
 		cmd.setInputChunk(stringData);
+		cmd.setInputChunkId(chunkId);
 		
 		// ctx.channel().remoteAddress();
 		CommandsClient cc = new CommandsClient("127.0.0.1", "8476");

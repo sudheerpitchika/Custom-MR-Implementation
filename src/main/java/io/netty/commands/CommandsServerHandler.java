@@ -90,6 +90,16 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         	
         }
         
+        else if(cmdString.equals("REDUCE_COMPLETE")){
+        	ctx.write(cmdResp.build());
+        	
+        	Master.completedReducersCount++;
+        	Master.availableClients.add(ctx);
+        	if(Master.shuffler.totalReducerCount == Master.completedReducersCount){
+        		System.out.println("Last reducer completed");
+        	}
+        	
+        }
         
         if(cmdString.equals("SHUTDOWN")){
         	

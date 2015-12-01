@@ -17,7 +17,7 @@ import responses.SendKeysAndLocationToReducers;
 public class ShufflerProgram {
 
 	Map<String, ArrayList<Location>> keysAndLocations;
-	int totalReducerCount=4;
+	public int totalReducerCount=4;
 	Map<String, String> keysReducerMap;
 	
 	public ShufflerProgram(){
