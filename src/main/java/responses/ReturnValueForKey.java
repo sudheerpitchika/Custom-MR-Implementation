@@ -39,6 +39,7 @@ public class ReturnValueForKey implements Runnable{
     	CommandResponse.Builder cmdResponse = CommandResponse.newBuilder();
     	cmdResponse.setForCommandId(command.getCommandId());
     	cmdResponse.setForCommandString(command.getCommandString());
+    	cmdResponse.setResponseText("OK "+command.getCommandString());
     	
     	KeyValuesSet.Builder keyValueSet = KeyValuesSet.newBuilder();
     	keyValueSet.setKey(key);
@@ -47,6 +48,6 @@ public class ReturnValueForKey implements Runnable{
     	}
     	
     	cmdResponse.setKeyValuesSet(keyValueSet.build());
-    	ctx.write(cmdResponse.build());
+    	ctx.writeAndFlush(cmdResponse.build());
 	}
 }

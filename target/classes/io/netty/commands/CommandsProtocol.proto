@@ -53,7 +53,7 @@ message Command {
   required uint32 commandId = 1;
   required string commandString = 2;
   optional string inputChunk = 3;							// for ACCEPT_DATA
-  optional uint32 inputChunkId = 4;
+  optional uint32 inputChunkId = 4;							// for ACCEPT_DATA
   repeated KeyLocationsSet keysAndLocationsSet = 5;			// for ACCEPT_KEYS_AND_LOCATIONS
   optional KeyLocation keyLocation = 6;						// for RETURN_VALUES_FOR_KEY
   repeated KeyLocation keyLocationsMap = 7;					// for ACCEPT_DATA_SHUFFLER  
@@ -77,7 +77,6 @@ message KeyLocation{
 	required string key = 1;
 	required Location location = 2;
 }
-
 
 message HeartBeat{
 	required uint32 forCommandId = 1;

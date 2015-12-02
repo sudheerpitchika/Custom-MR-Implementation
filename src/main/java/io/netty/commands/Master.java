@@ -167,7 +167,7 @@ class JobTracker implements Runnable{
 		chunkSize = 1024 * 2;
 		chunksCount = (int) Math.ceil(fileLength/chunkSize);
 		
-		chunksCount=1;
+//		chunksCount=1;
 		numberOfMappers = chunksCount;
 		
 		try {

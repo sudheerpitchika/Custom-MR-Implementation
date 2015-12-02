@@ -170,14 +170,14 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         }*/
 
         else if(cmdString.equals("ACCEPT_KEYS_AND_LOCATIONS")){
-        	ctx.write(cmdResp.build());
+        	// ctx.write(cmdResp.build());
         	AcceptingKeyAndLocationsAtReducer acceptKeyLocn = new AcceptingKeyAndLocationsAtReducer(ctx, command);
         	Thread t = new Thread(acceptKeyLocn);
         	t.start();
         }
         
         else if(cmdString.equals("RETURN_VALUES_FOR_KEY")){
-        	ctx.write(cmdResp.build());
+        	//ctx.write(cmdResp.build());
         	ReturnValueForKey retValForKey = new ReturnValueForKey(ctx, command);
         	Thread t = new Thread(retValForKey);
         	t.start();

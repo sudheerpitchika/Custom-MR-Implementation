@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -34,8 +35,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.google.protobuf.ProtocolStringList;
-
 public class WorkerProgram {
 	TaskTracker tt;
 	DataNode dn;
@@ -50,53 +49,55 @@ public class WorkerProgram {
 	Map<String, ArrayList<String>> keyValuesInReducer;
 	ArrayList<String> keyList;
 	ArrayList<Integer> inputChunkIdsList;
-	HashMap<Integer,DataInputStream> fileStreams;
+	HashMap<Integer,RandomAccessFile> fileStreams;
+//	HashMap<Integer, Long> fileSizes;
 	String inputData;
 	FileOutputStream reduceOs;
 	static int reducersProcessed = 0;
 	BlockingQueue<String> completedReducerKeys = new LinkedBlockingQueue<String>();
 	int inputChunkId;
-	
-	public WorkerProgram(){
-	
-		complexDelimiter = "$";
-		fileStreams = new HashMap<Integer,DataInputStream>();
 
+	public WorkerProgram(){
+
+		complexDelimiter = "#";
+		fileStreams = new HashMap<Integer,RandomAccessFile>();
+//		fileSizes = new HashMap<Integer,Long>();
 		inputChunkIdsList = new ArrayList<Integer>();
 		inputData = null;
 	}
 	
 	public void acceptData(int inputChunkId, String inputDataString){
 		
-			keyValuesInMap = new HashMap<String, ArrayList<String>>();
-			keyAndFileLocationMap = new HashMap<String, LocationMeta>();
-			
-			inputData = inputDataString;
-			this.inputChunkId = inputChunkId;
-			byte[] buffer = inputDataString.getBytes();
-			
-			inputChunkIdsList.add(inputChunkId);
-			String fileName = "receivedData-"+inputChunkId+".txt";
-			File jOutFile = new File(fileName);
-	        BufferedOutputStream bos;
-			try {
-				bos = new BufferedOutputStream(new FileOutputStream(jOutFile));
-		        bos.write(buffer, 0, buffer.length);
-		        bos.flush();
-		        bos.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		keyValuesInMap = new HashMap<String, ArrayList<String>>();
+		keyAndFileLocationMap = new HashMap<String, LocationMeta>();
+		
+		inputData = inputDataString;
+		this.inputChunkId = inputChunkId;
+		byte[] buffer = inputDataString.getBytes();
+		
+		inputChunkIdsList.add(inputChunkId);
+		String fileName = "receivedData-"+inputChunkId+".txt";
+		File jOutFile = new File(fileName);
+        BufferedOutputStream bos;
+		try {
+			bos = new BufferedOutputStream(new FileOutputStream(jOutFile));
+	        bos.write(buffer, 0, buffer.length);
+	        bos.flush();
+	        bos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void openAllFiles() throws Exception{	
-		
 		// for loop here
 		for(int chunkId : inputChunkIdsList){
 			String fileName = "tempFile"+chunkId+".txt";
-			File file = new File(fileName);
-			DataInputStream in = new DataInputStream(new FileInputStream(file));		
-			fileStreams.put(chunkId,in);
+			/*File file = new File(fileName);
+			DataInputStream in = new DataInputStream(new FileInputStream(file));*/
+			RandomAccessFile raf = new RandomAccessFile(fileName, "r");
+			fileStreams.put(chunkId,raf);
+//			fileSizes.put(chunkId, file.length());
 		}
 	}
 	
@@ -138,11 +139,13 @@ public class WorkerProgram {
         Object instance = ctor.newInstance();
 System.out.println("Accessing key values in reducer");        
         Set<String> keySet = keysAndMapperLocations.keySet();
+        
         for(String key : keySet){
         	// Object value = printit.invoke(instance,key,keyValuesInReducer.get(key), Slave.worker);
         	RunReducerClass runReducer = new RunReducerClass(instance, printit, key);
-        	Thread reducerTrhead = new Thread(runReducer);
-        	reducerTrhead.start();
+        	/*Thread reducerTrhead = new Thread(runReducer);
+        	reducerTrhead.start();*/
+        	runReducer.run();
         }
 
         for(int i=0; i < keySet.size(); i++){
@@ -210,17 +213,25 @@ System.out.println("Accessing key values in reducer");
 	public ArrayList<String> valueForKey(String key, LocationMeta location) throws Exception{
 		//get the value from the file(for corresponding chunk) //requested by reducer
 		
-		DataInputStream in = fileStreams.get(location.getChunkId());
-		byte[] dataBytes=new byte[location.getLength()];
-		in.read(dataBytes, location.getStart(), location.getLength());
-		String dataString = dataBytes.toString();
+		RandomAccessFile raf = fileStreams.get(location.getChunkId());
+
+		System.out.println(key+"\t"+location.getStart()+"\t"+location.getLength());
+		
+		byte[] dataBytes = new byte[location.getLength()];
+//		System.out.println("***"+location.getStart());
+		raf.seek(location.getStart());
+		raf.read(dataBytes);
+		
+		String dataString = new String(dataBytes);
+		dataString = dataString.trim();
+		System.out.println("Data String: "+dataString);
 		String[] splits = dataString.split(complexDelimiter);
-		// String returnKey = splits[0];
 		
 		ArrayList<String> values = new ArrayList<String> ( Arrays.asList(splits));
-		values.remove(values.size());
+		
 		values.remove(0);
-System.out.println("*** Returning values for key: "+key+"\t size: "+values.size());
+		
+		System.out.println("*** Returning values for key: "+key+"\t size: "+values.size());
 		return values;
 	}
 
@@ -234,7 +245,7 @@ System.out.println("*** Returning values for key: "+key+"\t size: "+values.size(
 		keysAndMapperLocations = new HashMap<String, ArrayList<LocationMeta>>();
 
 		
-		this.keysAndMapperLocations = map;		
+		this.keysAndMapperLocations = map;
 	}
 	
 
@@ -256,7 +267,7 @@ System.out.println("*** Returning values for key: "+key+"\t size: "+values.size(
 //		System.out.println("Size: "+keyValuesInMap.size());
 	}
 	
-	
+
 	public void write(String key, String value) throws IOException{
 		String outVal = key+"\t"+value;
 		reduceOs.write(outVal.getBytes());
@@ -271,32 +282,32 @@ System.out.println("*** Returning values for key: "+key+"\t size: "+values.size(
 		int start = 0;
 		
 		for(String key : keyList){
-			ArrayList<String> values = keyValuesInMap.get(key);
-		
-			
-			
-			byte[] dataBytes = key.getBytes();
-			fos.write(dataBytes);
-			
-			int dataBytesLength = key.length();
-			String value = "";
-			
-			for(String val : values){
-				value = value + complexDelimiter + val;
+			if(key.trim().length() > 0){
+				ArrayList<String> valuesList = keyValuesInMap.get(key);
+				
+				byte[] dataBytes = key.getBytes();
+				fos.write(dataBytes);
+				
+				int dataBytesLength = key.length();
+				String value = "";
+				
+				for(String val : valuesList){
+					value = value + complexDelimiter + val;
+				}
+					
+	//			System.out.println(key+"\t"+value.length());
+				dataBytes = value.getBytes();
+				fos.write(dataBytes);
+				dataBytesLength += value.length();
+	
+				String ip = ""; //ip of this machine
+				LocationMeta location = new LocationMeta(start, dataBytesLength, inputChunkId,ip);
+				
+				start =  start + dataBytesLength;
+				
+				keyAndFileLocationMap.put(key, location);
+				System.out.println(key+"\t"+location.toString());
 			}
-			
-//			System.out.println(key+"\t"+value.length());
-			dataBytes = value.getBytes();
-			fos.write(dataBytes);
-			dataBytesLength += value.length();
-
-			String ip = ""; //ip of this machine
-			LocationMeta location = new LocationMeta(start, dataBytesLength, inputChunkId,ip);
-			
-			start += dataBytesLength;
-			
-			keyAndFileLocationMap.put(key, location);
-//			System.out.println(key+"\t"+location.toString());
 		}		
 		fos.close();
 	}
@@ -304,7 +315,7 @@ System.out.println("*** Returning values for key: "+key+"\t size: "+values.size(
 
 
 
-class RunReducerClass implements Runnable{
+class RunReducerClass /*implements Runnable*/{
 
 	
 	Object instance;
@@ -322,7 +333,7 @@ class RunReducerClass implements Runnable{
 	public void run() {
 		try {
 			
-			/*ArrayList<LocationMeta> */locations = Slave.worker.keysAndMapperLocations.get(key);
+			locations = Slave.worker.keysAndMapperLocations.get(key);
 			ArrayList<String> values = getValuesForKeyFromMaps();
 			Object value = printit.invoke(instance,key,values, Slave.worker);	// can replace value with Slave.worker.keyValuesInReducer.get(key) 
 			Slave.worker.completedReducerKeys.add(key);
@@ -353,7 +364,7 @@ class RunReducerClass implements Runnable{
 		
 		int threadNum = locations.size();
 		
-		System.out.println("Fething values from mapper locations for: "+key+"\t loc Count: "+threadNum);
+//		System.out.println("Fething values from mapper locations for: "+key+"\t loc Count: "+threadNum);
         ExecutorService executor = Executors.newFixedThreadPool(threadNum);
         List<FutureTask<ArrayList<String>>> taskList = new ArrayList<FutureTask<ArrayList<String>>>();
         
@@ -380,7 +391,7 @@ class RunReducerClass implements Runnable{
             valuesFromMappers.addAll(futureTask.get());
         }
         executor.shutdown();
-        System.out.println("setting key values in reducer: "+key); 
+//        System.out.println("setting key values in reducer: "+key); 
         Slave.worker.keyValuesInReducer.put(key, valuesFromMappers);
         return valuesFromMappers;
 	}
@@ -389,21 +400,33 @@ class RunReducerClass implements Runnable{
 	public static ArrayList<String> getValuesFromSingleMap(String key, LocationMeta location) throws Exception{
 		// send command "RETURN_VALUES_FOR_KEY" and return result
 		
+		Location.Builder locn = Location.newBuilder();
+		locn.setChunk(location.getChunkId());
+		locn.setIp(location.getIp());
+		locn.setStart(location.getStart());
+		locn.setLength(location.getLength());
+		
+		KeyLocation.Builder keyLocation = KeyLocation.newBuilder();
+		keyLocation.setKey(key);
+		keyLocation.setLocation(locn.build());
+		
 		CommandsClient commandClient = new CommandsClient("127.0.0.1", "8476"); // use location.getIp(); for ip
 		commandClient.startConnection();
 		
 		Command.Builder command = Command.newBuilder();
 		command.setCommandId(1);
 		command.setCommandString("RETURN_VALUES_FOR_KEY");
+		command.setKeyLocation(keyLocation);
+		
 		CommandResponse response = commandClient.sendCommand(command.build());
 		KeyValuesSet kvSet = response.getKeyValuesSet();
 		
 		int valCount = kvSet.getValuesCount();
 		ArrayList<String> valueList = new ArrayList<String>();
 		
-		for(int i=0; i < valCount; i++)
+		for(int i=0; i < valCount; i++){
 			valueList.add(kvSet.getValues(i));
-		
+		}
 		return valueList;
 		
 /*		ProtocolStringList valsProtoStringList=kvSet.getValuesList();

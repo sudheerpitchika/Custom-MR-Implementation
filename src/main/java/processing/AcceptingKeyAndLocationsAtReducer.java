@@ -2,6 +2,7 @@ package processing;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.commands.CommandsProtocol.Command;
+import io.netty.commands.CommandsProtocol.CommandResponse;
 import io.netty.commands.CommandsProtocol.KeyLocationsSet;
 import io.netty.commands.CommandsProtocol.Location;
 import io.netty.commands.Slave;
@@ -24,9 +25,9 @@ public class AcceptingKeyAndLocationsAtReducer implements Runnable{
 	}
 	
 	public void run(){
-		
+
 		List<KeyLocationsSet> keyLocationsSet = command.getKeysAndLocationsSetList();
-		System.out.println("********* Reducer received "+keyLocationsSet.size()+" elements");
+		System.out.println("Reducer received "+keyLocationsSet.size()+" elements");
 		for(KeyLocationsSet keyLocnSet : keyLocationsSet){
 			String key = keyLocnSet.getKey();
 			List<Location> locations = keyLocnSet.getLocationsList();
@@ -46,5 +47,17 @@ public class AcceptingKeyAndLocationsAtReducer implements Runnable{
 		}
 
 		Slave.worker.acceptKeyAndMapperLocationSetFromShuffler(klMap);
+		
+		sendResponse();
+	}
+	
+	public void sendResponse(){
+	
+		CommandResponse.Builder cmdResp = CommandResponse.newBuilder();
+        cmdResp.setForCommandId(command.getCommandId());
+        cmdResp.setForCommandString(command.getCommandString());
+        cmdResp.setResponseText("OK "+command.getCommandString());
+        this.ctx.writeAndFlush(cmdResp.build());
+        System.out.println("after responded for command");
 	}
 }
