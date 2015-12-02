@@ -32,15 +32,31 @@ public class Master {
 	
 	public static void main(String[] args) throws Exception{
 		
+
+
 		
 		CommandServerThread commandsServer = new CommandServerThread("8475");
 		Thread servThread = new Thread(commandsServer);
 		servThread.start();
 		
-		shuffleServer = new ShuffleServerThread("8477");
+ Thread.sleep(2000);
+
+		HeartBeatServerThread myRunnable = new HeartBeatServerThread("8478");
+	     Thread t = new Thread(myRunnable);
+	     t.start();
+
+// Thread.sleep(2000);
+ 
+     	shuffleServer = new ShuffleServerThread("8477");
 		Thread shuffleThread = new Thread(shuffleServer);
 		shuffleThread.start();
-		
+     
+/*	    ShuffleServerThread shuffler = new ShuffleServerThread("8477");
+		Thread shuffleThread = new Thread(shuffler);
+		shuffleThread.start();*/
+
+// Thread.sleep(2000);
+			
 		jobTracker = new JobTracker();
 		Thread jobTrackerThread = new Thread(jobTracker);
 		jobTrackerThread.start();
@@ -56,7 +72,7 @@ public class Master {
 		
 		Thread.sleep(4000);
 		
-		HeartBeatServerThread myRunnable = new HeartBeatServerThread("9898");
+		HeartBeatServerThread myRunnable = new HeartBeatServerThread("8478");
 	     Thread t = new Thread(myRunnable);
 	     t.start();
 	        
@@ -144,13 +160,14 @@ class JobTracker implements Runnable{
 		String fileName = "inputdata.txt";
 		File jInFile = new File(fileName);
 		long fileLength = jInFile.length();
-		
+		System.out.println("File length "+fileLength);
 		
 		int chunkSize = 4194304;
 		int offset = 0;
-		chunkSize = 4096;
+		chunkSize = 1024 * 2;
 		chunksCount = (int) Math.ceil(fileLength/chunkSize);
 		
+		chunksCount=1;
 		numberOfMappers = chunksCount;
 		
 		try {
@@ -163,7 +180,7 @@ class JobTracker implements Runnable{
 				Thread t = new Thread(sendDataClient);
 				t.start();
 				
-				offset += chunkSize;
+				// offset += chunkSize;
 				chunkId++;
 				chunksCount--;
 			}
@@ -214,9 +231,10 @@ class SendData implements Runnable{
 	}
 	
 	public void run() {
-		byte[] byteData = new byte[length];
+		byte[] byteData = new byte[length+10];
 		try {
-			bis.read(byteData, offset, length);
+			System.out.println("Trying to read from "+offset+" to "+(offset+length-1));
+			bis.read(byteData, offset, length-1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -240,5 +258,10 @@ class SendData implements Runnable{
 		
 		cmd.setCommandString("START_MAP");
 		cc.sendCommand(cmd.build());
+		try {
+			bis.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 } 

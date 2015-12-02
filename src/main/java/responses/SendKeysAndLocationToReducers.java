@@ -30,8 +30,10 @@ public class SendKeysAndLocationToReducers implements Runnable {
 		command.setCommandId(1);
 		command.setCommandString("ACCEPT_KEYS_AND_LOCATIONS");
 		
+		int initial = start;
 		// KeyLocationsSet
-		for( ; start < start+count && start < keyList.size(); start++){
+		for( ; start < initial+count && start < keyList.size(); start++){
+		
 			String key = keyList.get(start);
 			ArrayList<Location> locations = keysAndLocations.get(key);
 			KeyLocationsSet.Builder klSet = KeyLocationsSet.newBuilder();
@@ -46,9 +48,9 @@ public class SendKeysAndLocationToReducers implements Runnable {
 		try {
 			cmdClient.startConnection();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 		cmdClient.sendCommand(command.build());
 		

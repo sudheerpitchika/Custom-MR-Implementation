@@ -44,7 +44,7 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandRe
     }
 
     
-    public String sendCommand(Command command){
+    public CommandResponse sendCommand(Command command){
 
     	ChannelPromise promise = channel.newPromise();
     	promise.addListener(new GenericFutureListener<Future<? super Void>>() {
@@ -58,17 +58,18 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandRe
     	ChannelFuture responseFuture = channel.writeAndFlush(command,promise);
     	
     	String returnResult = "OK:Client";
+    	CommandResponse response = null;
     	
     	if(command.getCommandString().equals("SHUTDOWN")){
     		while(true)
     			if(responseFuture.isDone())
-    				return returnResult;
+    				return response;
     	}
     	    	
     	boolean interrupted = false;    	
         for (;;) {
             try {
-            	returnResult = responseFromServer.take().getResponseText();
+            	response = responseFromServer.take();
                 break;
             } catch (InterruptedException ignore) {
                 interrupted = true;
@@ -78,7 +79,7 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandRe
         if (interrupted) {
             Thread.currentThread().interrupt();
         }
-        return returnResult;
+        return response;
     }
     
     @Override

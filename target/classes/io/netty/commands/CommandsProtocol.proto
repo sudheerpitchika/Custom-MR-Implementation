@@ -56,8 +56,7 @@ message Command {
   optional uint32 inputChunkId = 4;
   repeated KeyLocationsSet keysAndLocationsSet = 5;			// for ACCEPT_KEYS_AND_LOCATIONS
   optional KeyLocation keyLocation = 6;						// for RETURN_VALUES_FOR_KEY
-  repeated KeyLocation keyLocationsMap = 7;					// for ACCEPT_DATA_SHUFFLER
-  
+  repeated KeyLocation keyLocationsMap = 7;					// for ACCEPT_DATA_SHUFFLER  
 }
 
 message CommandResponse{

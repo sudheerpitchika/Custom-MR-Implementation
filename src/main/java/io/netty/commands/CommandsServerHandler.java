@@ -26,7 +26,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.commands.CommandsProtocol.Command;
 import io.netty.commands.CommandsProtocol.CommandResponse;
 import processing.AcceptData;
-import processing.AcceptingKeyAndLocations;
+import processing.AcceptingKeyAndLocationsAtReducer;
 import processing.StartMapFunction;
 import processing.StartReduceFunction;
 import responses.AcceptDataShuffler;
@@ -136,7 +136,7 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         else if(cmdString.equals("START_TASK_TRACKER")){
         	// send heart beats to master repeatedly
         	ctx.write(cmdResp.build());
-        	heartBeatClient = new HeartBeats("127.0.0.1", "9898");
+        	heartBeatClient = new HeartBeats("127.0.0.1", "8478");
    	     	Thread t = new Thread(heartBeatClient);
    	     	t.start();
    	     	
@@ -171,7 +171,7 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
 
         else if(cmdString.equals("ACCEPT_KEYS_AND_LOCATIONS")){
         	ctx.write(cmdResp.build());
-        	AcceptingKeyAndLocations acceptKeyLocn = new AcceptingKeyAndLocations(ctx, command);
+        	AcceptingKeyAndLocationsAtReducer acceptKeyLocn = new AcceptingKeyAndLocationsAtReducer(ctx, command);
         	Thread t = new Thread(acceptKeyLocn);
         	t.start();
         }

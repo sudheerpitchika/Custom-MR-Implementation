@@ -17,7 +17,7 @@ import responses.SendKeysAndLocationToReducers;
 public class ShufflerProgram {
 
 	Map<String, ArrayList<Location>> keysAndLocations;
-	public int totalReducerCount=4;
+	public int totalReducerCount=1;
 	Map<String, String> keysReducerMap;
 	
 	public ShufflerProgram(){
@@ -39,7 +39,6 @@ public class ShufflerProgram {
 	
 	public void sendKeysAndLocationsToReducers() throws InterruptedException{
 		
-		int reducers=0;
 		
 		Set<String> keySet = keysAndLocations.keySet();
 		List<String> keyList = new ArrayList<String>();
@@ -48,6 +47,9 @@ public class ShufflerProgram {
 		int keysCount = keyList.size();
 		
 		int keysCountToEachReducer = keysCount/totalReducerCount;
+		System.out.println("TOTAL KEYS COUNT     : "+keysCount);		
+		System.out.println("KEYS TO EACH REDUCER : "+keysCountToEachReducer);
+		
 		
 		for(int i = 0; i < totalReducerCount; i++){
 			
@@ -62,6 +64,9 @@ public class ShufflerProgram {
 			t.start();
 			
 		}
-		System.out.println("Shuffler: sent data to all reducers");
+		for(String k : keysReducerMap.keySet()){
+			System.out.println(k+"\t"+keysReducerMap.get(k));
+		}
+		System.out.println("Shuffler: Sent data to all reducers");
 	}
 }

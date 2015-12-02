@@ -25,6 +25,9 @@ public class AcceptDataShuffler implements Runnable{
 			String key = kl.getKey();
 			Location location = kl.getLocation();
 			// Slave.shuffler.receiveKeyAndLocationFromMapper(key, location);
+			
+//			System.out.println(key+"\t"+kl.getLocation().getStart()+"\t"+kl.getLocation().getLength());
+			
 			Master.shuffler.receiveKeyAndLocationFromMapper(key, location);
 		}
 	}	

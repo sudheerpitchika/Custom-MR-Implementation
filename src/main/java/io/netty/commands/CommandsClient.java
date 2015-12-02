@@ -21,6 +21,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.commands.CommandsProtocol.Command;
+import io.netty.commands.CommandsProtocol.CommandResponse;
 import io.netty.example.worldclock.WorldClockServer;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -72,12 +73,10 @@ public class CommandsClient {
         }
     }
     
-    public void sendCommand(Command command){
-        //String result = handler.sendCommand("START_TASK_TRACKER");
+    public CommandResponse sendCommand(Command command){
     	
-        String result = handler.sendCommand(command);
-        
-        //System.out.println("Returned: "+result);
+    	CommandResponse response = handler.sendCommand(command);
+    	return response;
     }
     
     public void closeConnection(){

@@ -49,5 +49,8 @@ public class LocationMeta{
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-		
+	
+	public String toString(){
+		return start+"\t"+length;
+	}
 }
