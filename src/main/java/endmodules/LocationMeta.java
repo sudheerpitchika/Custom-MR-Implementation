@@ -51,6 +51,6 @@ public class LocationMeta{
 	}
 	
 	public String toString(){
-		return start+"\t"+length;
+		return ip+"\t"+chunkId+"\t"+start+"\t"+length;
 	}
 }

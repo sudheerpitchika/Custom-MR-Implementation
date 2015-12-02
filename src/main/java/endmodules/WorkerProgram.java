@@ -224,7 +224,7 @@ System.out.println("Accessing key values in reducer");
 		
 		String dataString = new String(dataBytes);
 		dataString = dataString.trim();
-		System.out.println("Data String: "+dataString);
+//		System.out.println("Data String: "+dataString);
 		String[] splits = dataString.split(complexDelimiter);
 		
 		ArrayList<String> values = new ArrayList<String> ( Arrays.asList(splits));
@@ -306,7 +306,7 @@ System.out.println("Accessing key values in reducer");
 				start =  start + dataBytesLength;
 				
 				keyAndFileLocationMap.put(key, location);
-				System.out.println(key+"\t"+location.toString());
+	//			System.out.println(key+"\t"+location.toString());
 			}
 		}		
 		fos.close();

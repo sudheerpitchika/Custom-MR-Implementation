@@ -17,7 +17,7 @@ import responses.SendKeysAndLocationToReducers;
 public class ShufflerProgram {
 
 	Map<String, ArrayList<Location>> keysAndLocations;
-	public int totalReducerCount=1;
+	public int totalReducerCount=2;
 	Map<String, String> keysReducerMap;
 	
 	public ShufflerProgram(){
@@ -27,13 +27,15 @@ public class ShufflerProgram {
 	}
 	
 	public void receiveKeyAndLocationFromMapper(String key, Location location){
-		if(keysAndLocations.containsKey(key)){
-			keysAndLocations.get(key).add(location);
-		}
-		else{
-			ArrayList<Location> locationList = new ArrayList<Location>();
-			locationList.add(location);
-			keysAndLocations.put(key, locationList);
+		synchronized(this){
+			if(keysAndLocations.containsKey(key)){
+				keysAndLocations.get(key).add(location);
+			}
+			else{
+				ArrayList<Location> locationList = new ArrayList<Location>();
+				locationList.add(location);
+				keysAndLocations.put(key, locationList);
+			}
 		}
 	}
 	
@@ -46,7 +48,7 @@ public class ShufflerProgram {
 		Collections.sort(keyList);
 		int keysCount = keyList.size();
 		
-		int keysCountToEachReducer = keysCount/totalReducerCount;
+		int keysCountToEachReducer = (int) Math.ceil(keysCount/(1.0*totalReducerCount));
 		System.out.println("TOTAL KEYS COUNT     : "+keysCount);		
 		System.out.println("KEYS TO EACH REDUCER : "+keysCountToEachReducer);
 		
@@ -62,11 +64,12 @@ public class ShufflerProgram {
 			SendKeysAndLocationToReducers toReducers = new SendKeysAndLocationToReducers(ctx, keyList, keysAndLocations, start, keysCountToEachReducer);
 			Thread t = new Thread(toReducers);
 			t.start();
-			
 		}
-		for(String k : keysReducerMap.keySet()){
+		
+/*		for(String k : keysReducerMap.keySet()){
 			System.out.println(k+"\t"+keysReducerMap.get(k));
-		}
+		}*/
+		
 		System.out.println("Shuffler: Sent data to all reducers");
 	}
 }

@@ -13,13 +13,14 @@ public class StartMapFunction implements Runnable{
 	public void run(){
 		try {
 			Slave.worker.startMapFunction();
-			System.out.println("MAP DONE");
+
 			Slave.worker.startCombiner();
-			System.out.println("COMBINER DONE");
+
 			Slave.worker.writeKeyValuesToFileAndCreateTable();
-			System.out.println("CREATE TABLES DONE");
+
 			Slave.worker.sendKeyAndLocationsToShuffler();
-			System.out.println("KEY TO SHUFFLER DONE");
+
+			Slave.worker.openAllFiles();
 			
 			CommandsClient client = new CommandsClient("127.0.0.1", "8475");
 			client.startConnection();
@@ -27,8 +28,9 @@ public class StartMapFunction implements Runnable{
 			command.setCommandId(1);
 			command.setCommandString("MAP_COMPLETE");
 			client.sendCommand(command.build());
-			System.out.println("MAP COMPLETE DONE");
-			Slave.worker.openAllFiles();
+			
+			System.out.println("***** MAP COMPLETE **** ");
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

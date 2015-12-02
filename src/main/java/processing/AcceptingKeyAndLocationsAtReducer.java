@@ -28,6 +28,9 @@ public class AcceptingKeyAndLocationsAtReducer implements Runnable{
 
 		List<KeyLocationsSet> keyLocationsSet = command.getKeysAndLocationsSetList();
 		System.out.println("Reducer received "+keyLocationsSet.size()+" elements");
+		
+		
+		int i=0;
 		for(KeyLocationsSet keyLocnSet : keyLocationsSet){
 			String key = keyLocnSet.getKey();
 			List<Location> locations = keyLocnSet.getLocationsList();
@@ -40,19 +43,28 @@ public class AcceptingKeyAndLocationsAtReducer implements Runnable{
 				String ip = location.getIp();
 				
 				LocationMeta locationMeta = new LocationMeta(start, length, chunkId, ip);
-				
 				locationMetaList.add(locationMeta);
+				if(i==6)
+					System.out.println("meta:"+i+"  "+locationMeta.toString());
 			}
+			i++;
 			klMap.put(key, locationMetaList);
+			System.out.println(key+"  "+locationMetaList.size());
 		}
 
 		Slave.worker.acceptKeyAndMapperLocationSetFromShuffler(klMap);
-		
 		sendResponse();
 	}
 	
 	public void sendResponse(){
 	
+/*		try {
+			Thread.sleep(4000000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+*/		
 		CommandResponse.Builder cmdResp = CommandResponse.newBuilder();
         cmdResp.setForCommandId(command.getCommandId());
         cmdResp.setForCommandString(command.getCommandString());

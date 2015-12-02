@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
@@ -157,39 +158,51 @@ class JobTracker implements Runnable{
 	
 	public void run(){
 		
-		String fileName = "inputdata.txt";
+/*		String fileName = "inputdata.txt";
 		File jInFile = new File(fileName);
 		long fileLength = jInFile.length();
 		System.out.println("File length "+fileLength);
+*/		
 		
+	    RandomAccessFile raf = null;
+	    long fileLength = 1;
+		try {
+			
+			raf = new RandomAccessFile("inputdata.txt", "r");
+			fileLength = raf.length();
+			
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	     
+	System.out.println("File length "+fileLength);
 		int chunkSize = 4194304;
 		int offset = 0;
-		chunkSize = 1024 * 2;
-		chunksCount = (int) Math.ceil(fileLength/chunkSize);
-		
+//		chunkSize = 1024 * 1;
+		chunksCount = (int) Math.ceil(fileLength/(chunkSize*1.0));
 //		chunksCount=1;
+		
+		System.out.println("Chunks Count "+chunksCount);
 		numberOfMappers = chunksCount;
 		
 		try {
 			int chunkId = 0;
-			while(chunksCount>0){
+			while(chunksCount > 0){
 				ChannelHandlerContext ctx = Master.availableClients.take();
 				SocketAddress sa = ctx.channel().remoteAddress();
 				
-				SendData sendDataClient = new SendData (chunkId, offset, chunkSize, ctx);
+				
+				System.out.println("SENDING TO MAP "+chunkId+"\t"+offset+"\t"+chunkSize);
+				SendData sendDataClient = new SendData (raf, chunkId, offset, chunkSize, ctx);
 				Thread t = new Thread(sendDataClient);
 				t.start();
 				
-				// offset += chunkSize;
+				offset += chunkSize;
 				chunkId++;
 				chunksCount--;
-			}
-
-			/*while (numberOfMappers != Master.completedMapsCount){
-				
-			}*/
-			
-			
+			}			
 			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -207,37 +220,52 @@ class JobTracker implements Runnable{
 
 class SendData implements Runnable{
 
-	BufferedInputStream bis;
+	/*BufferedInputStream bis;*/
+	RandomAccessFile raf;
 	int chunkId;
 	int offset;
 	int length;
 	ChannelHandlerContext ctx;
 	
-	public SendData (int chunkId, int offset, int length, ChannelHandlerContext ctx){
+	public SendData (RandomAccessFile raf, int chunkId, int offset, int length, ChannelHandlerContext ctx){
 		
+		this.raf = raf;
 		this.chunkId = chunkId;
 		this.offset = offset;
 		this.length = length;
 		this.ctx = ctx;
 		
-		String fileName = "inputdata.txt";
+		/*String fileName = "inputdata.txt";
 		File jInFile = new File(fileName);
 		
 		try {
 			bis = new BufferedInputStream(new FileInputStream(jInFile));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
-		}
+		}*/
 	}
 	
 	public void run() {
-		byte[] byteData = new byte[length+10];
+		/*byte[] byteData = new byte[length+10];
 		try {
 			System.out.println("Trying to read from "+offset+" to "+(offset+length-1));
 			bis.read(byteData, offset, length-1);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}*/
+
+		
+        byte[] byteData = new byte[(int) length];
+
+		try {
+			raf.seek(offset);
+	        raf.read(byteData);
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
+
+        
+        
 		
 		String stringData = new String(byteData);
 		Command.Builder cmd = Command.newBuilder();
@@ -258,10 +286,10 @@ class SendData implements Runnable{
 		
 		cmd.setCommandString("START_MAP");
 		cc.sendCommand(cmd.build());
-		try {
+/*		try {
 			bis.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 } 
