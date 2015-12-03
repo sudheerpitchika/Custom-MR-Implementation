@@ -10,6 +10,6 @@ public class RunConfig {
 	public static final String shuffleServerPort = "8477";
 	public static final String heartBeatServerPort = "8478";
 	
-	public static final int chunkSize = 4194304;	//4 MB
-	public static final int numberOfReducers = 2;
+	public static final int chunkSize = 4194304/4;	//4 MB
+	public static final int numberOfReducers = 4;
 }

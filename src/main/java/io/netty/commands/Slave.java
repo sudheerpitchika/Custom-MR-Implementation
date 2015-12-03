@@ -1,5 +1,8 @@
 package io.netty.commands;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import io.netty.commands.CommandsProtocol.Command;
 import config.RunConfig;
 import endmodules.WorkerProgram;
@@ -7,6 +10,8 @@ import endmodules.WorkerProgram;
 public class Slave {
 	public static WorkerProgram worker = new WorkerProgram();
 	// public static ShufflerProgram shuffler = new ShufflerProgram();
+	
+	ExecutorService threadPool = Executors.newFixedThreadPool(200);
 	
 	public static void main(String[] args) throws Exception{
 		

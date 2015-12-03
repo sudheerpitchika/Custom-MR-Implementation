@@ -201,6 +201,5 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         	Thread t = new Thread(shuffleData);
         	t.start();
         }
-        
 	}
 }

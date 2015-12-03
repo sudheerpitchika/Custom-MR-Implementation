@@ -97,6 +97,7 @@ public class WorkerProgram {
 			DataInputStream in = new DataInputStream(new FileInputStream(file));*/
 			RandomAccessFile raf = new RandomAccessFile(fileName, "r");
 			fileStreams.put(chunkId,raf);
+			System.out.println(chunkId+"  Opening File: "+fileName);
 //			fileSizes.put(chunkId, file.length());
 		}
 	}
@@ -149,6 +150,7 @@ public class WorkerProgram {
         	/*Thread reducerTrhead = new Thread(runReducer);
         	reducerTrhead.start();*/
         	runReducer.run();
+   //     	Thread.sleep(100);
         }
 
         for(int i=0; i < keySet.size(); i++){
@@ -156,7 +158,7 @@ public class WorkerProgram {
         }
 
         executor.shutdown();
-        
+        reduceOs.close();
         loader.close ();
         System.out.println("Reduce: completed-"+reducersProcessed);
 		
@@ -173,7 +175,7 @@ public class WorkerProgram {
 		Set<String> keySet = keyValuesInMap.keySet();
 		keyList = new ArrayList<String>();
 		keyList.addAll(keySet);
-		Collections.sort(keyList);
+		//Collections.sort(keyList);
 	}
 
 	

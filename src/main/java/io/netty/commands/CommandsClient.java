@@ -34,8 +34,8 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 public class CommandsClient {
 
     boolean SSL = System.getProperty("ssl") != null;
-    static String HOST = System.getProperty("host", "127.0.0.1");
-    static int PORT = Integer.parseInt(System.getProperty("port", "8475"));
+    String HOST = System.getProperty("host", "127.0.0.1");
+    int PORT = Integer.parseInt(System.getProperty("port", "8475"));
     CommandsClientHandler handler;
     Channel ch;
     EventLoopGroup group;
@@ -60,7 +60,7 @@ public class CommandsClient {
             Bootstrap b = new Bootstrap();
             b.group(group)
              .channel(NioSocketChannel.class)
-             .handler(new CommandsClientInitializer(sslCtx));
+             .handler(new CommandsClientInitializer(sslCtx, this.HOST, this.PORT));
 
             // Make a new connection.
             ch = b.connect(HOST, PORT).sync().channel();

@@ -28,16 +28,19 @@ import io.netty.handler.ssl.SslContext;
 public class CommandsClientInitializer extends ChannelInitializer<SocketChannel> {
 
     private final SslContext sslCtx;
-
-    public CommandsClientInitializer(SslContext sslCtx) {
+    String HOST;
+    int PORT;
+    public CommandsClientInitializer(SslContext sslCtx, String HOST, int PORT) {
         this.sslCtx = sslCtx;
+        this.HOST = HOST;
+        this.PORT = PORT;
     }
 
     @Override
     public void initChannel(SocketChannel ch) {
         ChannelPipeline p = ch.pipeline();
         if (sslCtx != null) {
-            p.addLast(sslCtx.newHandler(ch.alloc(), CommandsClient.HOST, CommandsClient.PORT));
+            p.addLast(sslCtx.newHandler(ch.alloc(), this.HOST, this.PORT));
         }
 
         p.addLast(new ProtobufVarint32FrameDecoder());

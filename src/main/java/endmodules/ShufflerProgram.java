@@ -43,7 +43,7 @@ public class ShufflerProgram {
 	public void sendKeysAndLocationsToReducers() throws InterruptedException{
 		
 		
-		Thread.sleep(9000);
+//		Thread.sleep(9000);
 		
 		Set<String> keySet = keysAndLocations.keySet();
 		List<String> keyList = new ArrayList<String>();
@@ -57,10 +57,11 @@ public class ShufflerProgram {
 		
 		
 		for(int i = 0; i < totalReducerCount; i++){
-			
+			System.out.println("Before Q size: "+Master.availableClients.size());
 			ChannelHandlerContext ctx = Master.availableClients.take();
+			System.out.println("After Q size: "+Master.availableClients.size());
 			SocketAddress sa = ctx.channel().remoteAddress();
-			
+// Thread.sleep(2000);
 			int start = i*keysCountToEachReducer;
 			
 			keysReducerMap.put("ip: "+sa, ""+start);	// change it to key, ip table

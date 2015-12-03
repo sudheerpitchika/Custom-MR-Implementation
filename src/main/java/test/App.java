@@ -1,6 +1,7 @@
 package test;
 
-import java.net.InetAddress;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 
 public class App {
@@ -101,7 +102,7 @@ public class App {
 		
 		
 		
-		
+
 /*		File transferFile = new File("inputdata.txt");
         //byte[] bytearray = new byte[(int) transferFile.length()];
 		byte[] bytearray = new byte[10000];
@@ -139,9 +140,60 @@ public class App {
 		System.out.println(port+"\t"+ip);*/
 		
 		
-		InetAddress IP=InetAddress.getLocalHost();
+/*		InetAddress IP=InetAddress.getLocalHost();
 		System.out.println("IP of my system is := "+IP.getHostAddress());
-		System.out.println("\t"+InetAddress.getLocalHost().getHostAddress());
+		System.out.println("\t"+InetAddress.getLocalHost().getHostAddress());*/
 		
+		
+		
+		  RandomAccessFile raf = new RandomAccessFile("inputdata.txt", "r");
+	        long numSplits = 10; 
+	        long sourceSize = raf.length();
+	        long bytesPerSplit = sourceSize/numSplits ;
+	        /*long remainingBytes = sourceSize % numSplits;
+	        long startPosition = 0;
+	        for(int i=1; i <= numSplits; i++) {
+	            String s = readContent(raf,startPosition,bytesPerSplit);
+	            System.out.println(s);
+	            startPosition +=bytesPerSplit;
+	        }*/
+	        bytesPerSplit = 27;
+	        String s = readContent(raf,0,bytesPerSplit, sourceSize);
+            System.out.println(s);
 	}
+	
+    public static String readContent(RandomAccessFile raf,long startPosition,long length, long size) throws IOException{
+        raf.seek(startPosition);
+        byte[] buf = new byte[(int) length];
+        raf.read(buf);
+        
+        if(startPosition+length < size){
+        	
+        	byte[] buf2 = new byte[1];
+        	raf.read(buf2);
+        	String next = new String(buf2);
+        	
+        	if(next.equals(" ")){
+        		System.out.println("next char: "+next);
+        		System.out.println(new String(buf));
+        	}
+        	else{
+        		int i=0;
+        		while(true){
+        			raf.seek(startPosition+length+i--);
+        			raf.read(buf2);
+                	String prev = new String(buf2);
+                	if(prev.equals(" ")){
+                		break;
+                	}
+                	System.out.println("prev: "+prev);
+                		
+        		}
+        		
+        	}
+        }
+        
+        return new String(buf);
+        
+    }
 }
