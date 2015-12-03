@@ -137,12 +137,15 @@ public class WorkerProgram {
         Method printit = cl.getMethod("reduce",String.class, ArrayList.class, WorkerProgram.class );
         Constructor<?> ctor = cl.getConstructor(); //One has to pass arguments if constructor takes input arguments.
         Object instance = ctor.newInstance();
-System.out.println("Accessing key values in reducer");        
+        
+        System.out.println("Accessing key values in reducer");        
         Set<String> keySet = keysAndMapperLocations.keySet();
+        
+        ExecutorService executor = Executors.newFixedThreadPool(20);
         
         for(String key : keySet){
         	// Object value = printit.invoke(instance,key,keyValuesInReducer.get(key), Slave.worker);
-        	RunReducerClass runReducer = new RunReducerClass(instance, printit, key);
+        	RunReducerClass runReducer = new RunReducerClass(executor,instance, printit, key);
         	/*Thread reducerTrhead = new Thread(runReducer);
         	reducerTrhead.start();*/
         	runReducer.run();
@@ -151,6 +154,8 @@ System.out.println("Accessing key values in reducer");
         for(int i=0; i < keySet.size(); i++){
         	completedReducerKeys.take();
         }
+
+        executor.shutdown();
         
         loader.close ();
         System.out.println("Reduce: completed-"+reducersProcessed);
@@ -325,9 +330,10 @@ class RunReducerClass /*implements Runnable*/{
 	String key;
 	Method printit;
 	ArrayList<LocationMeta> locations;
-
+	ExecutorService executor;
 	
-    public RunReducerClass(Object instance, Method printit, String key){
+    public RunReducerClass(ExecutorService executor, Object instance, Method printit, String key){
+    	this.executor = executor;
     	this.instance = instance;
     	this.key = key;
     	this.printit = printit;
@@ -365,8 +371,8 @@ class RunReducerClass /*implements Runnable*/{
 		
 		int threadNum = locations.size();
 		
-//		System.out.println("Fething values from mapper locations for: "+key+"\t loc Count: "+threadNum);
-        ExecutorService executor = Executors.newFixedThreadPool(threadNum);
+
+//        ExecutorService executor = Executors.newFixedThreadPool(threadNum);
         List<FutureTask<ArrayList<String>>> taskList = new ArrayList<FutureTask<ArrayList<String>>>();
         
 		for(final LocationMeta location : locations){
@@ -391,8 +397,8 @@ class RunReducerClass /*implements Runnable*/{
             FutureTask<ArrayList<String>> futureTask = taskList.get(j);
             valuesFromMappers.addAll(futureTask.get());
         }
-        executor.shutdown();
-//        System.out.println("setting key values in reducer: "+key); 
+//        executor.shutdown();
+ 
         Slave.worker.keyValuesInReducer.put(key, valuesFromMappers);
         return valuesFromMappers;
 	}
