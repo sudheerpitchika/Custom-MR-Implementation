@@ -9,15 +9,14 @@ import io.netty.commands.CommandsProtocol.Location;
 import io.netty.commands.Slave;
 
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -35,12 +34,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import config.RunConfig;
+
 public class WorkerProgram {
 	TaskTracker tt;
 	DataNode dn;
 	
-	static String complexDelimiter = "#$%@@%$#";
-	
+	static String complexDelimiter = "#%@@%#";
 	
 	//used to send values to reducers
 	Map<String, LocationMeta> keyAndFileLocationMap; //stores keys and location(offset) in file, and let of the value for key
@@ -196,7 +196,8 @@ System.out.println("Accessing key values in reducer");
 	//		System.out.println(key+"\t"+location.toString());
 		}
 		
-		CommandsClient shuffleClient = new CommandsClient("127.0.0.1", "8477");
+		//CommandsClient shuffleClient = new CommandsClient("127.0.0.1", "8477");
+		CommandsClient shuffleClient = new CommandsClient(RunConfig.shuffleServerIp, RunConfig.shuffleServerPort);
 		shuffleClient.startConnection();
 		shuffleClient.sendCommand(command.build());
 	}
@@ -300,7 +301,7 @@ System.out.println("Accessing key values in reducer");
 				fos.write(dataBytes);
 				dataBytesLength += value.length();
 	
-				String ip = ""; //ip of this machine
+				String ip = InetAddress.getLocalHost().getHostAddress(); //ip of this machine
 				LocationMeta location = new LocationMeta(start, dataBytesLength, inputChunkId,ip);
 				
 				start =  start + dataBytesLength;
@@ -351,8 +352,6 @@ class RunReducerClass /*implements Runnable*/{
 		}
 		
 	}
-	
-	
 	
 	
 	public ArrayList<String> getValuesForKeyFromMaps() throws InterruptedException, ExecutionException{
@@ -410,7 +409,8 @@ class RunReducerClass /*implements Runnable*/{
 		keyLocation.setKey(key);
 		keyLocation.setLocation(locn.build());
 		
-		CommandsClient commandClient = new CommandsClient("127.0.0.1", "8476"); // use location.getIp(); for ip
+		// CommandsClient commandClient = new CommandsClient("127.0.0.1", "8476"); // use location.getIp(); for ip
+		CommandsClient commandClient = new CommandsClient(location.getIp(), RunConfig.slaveServerPort);
 		commandClient.startConnection();
 		
 		Command.Builder command = Command.newBuilder();
@@ -432,8 +432,7 @@ class RunReducerClass /*implements Runnable*/{
 /*		ProtocolStringList valsProtoStringList=kvSet.getValuesList();
 		String[] valsArray= (String[]) valsProtoStringList.toArray();
 		ArrayList<String> valsList = (ArrayList<String>) Arrays.asList(valsArray);
-		return valsList;*/
-		
+		return valsList;*/		
 	}
 }
 

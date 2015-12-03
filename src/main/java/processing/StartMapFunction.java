@@ -3,6 +3,7 @@ package processing;
 import io.netty.commands.CommandsClient;
 import io.netty.commands.CommandsProtocol.Command;
 import io.netty.commands.Slave;
+import config.RunConfig;
 
 public class StartMapFunction implements Runnable{
 
@@ -22,7 +23,7 @@ public class StartMapFunction implements Runnable{
 
 			Slave.worker.openAllFiles();
 			
-			CommandsClient client = new CommandsClient("127.0.0.1", "8475");
+			CommandsClient client = new CommandsClient(RunConfig.masterServerIp, RunConfig.masterServerPort);
 			client.startConnection();
 			Command.Builder command = Command.newBuilder();
 			command.setCommandId(1);

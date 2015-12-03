@@ -1,7 +1,7 @@
 package io.netty.commands;
 
 import io.netty.commands.CommandsProtocol.Command;
-import endmodules.ShufflerProgram;
+import config.RunConfig;
 import endmodules.WorkerProgram;
 
 public class Slave {
@@ -14,7 +14,8 @@ public class Slave {
 		Thread t = new Thread(listenerThread);
 		t.start();
 		
-		CommandsClient commandClient = new CommandsClient("127.0.0.1", "8475");
+		//CommandsClient commandClient = new CommandsClient("127.0.0.1", "8475");
+		CommandsClient commandClient = new CommandsClient(RunConfig.masterServerIp, RunConfig.masterServerPort);
 		commandClient.startConnection();
 		Command.Builder command = Command.newBuilder();
 		command.setCommandId(1);
@@ -29,7 +30,8 @@ public class Slave {
 class CommandListenerThread implements Runnable{
 
 	public void run() {
-		CommandsServer commandsListener = new CommandsServer("8476");
+		//CommandsServer commandsListener = new CommandsServer("8476");
+		CommandsServer commandsListener = new CommandsServer(RunConfig.slaveServerPort);
 		try {
 			commandsListener.startListening();
 		} catch (Exception e) {

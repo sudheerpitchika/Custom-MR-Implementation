@@ -1,15 +1,6 @@
 package test;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
+import java.net.InetAddress;
 
 
 public class App {
@@ -111,17 +102,13 @@ public class App {
 		
 		
 		
-		File transferFile = new File("inputdata.txt");
+/*		File transferFile = new File("inputdata.txt");
         //byte[] bytearray = new byte[(int) transferFile.length()];
 		byte[] bytearray = new byte[10000];
         System.out.println("Size: "+bytearray.length);
 
-
-
-
         FileInputStream fin = new FileInputStream(transferFile);
         BufferedInputStream bin = new BufferedInputStream(fin);
-
 
         int length = (int) transferFile.length();
         int start=0, splitSize = 6291456;
@@ -142,9 +129,19 @@ public class App {
             System.out.println(new String(bytearray));
             start = end;
         }
-
-
-        System.out.println("File transfer complete");
+        System.out.println("File transfer complete");*/
+		
+/*		String remoteAddr = "/127.0.0.1:57050";
+		String[] parts = remoteAddr.split(":");
+		
+		String port = parts[1];
+		String ip = remoteAddr.split(":")[0].substring(1);
+		System.out.println(port+"\t"+ip);*/
+		
+		
+		InetAddress IP=InetAddress.getLocalHost();
+		System.out.println("IP of my system is := "+IP.getHostAddress());
+		System.out.println("\t"+InetAddress.getLocalHost().getHostAddress());
 		
 	}
 }

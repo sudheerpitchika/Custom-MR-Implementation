@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import config.RunConfig;
+
 public class SendKeysAndLocationToReducers implements Runnable {
 
 	ChannelHandlerContext ctx;
@@ -44,7 +46,10 @@ public class SendKeysAndLocationToReducers implements Runnable {
 			
 			command.addKeysAndLocationsSet(klSet);	
 		}
-		CommandsClient cmdClient = new CommandsClient("127.0.0.1", "8476");
+		
+		//CommandsClient cmdClient = new CommandsClient("127.0.0.1", "8476");
+		String remoteAddress = ctx.channel().remoteAddress().toString();
+		CommandsClient cmdClient = new CommandsClient(remoteAddress.split(":")[0].substring(1), RunConfig.slaveServerPort);
 		try {
 			cmdClient.startConnection();
 		} catch (Exception e) {

@@ -4,9 +4,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.commands.CommandsProtocol.Command;
 import io.netty.heartbeats.HeartBeatServer;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -15,6 +12,7 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import config.RunConfig;
 import endmodules.ShufflerProgram;
 
 
@@ -36,61 +34,32 @@ public class Master {
 
 
 		
-		CommandServerThread commandsServer = new CommandServerThread("8475");
+		//CommandServerThread commandsServer = new CommandServerThread("8475");
+		CommandServerThread commandsServer = new CommandServerThread(RunConfig.masterServerPort);
 		Thread servThread = new Thread(commandsServer);
 		servThread.start();
 		
  Thread.sleep(2000);
 
-		HeartBeatServerThread myRunnable = new HeartBeatServerThread("8478");
+		//HeartBeatServerThread myRunnable = new HeartBeatServerThread("8478");
+		HeartBeatServerThread myRunnable = new HeartBeatServerThread(RunConfig.heartBeatServerPort);
 	     Thread t = new Thread(myRunnable);
 	     t.start();
 
 // Thread.sleep(2000);
  
-     	shuffleServer = new ShuffleServerThread("8477");
+     	//shuffleServer = new ShuffleServerThread("8477");
+	     shuffleServer = new ShuffleServerThread(RunConfig.shuffleServerPort);
 		Thread shuffleThread = new Thread(shuffleServer);
 		shuffleThread.start();
      
-/*	    ShuffleServerThread shuffler = new ShuffleServerThread("8477");
-		Thread shuffleThread = new Thread(shuffler);
-		shuffleThread.start();*/
 
 // Thread.sleep(2000);
 			
 		jobTracker = new JobTracker();
 		Thread jobTrackerThread = new Thread(jobTracker);
 		jobTrackerThread.start();
-		
-		
-	/*	
-		CommandsClient commandClient = new CommandsClient("127.0.0.1", "8475");
-		commandClient.startConnection();
-		
-		//start listening from the workers now
-		// only for the first time - if it needs to be only one for all slaves
-		
-		
-		Thread.sleep(4000);
-		
-		HeartBeatServerThread myRunnable = new HeartBeatServerThread("8478");
-	     Thread t = new Thread(myRunnable);
-	     t.start();
-	        
-	    Command.Builder command = Command.newBuilder();
-	    command.setCommandId(1);
-	    command.setCommandString("START_TASK_TRACKER");
-		commandClient.sendCommand(command.build());
-		Thread.sleep(4000);
-	    command.setCommandString("START_SHUFFLE");
-	    commandClient.sendCommand(command.build());
-		
-		Thread.sleep(6000);
-	    command.setCommandString("SHUTDOWN");		
-	    commandClient.sendCommand(command.build());
-		commandClient.closeConnection();
-	*/
-		//stop heart beat server
+
 	}
 }
 
@@ -178,7 +147,7 @@ class JobTracker implements Runnable{
 		}
 	     
 	System.out.println("File length "+fileLength);
-		int chunkSize = 4194304;
+		int chunkSize = RunConfig.chunkSize;
 		int offset = 0;
 //		chunkSize = 1024 * 1;
 		chunksCount = (int) Math.ceil(fileLength/(chunkSize*1.0));
@@ -192,9 +161,10 @@ class JobTracker implements Runnable{
 			while(chunksCount > 0){
 				ChannelHandlerContext ctx = Master.availableClients.take();
 				SocketAddress sa = ctx.channel().remoteAddress();
+				String s = sa.toString();
+
 				
-				
-				System.out.println("SENDING TO MAP "+chunkId+"\t"+offset+"\t"+chunkSize);
+				System.out.println("SENDING TO MAP: "+s+"\t"+chunkId+"\t"+offset+"\t"+chunkSize);
 				SendData sendDataClient = new SendData (raf, chunkId, offset, chunkSize, ctx);
 				Thread t = new Thread(sendDataClient);
 				t.start();
@@ -264,18 +234,18 @@ class SendData implements Runnable{
 			e1.printStackTrace();
 		}
 
-        
-        
-		
-		String stringData = new String(byteData);
+        String stringData = new String(byteData);
 		Command.Builder cmd = Command.newBuilder();
 		cmd.setCommandId(1);
 		cmd.setCommandString("ACCEPT_DATA");
 		cmd.setInputChunk(stringData);
 		cmd.setInputChunkId(chunkId);
 		
-		// ctx.channel().remoteAddress();
-		CommandsClient cc = new CommandsClient("127.0.0.1", "8476");
+		String remoteAddress =  ctx.channel().remoteAddress().toString();
+		// CommandsClient cc = new CommandsClient("127.0.0.1", "8476");
+		CommandsClient cc = new CommandsClient(remoteAddress.split(":")[0].substring(1), RunConfig.slaveServerPort);
+		
+		
 		try {
 			cc.startConnection();
 		} catch (Exception e) {
@@ -286,10 +256,5 @@ class SendData implements Runnable{
 		
 		cmd.setCommandString("START_MAP");
 		cc.sendCommand(cmd.build());
-/*		try {
-			bis.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
 	}
 } 

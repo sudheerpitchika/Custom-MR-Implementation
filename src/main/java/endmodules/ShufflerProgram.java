@@ -13,11 +13,12 @@ import java.util.Map;
 import java.util.Set;
 
 import responses.SendKeysAndLocationToReducers;
+import config.RunConfig;
 
 public class ShufflerProgram {
 
 	Map<String, ArrayList<Location>> keysAndLocations;
-	public int totalReducerCount=2;
+	public int totalReducerCount = RunConfig.numberOfReducers;
 	Map<String, String> keysReducerMap;
 	
 	public ShufflerProgram(){

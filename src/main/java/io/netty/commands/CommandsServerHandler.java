@@ -15,16 +15,15 @@
  */
 package io.netty.commands;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-
-import com.google.protobuf.ByteString;
-
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.commands.CommandsProtocol.Command;
 import io.netty.commands.CommandsProtocol.CommandResponse;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+
 import processing.AcceptData;
 import processing.AcceptingKeyAndLocationsAtReducer;
 import processing.StartMapFunction;
@@ -32,6 +31,10 @@ import processing.StartReduceFunction;
 import responses.AcceptDataShuffler;
 import responses.HeartBeats;
 import responses.ReturnValueForKey;
+
+import com.google.protobuf.ByteString;
+
+import config.RunConfig;
 
 public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> {
 
@@ -136,7 +139,8 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         else if(cmdString.equals("START_TASK_TRACKER")){
         	// send heart beats to master repeatedly
         	ctx.write(cmdResp.build());
-        	heartBeatClient = new HeartBeats("127.0.0.1", "8478");
+        	//heartBeatClient = new HeartBeats("127.0.0.1", "8478");
+        	heartBeatClient = new HeartBeats(RunConfig.heartBeatServerIp, RunConfig.heartBeatServerPort);
    	     	Thread t = new Thread(heartBeatClient);
    	     	t.start();
    	     	
