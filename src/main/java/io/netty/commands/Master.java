@@ -256,5 +256,7 @@ class SendData implements Runnable{
 		
 		cmd.setCommandString("START_MAP");
 		cc.sendCommand(cmd.build());
+		// *************** closing connection
+		cc.closeConnection();
 	}
 } 

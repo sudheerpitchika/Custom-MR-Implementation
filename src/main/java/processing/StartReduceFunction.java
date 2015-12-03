@@ -24,7 +24,8 @@ public class StartReduceFunction implements Runnable{
 			CommandsClient commandClient  = new CommandsClient(RunConfig.masterServerIp, RunConfig.masterServerPort);
 			commandClient.startConnection();
 			commandClient.sendCommand(command.build());
-			
+			// *************** closing connection
+			commandClient.closeConnection();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

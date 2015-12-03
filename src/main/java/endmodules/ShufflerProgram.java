@@ -43,6 +43,8 @@ public class ShufflerProgram {
 	public void sendKeysAndLocationsToReducers() throws InterruptedException{
 		
 		
+		Thread.sleep(4000);
+		
 		Set<String> keySet = keysAndLocations.keySet();
 		List<String> keyList = new ArrayList<String>();
 		keyList.addAll(keySet);
@@ -72,5 +74,6 @@ public class ShufflerProgram {
 		}*/
 		
 		System.out.println("Shuffler: Sent data to all reducers");
+
 	}
 }

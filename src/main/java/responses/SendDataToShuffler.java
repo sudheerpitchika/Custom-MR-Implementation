@@ -51,5 +51,7 @@ public class SendDataToShuffler implements Runnable{
 		// sending the above data also
 		
 		commandClient.sendCommand(command.build());
+		// *************** closing connection
+		commandClient.closeConnection();
 	}
 }

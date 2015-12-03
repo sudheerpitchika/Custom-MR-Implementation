@@ -21,7 +21,8 @@ public class Slave {
 		command.setCommandId(1);
 		command.setCommandString("CONNECT");
 		commandClient.sendCommand(command.build());
-				
+		// *************** closing connection
+		commandClient.closeConnection();		
 		
 		
 	}

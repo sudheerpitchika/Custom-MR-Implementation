@@ -29,7 +29,8 @@ public class StartMapFunction implements Runnable{
 			command.setCommandId(1);
 			command.setCommandString("MAP_COMPLETE");
 			client.sendCommand(command.build());
-			
+			// *************** closing connection
+			client.closeConnection();
 			System.out.println("***** MAP COMPLETE **** ");
 			
 			

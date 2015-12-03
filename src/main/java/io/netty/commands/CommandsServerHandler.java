@@ -80,15 +80,17 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         	cmdResp.setJarData(ByteString.copyFrom(buffer));
             ctx.write(cmdResp.build());
         }
-       
+
         else if(cmdString.equals("MAP_COMPLETE")){
         	ctx.write(cmdResp.build());
         	
         	Master.completedMapsCount++;
         	Master.availableClients.add(ctx);
         	if(Master.jobTracker.getNumberOfMappers() == Master.completedMapsCount){
-        		Master.shuffler.sendKeysAndLocationsToReducers();
         		System.out.println("Last mapper completed");
+// ****** USE THREADS HERE
+        		Master.shuffler.sendKeysAndLocationsToReducers();
+        		System.out.println("");
         	}
         	
         }

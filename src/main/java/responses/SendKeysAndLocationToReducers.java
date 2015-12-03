@@ -62,5 +62,7 @@ public class SendKeysAndLocationToReducers implements Runnable {
 		// once completed, send START_REDUCE command to start reduce task
 		command.setCommandString("START_REDUCE");
 		cmdClient.sendCommand(command.build());
+		// *************** closing connection
+		cmdClient.closeConnection();
 	}
 }

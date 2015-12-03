@@ -200,6 +200,8 @@ System.out.println("Accessing key values in reducer");
 		CommandsClient shuffleClient = new CommandsClient(RunConfig.shuffleServerIp, RunConfig.shuffleServerPort);
 		shuffleClient.startConnection();
 		shuffleClient.sendCommand(command.build());
+		// *************** closing connection
+		shuffleClient.closeConnection();
 	}
 	
 	public Map<String, LocationMeta> getKeyAndLocations(){
@@ -216,7 +218,7 @@ System.out.println("Accessing key values in reducer");
 		
 		RandomAccessFile raf = fileStreams.get(location.getChunkId());
 
-		System.out.println(key+"\t"+location.getStart()+"\t"+location.getLength());
+		System.out.println(key+"\t"+location.getChunkId()+"\t"+location.getStart()+"\t"+location.getLength());
 		
 		byte[] dataBytes = new byte[location.getLength()];
 //		System.out.println("***"+location.getStart());
@@ -419,6 +421,8 @@ class RunReducerClass /*implements Runnable*/{
 		command.setKeyLocation(keyLocation);
 		
 		CommandResponse response = commandClient.sendCommand(command.build());
+		// *************** closing connection
+		commandClient.closeConnection();
 		KeyValuesSet kvSet = response.getKeyValuesSet();
 		
 		int valCount = kvSet.getValuesCount();
