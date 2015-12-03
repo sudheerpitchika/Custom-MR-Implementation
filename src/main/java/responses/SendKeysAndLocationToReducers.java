@@ -28,6 +28,8 @@ public class SendKeysAndLocationToReducers implements Runnable {
 	
 	public void run(){
 		
+		
+		
 		Command.Builder command = Command.newBuilder();
 		command.setCommandId(1);
 		command.setCommandString("ACCEPT_KEYS_AND_LOCATIONS");
@@ -50,6 +52,7 @@ public class SendKeysAndLocationToReducers implements Runnable {
 		//CommandsClient cmdClient = new CommandsClient("127.0.0.1", "8476");
 		String remoteAddress = ctx.channel().remoteAddress().toString();
 		CommandsClient cmdClient = new CommandsClient(remoteAddress.split(":")[0].substring(1), RunConfig.slaveServerPort);
+		System.out.println("Sending kes and locations to "+remoteAddress);
 		try {
 			cmdClient.startConnection();
 		} catch (Exception e) {

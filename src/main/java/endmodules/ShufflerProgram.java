@@ -43,7 +43,7 @@ public class ShufflerProgram {
 	public void sendKeysAndLocationsToReducers() throws InterruptedException{
 		
 		
-		Thread.sleep(4000);
+		Thread.sleep(9000);
 		
 		Set<String> keySet = keysAndLocations.keySet();
 		List<String> keyList = new ArrayList<String>();

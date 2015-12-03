@@ -46,7 +46,7 @@ public class ReturnKeysAndLocations implements Runnable {
 //			cmdResponse.addKeyLocationTable(kl);
 		}
 		
-		ctx.write(cmdResponse);
+		ctx.writeAndFlush(cmdResponse);
 	}
 }
 
