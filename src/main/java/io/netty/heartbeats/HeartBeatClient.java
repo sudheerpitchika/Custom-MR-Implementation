@@ -20,6 +20,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.commands.CommandsProtocol.Command;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -70,9 +71,13 @@ public class HeartBeatClient {
         }
     }
     
-    public void sendCommand(String command){
-        String result = handler.sendCommand(1,command);
+    /*public void sendCommand(Command command){
+        String result = handler.sendCommand(command);
 //        System.out.println("Returned: "+result);
+    }*/
+    
+    public void sendCommandAsync(Command command){
+    	handler.sendCommandAsync(command);
     }
     
     public void closeConnection(){

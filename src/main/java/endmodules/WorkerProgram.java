@@ -4,15 +4,13 @@ import io.netty.commands.CommandsClient;
 import io.netty.commands.CommandsProtocol.Command;
 import io.netty.commands.CommandsProtocol.CommandResponse;
 import io.netty.commands.CommandsProtocol.KeyLocation;
+import io.netty.commands.CommandsProtocol.KeyLocationsSet;
 import io.netty.commands.CommandsProtocol.KeyValuesSet;
 import io.netty.commands.CommandsProtocol.Location;
 import io.netty.commands.Slave;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -22,9 +20,9 @@ import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -283,6 +281,39 @@ public class WorkerProgram {
 		return values;
 	}
 
+	
+	
+	public ArrayList<String> valueForKeyLocationSet(String key, ArrayList<LocationMeta> locations) throws Exception{
+		//get the value from the file(for corresponding chunk) //requested by reducer
+		
+		ArrayList<String> valuesList = new ArrayList<String>();
+		
+		for(LocationMeta location : locations)
+		{
+			RandomAccessFile raf = fileStreams.get(location.getChunkId());
+	
+			//System.out.println(key+"\t"+location.getChunkId()+"\t"+location.getStart()+"\t"+location.getLength());
+			
+			byte[] dataBytes = new byte[location.getLength()];
+
+			raf.seek(location.getStart());
+			raf.read(dataBytes);
+			
+			String dataString = new String(dataBytes);
+			dataString = dataString.trim();
+	//		System.out.println("Data String: "+dataString);
+			String[] splits = dataString.split(complexDelimiter);
+			
+			ArrayList<String> values = new ArrayList<String> ( Arrays.asList(splits));
+			values.remove(0);
+			valuesList.addAll(values);
+		}
+		
+		
+		System.out.println("*** Returning values for key: "+key+"\t size: "+valuesList.size());
+		return valuesList;
+	}
+	
 	public void acceptKeyAndMapperLocationSetFromShuffler( Map<String, ArrayList<LocationMeta>> map){
 		//reducer server
 		//read from buffer and add to keysAndMapperLocations
@@ -399,54 +430,136 @@ class RunReducerClass /*implements Runnable*/{
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
 		}
-		
 	}
 	
 	
-	public ArrayList<String> getValuesForKeyFromMaps() throws InterruptedException, ExecutionException{
+	public ArrayList<String> getValuesForKeyFromMaps() throws InterruptedException, ExecutionException, UnknownHostException{
 		// for each key, get the values from list of mappers of that key
 		// keysAndIps
 
 		// ArrayList<LocationMeta> locations = keysAndMapperLocations.get(key);
 		// reducer client to map server
 		
-		int threadNum = locations.size();
 		
-
+		
 //        ExecutorService executor = Executors.newFixedThreadPool(threadNum);
         List<FutureTask<ArrayList<String>>> taskList = new ArrayList<FutureTask<ArrayList<String>>>();
+        final String localIp = InetAddress.getLocalHost().getHostAddress().toString().split(":")[0].substring(1);
         
-		for(final LocationMeta location : locations){
+        final HashMap<String, ArrayList<LocationMeta>> locationsMap = new HashMap<String, ArrayList<LocationMeta>>();
+        
+        for(LocationMeta location : locations){
+        	if(locationsMap.containsKey(location.getIp())){
+        		locationsMap.get(location.getIp()).add(location);
+        	}else{
+        		ArrayList<LocationMeta> locationList = new ArrayList<LocationMeta>();
+        		locationList.add(location);
+        		locationsMap.put(key, locationList);
+        	}
+        }
+        
+        
+        
+        
+		/*for(final LocationMeta location : locations){
 			
 			//future task with
 			// Start thread for the first half of the numbers
 	        FutureTask<ArrayList<String>> futureTask_1 = new FutureTask<ArrayList<String>>(new Callable<ArrayList<String>>() {
 	            //@Override
 	            public ArrayList<String> call() throws Exception {
-	                return getValuesFromSingleMap(key, location);
+	            	if(location.getIp().equals(localIp))
+	            		return Slave.worker.valueForKey(key, location);
+	            	else	
+	            		return getValuesFromSingleRemoteMap(key, location);
 	            }
 	        });
 	        taskList.add(futureTask_1);
 	        executor.execute(futureTask_1);
-
 		}
 		
-		ArrayList<String> valuesFromMappers = new ArrayList<String>();
-		
-		// Wait until all results are available and combine them at the same time
+		int threadNum = locations.size();
+		*/
+ 
+        int threadNum = locationsMap.keySet().size();
+        
+        for(final String locationIp : locationsMap.keySet()){
+        	//future task with
+			// Start thread for the first half of the numbers
+	        FutureTask<ArrayList<String>> futureTask_1 = new FutureTask<ArrayList<String>>(new Callable<ArrayList<String>>() {
+	            //@Override
+	            public ArrayList<String> call() throws Exception {
+	            	if(locationIp.equals(localIp))
+	            		return Slave.worker.valueForKeyLocationSet(key, locationsMap.get(locationIp));
+	            	else	
+	            		return getValuesFromSingleRemoteMapLocationSet(key, locationsMap.get(locationIp));
+	            }
+	        });
+	        taskList.add(futureTask_1);
+	        executor.execute(futureTask_1);
+        }
+        
+        ArrayList<String> valuesFromMappers = new ArrayList<String>();
+        // Wait until all results are available and combine them at the same time
         for (int j = 0; j < threadNum; j++) {
             FutureTask<ArrayList<String>> futureTask = taskList.get(j);
             valuesFromMappers.addAll(futureTask.get());
         }
-//        executor.shutdown();
- 
+        
         Slave.worker.keyValuesInReducer.put(key, valuesFromMappers);
         return valuesFromMappers;
 	}
 	
 	
-	public static ArrayList<String> getValuesFromSingleMap(String key, LocationMeta location) throws Exception{
+	/*public ArrayList<String> getValuesFromLocalMap(String key, LocationMeta location) throws Exception{
+		return Slave.worker.valueForKey(key, location);
+	}*/
+	
+	
+	public static ArrayList<String> getValuesFromSingleRemoteMapLocationSet(String key, ArrayList<LocationMeta> locations) throws Exception{
+		
+		KeyLocationsSet.Builder keyLocationsSet = KeyLocationsSet.newBuilder();
+		keyLocationsSet.setKey(key);
+		
+		for(LocationMeta location : locations){
+			Location.Builder locn = Location.newBuilder();
+			locn.setChunk(location.getChunkId());
+			locn.setIp(location.getIp());
+			locn.setStart(location.getStart());
+			locn.setLength(location.getLength());
+			
+			keyLocationsSet.addLocations(locn);
+		}
+		
+		
+		CommandsClient commandClient = new CommandsClient(locations.get(0).getIp(), RunConfig.slaveServerPort);
+		commandClient.startConnection();
+		
+		Command.Builder command = Command.newBuilder();
+		command.setCommandId(1);
+		command.setCommandString("RETURN_VALUES_FOR_KEY_LOCATION_SET");
+		command.addKeysAndLocationsSet(keyLocationsSet);
+		//command.setKeysAndLocationsSet(keyLocationsSet);
+		
+		CommandResponse response = commandClient.sendCommand(command.build());
+		// *************** closing connection
+		commandClient.closeConnection();
+		KeyValuesSet kvSet = response.getKeyValuesSet();
+		
+		int valCount = kvSet.getValuesCount();
+		ArrayList<String> valueList = new ArrayList<String>();
+		
+		for(int i=0; i < valCount; i++){
+			valueList.add(kvSet.getValues(i));
+		}
+		return valueList;
+	}
+	
+	
+	public static ArrayList<String> getValuesFromSingleRemoteMap(String key, LocationMeta location) throws Exception{
 		// send command "RETURN_VALUES_FOR_KEY" and return result
 		
 		Location.Builder locn = Location.newBuilder();
@@ -480,11 +593,6 @@ class RunReducerClass /*implements Runnable*/{
 			valueList.add(kvSet.getValues(i));
 		}
 		return valueList;
-		
-/*		ProtocolStringList valsProtoStringList=kvSet.getValuesList();
-		String[] valsArray= (String[]) valsProtoStringList.toArray();
-		ArrayList<String> valsList = (ArrayList<String>) Arrays.asList(valsArray);
-		return valsList;*/		
 	}
 }
 

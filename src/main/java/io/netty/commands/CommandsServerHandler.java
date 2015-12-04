@@ -34,6 +34,7 @@ import processing.StartReduceFunction;
 import responses.AcceptDataShuffler;
 import responses.HeartBeats;
 import responses.ReturnValueForKey;
+import responses.ReturnValueForKeyLocationsSet;
 
 import com.google.protobuf.ByteString;
 
@@ -211,6 +212,25 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         else if(cmdString.equals("RETURN_VALUES_FOR_KEY")){
         	
         	final ReturnValueForKey retValForKey = new ReturnValueForKey(ctx, command);
+        	
+        	FutureTask<Void> futureTask_1 = new FutureTask<Void>(new Callable<Void>() {
+	            //@Override
+	            public Void call() throws Exception {
+	                return retValForKey.run();
+	            }
+	        });
+	        
+        	Slave.threadPool.execute(futureTask_1);
+        	
+/*        	ReturnValueForKey retValForKey = new ReturnValueForKey(ctx, command);
+        	Thread t = new Thread(retValForKey);
+        	t.start();*/
+        }
+        
+        
+        else if(cmdString.equals("RETURN_VALUES_FOR_KEY_LOCATION_SET")){
+        	
+        	final ReturnValueForKeyLocationsSet retValForKey = new ReturnValueForKeyLocationsSet(ctx, command);
         	
         	FutureTask<Void> futureTask_1 = new FutureTask<Void>(new Callable<Void>() {
 	            //@Override

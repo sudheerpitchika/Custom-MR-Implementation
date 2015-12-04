@@ -1,5 +1,6 @@
 package responses;
 
+import io.netty.commands.CommandsProtocol.Command;
 import io.netty.heartbeats.HeartBeatClient;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -23,9 +24,13 @@ public class HeartBeats implements Runnable {
         	exec.scheduleAtFixedRate(new Runnable() {
         	           public void run() {
         	        	   // send heartbeat to master
-        	        	   i++;
-        	        	   System.out.println(""+i);
-        	        	   heartBeatClientClient.sendCommand("HEART_BEAT");
+        	        	   // i++;
+        	        	   // System.out.println(""+i);
+        	        	   
+        	        	   Command.Builder command = Command.newBuilder();
+        	        	   command.setCommandId(1);
+        	        	   command.setCommandString("HEART_BEAT");
+        	        	   heartBeatClientClient.sendCommandAsync(command.build());
         	           }
         	       }, 0, RunConfig.heartbeatIntervalInSec, TimeUnit.SECONDS); // execute every 3 seconds
 		} catch (Exception e) {

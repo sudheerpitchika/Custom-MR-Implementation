@@ -37,7 +37,7 @@ public class HeartBeatClientHandler extends SimpleChannelInboundHandler<String> 
         super(false);
     }
 
-    public String sendCommand(int commandId, String commandString){
+    /*public String sendCommand(int commandId, String commandString){
     	Command.Builder builder = Command.newBuilder();
     	
     	builder.setCommandId(commandId);
@@ -79,6 +79,11 @@ public class HeartBeatClientHandler extends SimpleChannelInboundHandler<String> 
             Thread.currentThread().interrupt();
         }
         return returnResult;
+    }*/
+    
+    
+    public void sendCommandAsync(Command command){
+    	channel.writeAndFlush(command);
     }
     
     @Override
