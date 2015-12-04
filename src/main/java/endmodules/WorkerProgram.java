@@ -447,17 +447,19 @@ class RunReducerClass /*implements Runnable*/{
 		
 //        ExecutorService executor = Executors.newFixedThreadPool(threadNum);
         List<FutureTask<ArrayList<String>>> taskList = new ArrayList<FutureTask<ArrayList<String>>>();
-        final String localIp = InetAddress.getLocalHost().getHostAddress().toString().split(":")[0].substring(1);
+        final String localIp = InetAddress.getLocalHost().getHostAddress().toString().split(":")[0];
         
         final HashMap<String, ArrayList<LocationMeta>> locationsMap = new HashMap<String, ArrayList<LocationMeta>>();
         
         for(LocationMeta location : locations){
         	if(locationsMap.containsKey(location.getIp())){
-        		locationsMap.get(location.getIp()).add(location);
+        		ArrayList<LocationMeta> locationList = locationsMap.get(location.getIp());
+        		locationList.add(location);
+        		locationsMap.put(location.getIp(), locationList);
         	}else{
         		ArrayList<LocationMeta> locationList = new ArrayList<LocationMeta>();
         		locationList.add(location);
-        		locationsMap.put(key, locationList);
+        		locationsMap.put(location.getIp(), locationList);
         	}
         }
         
