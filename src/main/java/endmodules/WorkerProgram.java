@@ -464,8 +464,6 @@ class RunReducerClass /*implements Runnable*/{
         }
         
         
-        
-        
 		/*for(final LocationMeta location : locations){
 			
 			//future task with
@@ -494,10 +492,14 @@ class RunReducerClass /*implements Runnable*/{
 	        FutureTask<ArrayList<String>> futureTask_1 = new FutureTask<ArrayList<String>>(new Callable<ArrayList<String>>() {
 	            //@Override
 	            public ArrayList<String> call() throws Exception {
-	            	if(locationIp.equals(localIp))
+	            	if(locationIp.equals(localIp)){
+	            		System.out.println(" ****** LOCAL ****** "+locationsMap.get(locationIp));
 	            		return Slave.worker.valueForKeyLocationSet(key, locationsMap.get(locationIp));
-	            	else	
+	            	}
+	            	else{
+	            		System.out.println(" ****** REMOTE ****** "+locationsMap.get(locationIp)+"\t"+localIp+"\t"+locationIp);
 	            		return getValuesFromSingleRemoteMapLocationSet(key, locationsMap.get(locationIp));
+	            	}
 	            }
 	        });
 	        taskList.add(futureTask_1);
