@@ -5,6 +5,8 @@ import io.netty.heartbeats.HeartBeatClient;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import config.RunConfig;
+
 public class HeartBeats implements Runnable {
 	static ScheduledThreadPoolExecutor exec;
 	HeartBeatClient heartBeatClientClient;
@@ -25,12 +27,12 @@ public class HeartBeats implements Runnable {
         	        	   System.out.println(""+i);
         	        	   heartBeatClientClient.sendCommand("HEART_BEAT");
         	           }
-        	       }, 1, 1, TimeUnit.SECONDS); // execute every 60 seconds
+        	       }, 0, RunConfig.heartbeatIntervalInSec, TimeUnit.SECONDS); // execute every 3 seconds
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
     }
-	public void stopSendingHeartBeats(){
+	public void stopSendingHeartBeats(){ 
 		heartBeatClientClient.closeConnection();
 		exec.shutdown();
 	}

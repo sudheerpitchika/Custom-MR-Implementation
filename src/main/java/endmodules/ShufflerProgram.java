@@ -57,10 +57,10 @@ public class ShufflerProgram {
 		
 		
 		for(int i = 0; i < totalReducerCount; i++){
-			System.out.println("Before Q size: "+Master.availableClients.size());
+
 			ChannelHandlerContext ctx = Master.availableClients.take();
-			System.out.println("After Q size: "+Master.availableClients.size());
 			SocketAddress sa = ctx.channel().remoteAddress();
+			
 // Thread.sleep(2000);
 			int start = i*keysCountToEachReducer;
 			
@@ -70,7 +70,7 @@ public class ShufflerProgram {
 			t.start();
 		}
 		
-/*		for(String k : keysReducerMap.keySet()){
+		/*for(String k : keysReducerMap.keySet()){
 			System.out.println(k+"\t"+keysReducerMap.get(k));
 		}*/
 		

@@ -9,7 +9,7 @@ import io.netty.commands.CommandsProtocol.KeyValuesSet;
 import io.netty.commands.Slave;
 import endmodules.LocationMeta;
 
-public class ReturnValueForKey implements Runnable{
+public class ReturnValueForKey /*implements Runnable*/{
 	
 	ChannelHandlerContext ctx;
 	Command command;
@@ -19,7 +19,7 @@ public class ReturnValueForKey implements Runnable{
 		this.command = command;
 	}
 	
-	public void run(){
+	public Void run(){
     	
 		String key = command.getKeyLocation().getKey();
 		int chunkId = command.getKeyLocation().getLocation().getChunk();
@@ -49,5 +49,6 @@ public class ReturnValueForKey implements Runnable{
     	
     	cmdResponse.setKeyValuesSet(keyValueSet.build());
     	ctx.writeAndFlush(cmdResponse.build());
+		return null;
 	}
 }

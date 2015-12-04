@@ -8,8 +8,11 @@ import io.netty.commands.CommandsProtocol.KeyValuesSet;
 import io.netty.commands.CommandsProtocol.Location;
 import io.netty.commands.Slave;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -33,6 +36,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import com.google.protobuf.ByteString;
 
 import config.RunConfig;
 
@@ -66,6 +71,20 @@ public class WorkerProgram {
 		inputData = null;
 	}
 	
+	public void createJar(ByteString bs) throws IOException{
+		
+		createDirectoryIfNotExists(RunConfig.jarFileDirectory);
+		String fileName = RunConfig.jarFileDirectory + "/" + "MFReceived.jar"; 
+		
+		byte[] buffer = bs.toByteArray();
+		File jarOutFile = new File(fileName);
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(jarOutFile));
+        bos.write(buffer, 0, buffer.length);
+        bos.flush();
+        bos.close();
+        System.out.println("Created Jar.!");        
+	} 
+	
 	public void acceptData(int inputChunkId, String inputDataString){
 		
 		keyValuesInMap = new HashMap<String, ArrayList<String>>();
@@ -76,7 +95,11 @@ public class WorkerProgram {
 		byte[] buffer = inputDataString.getBytes();
 		
 		inputChunkIdsList.add(inputChunkId);
-		String fileName = "receivedData-"+inputChunkId+".txt";
+		
+		createDirectoryIfNotExists(RunConfig.inputFilesDirectory);
+		String fileName = RunConfig.inputFilesDirectory + "/" + "receivedData-" + inputChunkId + ".txt";
+		
+		//File jOutFile = new File(directory, fileName);
 		File jOutFile = new File(fileName);
         BufferedOutputStream bos;
 		try {
@@ -90,11 +113,8 @@ public class WorkerProgram {
 	}
 	
 	public void openAllFiles() throws Exception{	
-		// for loop here
 		for(int chunkId : inputChunkIdsList){
-			String fileName = "tempFile"+chunkId+".txt";
-			/*File file = new File(fileName);
-			DataInputStream in = new DataInputStream(new FileInputStream(file));*/
+			String fileName = RunConfig.tempFilesDirectory + "/" + "tempFile-" + chunkId + ".txt";
 			RandomAccessFile raf = new RandomAccessFile(fileName, "r");
 			fileStreams.put(chunkId,raf);
 			System.out.println(chunkId+"  Opening File: "+fileName);
@@ -113,8 +133,9 @@ public class WorkerProgram {
 	public void startMapFunction() throws Exception{
 		// run map class in jar
 		
+		String urlString = "file:"+RunConfig.jarFileDirectory+"/MFReceived.jar";
+		URL url = new URL(urlString);
 		
-		URL url = new URL("file:MFReceived.jar"); 
         URLClassLoader loader = new URLClassLoader (new URL[] {url});
         Class<?> cl = Class.forName ("userprogram.MapFunction", true, loader);
         Method printit = cl.getMethod("map",String.class, String.class, WorkerProgram.class );
@@ -125,14 +146,31 @@ public class WorkerProgram {
         System.out.println("Map completed, ele count "+keyValuesInMap.size());
 	}
 
+	public void createDirectoryIfNotExists(String directory){
+		File dir = new File(directory);
+		if (!dir.exists()) {
+			if (dir.mkdir()) {
+
+			} else {
+				System.out.println("Failed to create directory! "+directory);
+			}
+		}
+	}
+	
 	public void startReduceFunction() throws Exception{
 		
 		// open output file to write data into, write(key, value) function
-		String fileName = "output-"+reducersProcessed+".txt";
+		
+		createDirectoryIfNotExists(RunConfig.outputFilesDirectory);
+		
+		String fileName = RunConfig.outputFilesDirectory+"/"+"output-"+reducersProcessed+".txt";
 		reduceOs = new FileOutputStream(fileName);
 
 		// run reduce class in jar
-		URL url = new URL("file:MFReceived.jar"); 
+		String urlString = "file:"+RunConfig.jarFileDirectory+"/MFReceived.jar";
+		// URL url = new URL("file:jar/MFReceived.jar");
+		URL url = new URL(urlString);
+		
         URLClassLoader loader = new URLClassLoader (new URL[] {url});
         Class<?> cl = Class.forName ("userprogram.ReduceFunction", true, loader);
         Method printit = cl.getMethod("reduce",String.class, ArrayList.class, WorkerProgram.class );
@@ -286,7 +324,9 @@ public class WorkerProgram {
 	
 	//call this once map() is completed
 	public void writeKeyValuesToFileAndCreateTable() throws Exception{
-		String fileName = "tempFile"+inputChunkId+".txt";
+		
+		createDirectoryIfNotExists(RunConfig.tempFilesDirectory);
+		String fileName = RunConfig.tempFilesDirectory+"/"+"tempFile-"+inputChunkId+".txt";
 		FileOutputStream fos = new FileOutputStream(fileName);
 		
 		int start = 0;

@@ -18,7 +18,7 @@ import endmodules.ShufflerProgram;
 
 public class Master {
 	
-	static ArrayList<ChannelHandlerContext> connectedClients = new ArrayList<ChannelHandlerContext>(); 
+	public static final ArrayList<ChannelHandlerContext> connectedClients = new ArrayList<ChannelHandlerContext>(); 
 	public static final BlockingQueue<ChannelHandlerContext> availableClients = new LinkedBlockingQueue<ChannelHandlerContext>();
 	
 	static int numberOfClients = 0;
@@ -30,9 +30,6 @@ public class Master {
 	static ShuffleServerThread shuffleServer;
 	
 	public static void main(String[] args) throws Exception{
-		
-
-
 		
 		//CommandServerThread commandsServer = new CommandServerThread("8475");
 		CommandServerThread commandsServer = new CommandServerThread(RunConfig.masterServerPort);
@@ -127,13 +124,7 @@ class JobTracker implements Runnable{
 	
 	public void run(){
 		
-/*		String fileName = "inputdata.txt";
-		File jInFile = new File(fileName);
-		long fileLength = jInFile.length();
-		System.out.println("File length "+fileLength);
-*/		
-		
-	    RandomAccessFile raf = null;
+		RandomAccessFile raf = null;
 	    long fileLength = 1;
 		try {
 			
@@ -185,6 +176,22 @@ class JobTracker implements Runnable{
 	
 	public int getNumberOfMappers(){
 		return numberOfMappers;
+	}
+	
+	public void stopAllHeartBeats() throws Exception{
+		
+		for(ChannelHandlerContext ctx : Master.connectedClients){
+			String remoteAddress = ctx.channel().remoteAddress().toString();
+			CommandsClient cmdClient = new CommandsClient(remoteAddress.split(":")[0].substring(1), RunConfig.slaveServerPort);
+			cmdClient.startConnection();
+			
+			Command.Builder command = Command.newBuilder();
+			command.setCommandId(1);
+			command.setCommandString("SHUTDOWN");
+			cmdClient.sendCommandAsync(command.build());
+			cmdClient.closeConnection();
+    	}
+		
 	}
 } 
 

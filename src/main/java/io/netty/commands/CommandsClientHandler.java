@@ -82,6 +82,13 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandRe
         return response;
     }
     
+    
+    
+    public void sendCommandAsync(Command command){
+    	channel.writeAndFlush(command);
+    }
+    
+    
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) {
         channel = ctx.channel();
@@ -97,18 +104,12 @@ public class CommandsClientHandler extends SimpleChannelInboundHandler<CommandRe
 	protected void channelRead0(ChannelHandlerContext ctx, CommandResponse result) throws Exception {
 		
 		if(result.getForCommandString().equals("CONNECT")){
-			
 			ByteString bs = result.getJarData();
-			byte[] buffer = bs.toByteArray();
-			File jOutFile = new File("MFReceived.jar");
-	        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(jOutFile));
-	        bos.write(buffer, 0, buffer.length);
-	        bos.flush();
-	        bos.close();
-	        System.out.println("Creating Jar" +buffer.length);
+			Slave.worker.createJar(bs);
+			Slave.startHeartBeats();
 		}
 		
-		System.out.println("got from server: "+result.getResponseText());
+		System.out.println("Reply from server: "+result.getResponseText());
 		responseFromServer.add(result);
 	}
 }

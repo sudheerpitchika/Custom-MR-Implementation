@@ -22,7 +22,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.commands.CommandsProtocol.Command;
 import io.netty.commands.CommandsProtocol.CommandResponse;
-import io.netty.example.worldclock.WorldClockServer;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -73,10 +72,13 @@ public class CommandsClient {
         }
     }
     
-    public CommandResponse sendCommand(Command command){
-    	
+    public CommandResponse sendCommand(Command command){   	
     	CommandResponse response = handler.sendCommand(command);
     	return response;
+    }
+    
+    public void sendCommandAsync(Command command){
+    	handler.sendCommandAsync(command);
     }
     
     public void closeConnection(){

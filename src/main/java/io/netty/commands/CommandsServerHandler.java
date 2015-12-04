@@ -23,6 +23,9 @@ import io.netty.commands.CommandsProtocol.CommandResponse;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 import processing.AcceptData;
 import processing.AcceptingKeyAndLocationsAtReducer;
@@ -38,7 +41,7 @@ import config.RunConfig;
 
 public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> {
 
-	HeartBeats heartBeatClient = null;
+	
    
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
@@ -68,9 +71,7 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         	
         	Master.numberOfClients++;
         	Master.connectedClients.add(ctx);
-        	
         	Master.availableClients.add(ctx);
-
         	System.out.println(Master.availableClients.size()+"  ADDING NEW TO QUEUE "+ctx.channel().remoteAddress());
         	
         	File jInFile = new File("MF.jar");
@@ -106,24 +107,29 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         	Master.completedReducersCount++;
         	Master.availableClients.add(ctx);
         	if(Master.shuffler.totalReducerCount == Master.completedReducersCount){
-        		System.out.println("Last reducer completed");
-        	}
-        	
+        		System.out.println("********************************************");
+        		System.out.println("*************** MR Completed ***************");
+        		System.out.println("********************************************");
+        		Master.jobTracker.stopAllHeartBeats();
+        	}        	
         }
         
         if(cmdString.equals("SHUTDOWN")){
         	
-        	ctx.writeAndFlush(cmdResp.build());
-        	Master.numberOfClients--;
-        	Master.connectedClients.remove(ctx);
+        	// ctx.writeAndFlush(cmdResp.build());
         	
-        	if(heartBeatClient != null)
-        		heartBeatClient.stopSendingHeartBeats();
+        	/*Master.numberOfClients--;
+        	Master.connectedClients.remove(ctx);*/
+        	
+        	if(Slave.heartBeatClient != null)
+        		Slave.heartBeatClient.stopSendingHeartBeats();
         
         	// Close the current channel
         	ctx.channel().close();
         	// Then close the parent channel (the one attached to the bind)
         	ctx.channel().parent().close();
+        	System.out.println("Shutting down.!!");
+        	System.exit(0);
         }
         
         else if(cmdString.equals("START_DATA_NODE")){
@@ -139,20 +145,35 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         }
         
 /*        else if(cmdString.equals("ACCEPT_JAR")){
-        	ctx.writeAndFlush(cmdResp.build());f
+        	ctx.writeAndFlush(cmdResp.build());
         }
 */        
         
         else if(cmdString.equals("START_TASK_TRACKER")){
         	// send heart beats to master repeatedly
         	ctx.writeAndFlush(cmdResp.build());
-        	//heartBeatClient = new HeartBeats("127.0.0.1", "8478");
-        	heartBeatClient = new HeartBeats(RunConfig.heartBeatServerIp, RunConfig.heartBeatServerPort);
-   	     	Thread t = new Thread(heartBeatClient);
-   	     	t.start();
-   	     	
         }
         
+        else if(cmdString.equals("START_HEART_BEAT")){
+        	// send heart beats to master repeatedly
+        	ctx.writeAndFlush(cmdResp.build());
+        	//heartBeatClient = new HeartBeats("127.0.0.1", "8478");
+        	if(Slave.heartBeatClient == null){
+        		Slave.heartBeatClient = new HeartBeats(RunConfig.heartBeatServerIp, RunConfig.heartBeatServerPort);
+	   	     	Thread t = new Thread(Slave.heartBeatClient);
+	   	     	t.start();
+        	}
+        }
+        
+        else if(cmdString.equals("STOP_HEART_BEAT")){
+        	
+        	if(Slave.heartBeatClient != null)
+        		Slave.heartBeatClient.stopSendingHeartBeats();
+        	
+        	Slave.heartBeatClient = null;
+        	ctx.writeAndFlush(cmdResp.build());
+        }
+                
         else if(cmdString.equals("START_MAP")){
         	// new thread for map work
         	//at the end of map process send the completion status
@@ -188,10 +209,21 @@ public class CommandsServerHandler extends SimpleChannelInboundHandler<Command> 
         }
         
         else if(cmdString.equals("RETURN_VALUES_FOR_KEY")){
-        	//ctx.writeAndFlush(cmdResp.build());
-        	ReturnValueForKey retValForKey = new ReturnValueForKey(ctx, command);
+        	
+        	final ReturnValueForKey retValForKey = new ReturnValueForKey(ctx, command);
+        	
+        	FutureTask<Void> futureTask_1 = new FutureTask<Void>(new Callable<Void>() {
+	            //@Override
+	            public Void call() throws Exception {
+	                return retValForKey.run();
+	            }
+	        });
+	        
+        	Slave.threadPool.execute(futureTask_1);
+        	
+/*        	ReturnValueForKey retValForKey = new ReturnValueForKey(ctx, command);
         	Thread t = new Thread(retValForKey);
-        	t.start();
+        	t.start();*/
         }
         
         // Command to receive at shuffler

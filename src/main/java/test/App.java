@@ -1,5 +1,7 @@
 package test;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -145,21 +147,57 @@ public class App {
 		System.out.println("\t"+InetAddress.getLocalHost().getHostAddress());*/
 		
 		
-		
+		/*
 		  RandomAccessFile raf = new RandomAccessFile("inputdata.txt", "r");
 	        long numSplits = 10; 
 	        long sourceSize = raf.length();
 	        long bytesPerSplit = sourceSize/numSplits ;
-	        /*long remainingBytes = sourceSize % numSplits;
+	        long remainingBytes = sourceSize % numSplits;
 	        long startPosition = 0;
 	        for(int i=1; i <= numSplits; i++) {
 	            String s = readContent(raf,startPosition,bytesPerSplit);
 	            System.out.println(s);
 	            startPosition +=bytesPerSplit;
-	        }*/
+	        }
 	        bytesPerSplit = 27;
 	        String s = readContent(raf,0,bytesPerSplit, sourceSize);
-            System.out.println(s);
+            System.out.println(s);*/
+				
+/*		File file = new File("OutputFiles");
+		if (!file.exists()) {
+			if (file.mkdir()) {
+				System.out.println("Directory is created!");
+			} else {
+				System.out.println("Failed to create directory!");
+			}
+		}
+		else{
+			System.out.println("Already exists");
+			String[]entries = file.list();
+			for(String s: entries){
+			    File currentFile = new File(file.getPath(),s);
+			    currentFile.delete();
+			}
+			System.out.println("Cleared");
+		}*/
+		
+		
+
+/*		RandomAccessFile raf = new RandomAccessFile("OutputFiles/inputdata.txt", "r");
+		byte[] dataBytes = new byte[30];
+		raf.seek(0);
+		raf.read(dataBytes);
+		System.out.println(new String(dataBytes));*/
+		
+		
+
+		
+		String fileName = "output/output-"+1+".txt";
+		FileOutputStream reduceOs = new FileOutputStream(fileName);
+		reduceOs.write(fileName.getBytes());
+		reduceOs.close();
+		System.out.println("Done.!");
+
 	}
 	
     public static String readContent(RandomAccessFile raf,long startPosition,long length, long size) throws IOException{
@@ -192,8 +230,6 @@ public class App {
         		
         	}
         }
-        
         return new String(buf);
-        
     }
 }

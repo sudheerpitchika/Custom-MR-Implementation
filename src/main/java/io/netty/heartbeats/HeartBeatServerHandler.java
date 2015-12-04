@@ -34,15 +34,15 @@ public class HeartBeatServerHandler extends SimpleChannelInboundHandler<Command>
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Command command) throws Exception {
-		//replace command with heartbeat proto
-        command.getCommandId();
+		//replace Command with heartbeat proto
+
         String cmdString = command.getCommandString();
         
         //it only receives HEART_BEAT
         System.out.println(cmdString + "\t from "+ctx.channel().remoteAddress());
-        ctx.writeAndFlush("OK /"+cmdString);
+        // ctx.writeAndFlush("OK /"+cmdString);
         
-        if(cmdString.equals("SHUTDOWN")){
+        if(cmdString.equals("HEARTBEAT_SHUTDOWN")){
         	// Close the current channel
         	ctx.channel().close();
         	// Then close the parent channel (the one attached to the bind)
