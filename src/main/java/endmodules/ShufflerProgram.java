@@ -47,10 +47,12 @@ public class ShufflerProgram {
 		
 		Set<String> keySet = keysAndLocations.keySet();
 		List<String> keyList = new ArrayList<String>();
-		keyList.addAll(keySet);
-		Collections.sort(keyList);
-		int keysCount = keyList.size();
+		synchronized (this) {
+			keyList.addAll(keySet);
+			Collections.sort(keyList);			
+		}
 		
+		int keysCount = keyList.size();
 		int keysCountToEachReducer = (int) Math.ceil(keysCount/(1.0*totalReducerCount));
 		System.out.println("TOTAL KEYS COUNT     : "+keysCount);		
 		System.out.println("KEYS TO EACH REDUCER : "+keysCountToEachReducer);

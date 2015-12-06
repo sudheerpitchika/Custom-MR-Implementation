@@ -128,7 +128,8 @@ class JobTracker implements Runnable{
 	    long fileLength = 1;
 		try {
 			
-			raf = new RandomAccessFile("inputdata.txt", "r");
+			// raf = new RandomAccessFile("data.txt", "r");
+			 raf = new RandomAccessFile("pg2016.txt", "r");
 			fileLength = raf.length();
 			
 		} catch (FileNotFoundException e1) {

@@ -17,8 +17,9 @@ public class StartMapFunction implements Runnable{
 
 			Slave.worker.startCombiner();
 
-			Slave.worker.writeKeyValuesToFileAndCreateTable();
-
+//			Slave.worker.writeKeyValuesToFileAndCreateTable();
+			Slave.worker.writeKeyValuesToMultipleFileAndCreateTable();
+			
 			Slave.worker.sendKeyAndLocationsToShuffler();
 
 			Slave.worker.openAllFiles();

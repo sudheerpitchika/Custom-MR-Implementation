@@ -1,3 +1,64 @@
+/*
+Conversation opened. 6 messages. All messages read.
+
+Skip to content
+Using UNC Charlotte Mail with screen readers
+Sudheer
+Search
+
+
+
+Mail
+COMPOSE
+Labels
+Inbox
+Starred
+Sent Mail
+Drafts (2)
+Trash
+Not imp
+Univ Imp
+More 
+Hangouts
+
+ 
+ 
+ 
+  More 
+3 of 442  
+ 
+Expand all Print all In new window
+Thread pool for requests
+Inbox
+x 
+
+Pitchika, Sudheer		Dec 3 (3 days ago)
+else if(cmdString.equals("RETURN_VALUES_FOR_KEY")){ final ReturnValueForKey r...
+3 older messages
+
+Pitchika, Sudheer		3:46 PM (21 hours ago)
+public ArrayList<String> valueForKeyLocationSet(String key, ArrayList<Locatio...
+
+Pitchika, Sudheer <psudheer@uncc.edu>
+Attachments6:24 PM (18 hours ago)
+
+to me 
+Worker Program updated with buffered writer
+
+Attachments area
+Preview attachment WorkerProgram.java
+
+Text
+WorkerProgram.java
+	
+Click here to Reply or Forward
+Using 0.57 GB
+Program Policies
+Powered by Google
+Last account activity: 2 minutes ago
+Open in 1 other location  Details
+*/
+
 package endmodules;
 
 import io.netty.commands.CommandsClient;
@@ -9,11 +70,7 @@ import io.netty.commands.CommandsProtocol.KeyValuesSet;
 import io.netty.commands.CommandsProtocol.Location;
 import io.netty.commands.Slave;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -51,21 +108,24 @@ public class WorkerProgram {
 	Map<String, ArrayList<String>> keyValuesInMap;
 	Map<String, ArrayList<String>> keyValuesInReducer;
 	ArrayList<String> keyList;
-	ArrayList<Integer> inputChunkIdsList;
+	ArrayList<Integer> fileChunkIdsList;
 	HashMap<Integer,RandomAccessFile> fileStreams;
+	java.util.concurrent.ConcurrentHashMap<String, ArrayList<String>> keyValuesInConcurrentMap;
+	
+	ExecutorService executorService = Executors.newFixedThreadPool(20);
 //	HashMap<Integer, Long> fileSizes;
 	String inputData;
 	FileOutputStream reduceOs;
 	static int reducersProcessed = 0;
 	BlockingQueue<String> completedReducerKeys = new LinkedBlockingQueue<String>();
-	int inputChunkId;
+	int inputDataChunkId;
 
 	public WorkerProgram(){
 
 		complexDelimiter = "#";
 		fileStreams = new HashMap<Integer,RandomAccessFile>();
 //		fileSizes = new HashMap<Integer,Long>();
-		inputChunkIdsList = new ArrayList<Integer>();
+		fileChunkIdsList = new ArrayList<Integer>();
 		inputData = null;
 	}
 	
@@ -89,10 +149,10 @@ public class WorkerProgram {
 		keyAndFileLocationMap = new HashMap<String, LocationMeta>();
 		
 		inputData = inputDataString;
-		this.inputChunkId = inputChunkId;
+		this.inputDataChunkId = inputChunkId;
 		byte[] buffer = inputDataString.getBytes();
 		
-		inputChunkIdsList.add(inputChunkId);
+		//fileChunkIdsList.add(inputChunkId);
 		
 		createDirectoryIfNotExists(RunConfig.inputFilesDirectory);
 		String fileName = RunConfig.inputFilesDirectory + "/" + "receivedData-" + inputChunkId + ".txt";
@@ -110,14 +170,15 @@ public class WorkerProgram {
 		}
 	}
 	
-	public void openAllFiles() throws Exception{	
-		for(int chunkId : inputChunkIdsList){
+	public void openAllFiles() throws Exception{
+		System.out.println("******* OPENING FILES ******* "+fileChunkIdsList.size());
+		for(int chunkId : fileChunkIdsList){
 			String fileName = RunConfig.tempFilesDirectory + "/" + "tempFile-" + chunkId + ".txt";
 			RandomAccessFile raf = new RandomAccessFile(fileName, "r");
 			fileStreams.put(chunkId,raf);
-			System.out.println(chunkId+"  Opening File: "+fileName);
 //			fileSizes.put(chunkId, file.length());
 		}
+		System.out.println("******* OPENING FILES ******* "+fileChunkIdsList.size());
 	}
 	
 	
@@ -187,6 +248,7 @@ public class WorkerProgram {
         	reducerTrhead.start();*/
         	runReducer.run();
    //     	Thread.sleep(100);
+System.out.println("*** "+key);
         }
 
         for(int i=0; i < keySet.size(); i++){
@@ -270,7 +332,7 @@ public class WorkerProgram {
 		
 		String dataString = new String(dataBytes);
 		dataString = dataString.trim();
-//		System.out.println("Data String: "+dataString);
+		System.out.println("Data String: "+dataString);
 		String[] splits = dataString.split(complexDelimiter);
 		
 		ArrayList<String> values = new ArrayList<String> ( Arrays.asList(splits));
@@ -301,16 +363,47 @@ public class WorkerProgram {
 			
 			String dataString = new String(dataBytes);
 			dataString = dataString.trim();
-	//		System.out.println("Data String: "+dataString);
-			String[] splits = dataString.split(complexDelimiter);
+			//System.out.println("Data String: "+dataString);
 			
+			int keyIndex = dataString.indexOf(key);
+			if(keyIndex < 0){
+				
+				/*int correction = 30;
+				long offset = Long.max(location.getStart()-correction, 0);
+				dataBytes = new byte[(int)offset+location.getLength()+correction];
+				raf.seek(location.getStart());
+				raf.read(dataBytes);
+
+				dataString = new String(dataBytes);
+				dataString = dataString.trim();
+				keyIndex = dataString.indexOf(key);
+				
+				if(keyIndex >= 0){
+					System.out.println(" ***** CATCH INDEX ****** ");
+					dataString = dataString.substring(keyIndex, keyIndex+location.getLength()-1);
+				}
+				else{
+					System.out.println(" ***** ERROR INDEX ****** ");
+					continue;
+				}*/
+				System.out.println(" ***** ERROR INDEX ****** ");
+				continue;
+			}
+			if(keyIndex > 0){
+				dataString = dataString.substring(keyIndex);
+				dataBytes = new byte[keyIndex];
+				raf.seek(location.getStart() + location.getLength());
+				raf.read(dataBytes);
+				dataString = dataString + new String(dataBytes);
+			}
+			
+			String[] splits = dataString.split(complexDelimiter);
 			ArrayList<String> values = new ArrayList<String> ( Arrays.asList(splits));
 			values.remove(0);
 			valuesList.addAll(values);
 		}
-		
-		
-		System.out.println("*** Returning values for key: "+key+"\t size: "+valuesList.size());
+// uncomment this
+//		System.out.println("*** Returning values for key: "+key+"\t size: "+valuesList.size());
 		return valuesList;
 	}
 	
@@ -333,17 +426,22 @@ public class WorkerProgram {
 		//keyValuesMap
 		
 //		System.out.println("In Emit Function "+key+"\t"+value);
+		key = key.trim();
+		key = key.replaceAll("\\s", "");
+		key = key.replaceAll("\\n ", "");
+		key = key.replaceAll("#", "");
 		
-		if(keyValuesInMap.containsKey(key)){
-			ArrayList<String> values = keyValuesInMap.get(key);
-			values.add(value);
-			keyValuesInMap.put(key, values);
-		}else{
-			ArrayList<String> values = new ArrayList<String>();
-			values.add(value);
-			keyValuesInMap.put(key, values);
+		if(value != null && value.length() > 0){
+				if(keyValuesInMap.containsKey(key)){
+					ArrayList<String> values = keyValuesInMap.get(key);
+					values.add(value);
+					keyValuesInMap.put(key, values);
+				}else{
+					ArrayList<String> values = new ArrayList<String>();
+					values.add(value);
+					keyValuesInMap.put(key, values);
+				}
 		}
-//		System.out.println("Size: "+keyValuesInMap.size());
 	}
 	
 
@@ -354,16 +452,21 @@ public class WorkerProgram {
 	}
 	
 	//call this once map() is completed
+	// writeKeyValuesToMultipleFileAndCreateTable
 	public void writeKeyValuesToFileAndCreateTable() throws Exception{
 		
 		createDirectoryIfNotExists(RunConfig.tempFilesDirectory);
-		String fileName = RunConfig.tempFilesDirectory+"/"+"tempFile-"+inputChunkId+".txt";
+		String fileName = RunConfig.tempFilesDirectory+"/"+"tempFile-"+inputDataChunkId+".txt";
 		FileOutputStream fos = new FileOutputStream(fileName);
 		
 		int start = 0;
 		
 		for(String key : keyList){
-			if(key.trim().length() > 0){
+			
+/*			key = key.trim();
+			key = key.replaceAll("\n ", "");
+*/			
+			if(key.length() > 0){
 				ArrayList<String> valuesList = keyValuesInMap.get(key);
 				
 				byte[] dataBytes = key.getBytes();
@@ -382,7 +485,7 @@ public class WorkerProgram {
 				dataBytesLength += value.length();
 	
 				String ip = InetAddress.getLocalHost().getHostAddress(); //ip of this machine
-				LocationMeta location = new LocationMeta(start, dataBytesLength, inputChunkId,ip);
+				LocationMeta location = new LocationMeta(start, dataBytesLength, inputDataChunkId,ip);
 				
 				start =  start + dataBytesLength;
 				
@@ -391,6 +494,140 @@ public class WorkerProgram {
 			}
 		}		
 		fos.close();
+	}
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	public HashMap<String, LocationMeta> writeToFile(int chunkId, int start, int end, ArrayList<String> localKeyList, Map<String, ArrayList<String>> finalKeyValuesInMap) throws IOException{
+		
+		createDirectoryIfNotExists(RunConfig.tempFilesDirectory);
+		String fileName = RunConfig.tempFilesDirectory+"/"+"tempFile-"+chunkId+".txt";
+		// FileOutputStream fos = new FileOutputStream(fileName);
+		int offset = 0;
+
+
+		BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+
+
+
+		HashMap<String, LocationMeta> keyAndFileLocationMapLocal = new HashMap<String, LocationMeta>();
+		
+		long first = System.currentTimeMillis();
+		System.out.println("--------------------------- START "+chunkId);
+		
+		for(int i=start; i < end && i < localKeyList.size(); i++){
+			String key =null;
+
+				key = localKeyList.get(i);	
+
+			
+			
+			if(key.length() > 0){
+
+				// ArrayList<String> valuesList = keyValuesInConcurrentMap.get(key);
+				
+				ArrayList<String> valuesList = finalKeyValuesInMap.get(key);	
+				
+				byte[] dataBytes = key.getBytes();
+				// fos.write(dataBytes);
+				bw.write(key);
+
+				int dataBytesLength = key.length();
+				String value = "";
+				StringBuilder sbValue = new StringBuilder();
+				
+				for(String val : valuesList){
+					val = complexDelimiter + val;
+					sbValue.append(val);
+				}
+				value = sbValue.toString();
+				dataBytes = value.getBytes();
+				// fos.write(dataBytes);
+				bw.write(value);
+				dataBytesLength += value.length();
+	
+				String ip = InetAddress.getLocalHost().getHostAddress(); //ip of this machine
+				LocationMeta location = new LocationMeta(offset, dataBytesLength, chunkId,ip);
+				
+				offset += dataBytesLength;
+				
+
+				keyAndFileLocationMapLocal.put(key, location);					
+
+			}
+		}
+		// fos.close();
+		bw.close();
+/*		synchronized (fileChunkIdsList) {
+			fileChunkIdsList.add(chunkId);			
+		}*/
+
+		long last = System.currentTimeMillis();
+		System.out.println("---------------------------   END "+chunkId+"\t"+(last-first)/1000+"s");
+
+		
+		return keyAndFileLocationMapLocal;
+	}
+	
+	
+	
+	
+	public void writeKeyValuesToMultipleFileAndCreateTable() throws Exception{
+			
+//		keyValuesInConcurrentMap = (ConcurrentHashMap<String, ArrayList<String>>) keyValuesInMap;
+		
+		final int keyListSize = keyList.size();
+		final int keysChunkSize = (int) Math.ceil(keyListSize/(1.0*10));
+		int chunkId = inputDataChunkId*1000;
+		int processedCount = 0;
+		
+		final ArrayList<String> finalKeyList = keyList;
+		final Map<String, ArrayList<String>> finalKeyValuesInMap = keyValuesInMap;
+		
+		List<FutureTask<HashMap<String, LocationMeta>>> taskList = new ArrayList<FutureTask<HashMap<String, LocationMeta>>>();
+		
+		for(int start = 0; start < keyListSize; ){
+			
+			final int curChunkId = chunkId;
+			final int curStart = start;
+					
+			//future task with
+			// Start thread for the first half of the numbers
+	        FutureTask<HashMap<String, LocationMeta>> futureTask_1 = new FutureTask<HashMap<String, LocationMeta>>(new Callable<HashMap<String, LocationMeta>>() {
+	            //@Override
+	            public HashMap<String, LocationMeta> call() throws Exception {
+	            	return writeToFile(curChunkId, curStart, curStart + keyListSize, finalKeyList, finalKeyValuesInMap);
+		            }
+		        });
+		        taskList.add(futureTask_1);
+		        executorService.execute(futureTask_1);
+		        
+		        start += keysChunkSize;
+				chunkId++;
+				processedCount++;
+		}	
+			
+
+		List<HashMap<String, LocationMeta>> listOfMaps = new ArrayList<HashMap<String, LocationMeta>>();
+		
+	    // Wait until all results are available and combine them at the same time
+	    for (int j = 0; j < processedCount; j++) {
+	        FutureTask<HashMap<String, LocationMeta>> futureTask = taskList.get(j);	        
+	        System.out.println("Completed creating file: "+j);
+	        listOfMaps.add(futureTask.get());
+	        
+	    }
+	    for(int i=0; i<processedCount; i++){
+	    	fileChunkIdsList.add(inputDataChunkId*1000 + i);
+	    	keyAndFileLocationMap.putAll(listOfMaps.get(i));
+	    }
 	}
 }
 
@@ -417,9 +654,10 @@ class RunReducerClass /*implements Runnable*/{
 			
 			locations = Slave.worker.keysAndMapperLocations.get(key);
 			ArrayList<String> values = getValuesForKeyFromMaps();
-			Object value = printit.invoke(instance,key,values, Slave.worker);	// can replace value with Slave.worker.keyValuesInReducer.get(key) 
-			Slave.worker.completedReducerKeys.add(key);
-			
+			Object value = null;
+			if(values.size() > 0)
+				value = printit.invoke(instance,key,values, Slave.worker);	// can replace value with Slave.worker.keyValuesInReducer.get(key) 
+			Slave.worker.completedReducerKeys.add(key);			
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
@@ -493,11 +731,13 @@ class RunReducerClass /*implements Runnable*/{
 	            //@Override
 	            public ArrayList<String> call() throws Exception {
 	            	if(locationIp.equals(localIp)){
-	            		System.out.println(" ****** LOCAL ****** "+locationsMap.get(locationIp));
+						// uncomment this
+	            		// System.out.println(" ****** LOCAL ****** "+locationsMap.get(locationIp));
 	            		return Slave.worker.valueForKeyLocationSet(key, locationsMap.get(locationIp));
 	            	}
 	            	else{
-	            		System.out.println(" ****** REMOTE ****** "+locationsMap.get(locationIp)+"\t"+localIp+"\t"+locationIp);
+						// uncomment this
+	            		// System.out.println(" ****** REMOTE ****** "+locationsMap.get(locationIp)+"\t"+localIp+"\t"+locationIp);
 	            		return getValuesFromSingleRemoteMapLocationSet(key, locationsMap.get(locationIp));
 	            	}
 	            }
@@ -512,8 +752,9 @@ class RunReducerClass /*implements Runnable*/{
             FutureTask<ArrayList<String>> futureTask = taskList.get(j);
             valuesFromMappers.addAll(futureTask.get());
         }
+        if(valuesFromMappers.size() > 0)
+        	Slave.worker.keyValuesInReducer.put(key, valuesFromMappers);
         
-        Slave.worker.keyValuesInReducer.put(key, valuesFromMappers);
         return valuesFromMappers;
 	}
 	
@@ -601,3 +842,5 @@ class RunReducerClass /*implements Runnable*/{
 }
 
 
+/*WorkerProgram.javaOpen
+Displaying WorkerProgram.java.*/

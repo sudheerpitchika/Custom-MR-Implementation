@@ -163,7 +163,7 @@ public class App {
 	        String s = readContent(raf,0,bytesPerSplit, sourceSize);
             System.out.println(s);*/
 				
-/*		File file = new File("OutputFiles");
+		/*File file = new File("Output");
 		if (!file.exists()) {
 			if (file.mkdir()) {
 				System.out.println("Directory is created!");
@@ -174,11 +174,13 @@ public class App {
 		else{
 			System.out.println("Already exists");
 			String[]entries = file.list();
+			
 			for(String s: entries){
 			    File currentFile = new File(file.getPath(),s);
 			    currentFile.delete();
+				System.out.println(s);
 			}
-			System.out.println("Cleared");
+//			System.out.println("Cleared");
 		}*/
 		
 		
@@ -192,11 +194,12 @@ public class App {
 		
 
 		
-		String fileName = "output/output-"+1+".txt";
+/*		String fileName = "output/output-"+1+".txt";
 		FileOutputStream reduceOs = new FileOutputStream(fileName);
 		reduceOs.write(fileName.getBytes());
 		reduceOs.close();
-		System.out.println("Done.!");
+		System.out.println("Done.!");*/
+		
 
 	}
 	
